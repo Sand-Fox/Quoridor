@@ -1,14 +1,13 @@
 using System;
 using UnityEngine;
 using Photon.Pun;
-using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public PhotonView view;
 
-    public PlayerMovement player;
+    public Player player;
     public PlayerFaction playerFaction;
     public GameState gameState;
     public static event Action<GameState> OnGameStateChanged;

@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Random = UnityEngine.Random;
 
 public class PlayerSetUpManager : MonoBehaviour
 {
@@ -24,8 +23,10 @@ public class PlayerSetUpManager : MonoBehaviour
     private void OnSpawnPlayers()
     {
         GameObject playerObject = PhotonNetwork.Instantiate("Player", new Vector2(4, 4), Quaternion.identity);
-        GameManager.Instance.player = playerObject.GetComponent<PlayerMovement>();
+        GameManager.Instance.player = playerObject.GetComponent<Player>();
         playerObject.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
+
+        if (PhotonNetwork.OfflineMode) PhotonNetwork.Instantiate("IABestPath", new Vector2(4, 4), Quaternion.identity);
     }
 
     private void OnWaitForPlayer()
@@ -38,6 +39,8 @@ public class PlayerSetUpManager : MonoBehaviour
             PhotonNetwork.CurrentRoom.IsOpen = false;
             CoinToss();
         }
+
+        if (PhotonNetwork.OfflineMode) CoinToss();
     }
 
     private void CoinToss()

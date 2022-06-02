@@ -15,8 +15,9 @@ public class PathFinding : MonoBehaviour
     public List<CustomTile> GetPath(CustomTile startTile, CustomTile targetTile)
     {
         SetUpPath(startTile, targetTile);
-        List<CustomTile> path = new List<CustomTile>() { targetTile };
+        if (targetTile.previousTile == null) return null;
 
+        List<CustomTile> path = new List<CustomTile>() { targetTile };
         CustomTile currentTile = targetTile;
         while (currentTile.previousTile != null)
         {
@@ -43,7 +44,7 @@ public class PathFinding : MonoBehaviour
 
             foreach (CustomTile neighbour in current.AdjacentTiles())
             {
-                if (neighbour == null || neighbour.occupiedPlayer != null || closed.Contains(neighbour)) continue;
+                if (neighbour == null || neighbour.occupiedUnit != null || closed.Contains(neighbour)) continue;
 
                 if (!open.Contains(neighbour) || current.GetDistanceFromStartTile() + 1 < neighbour.GetDistanceFromStartTile())
                 {

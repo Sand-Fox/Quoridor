@@ -5,7 +5,7 @@ using TMPro;
 
 public class CustomTile : MonoBehaviour
 {
-    [HideInInspector] public PlayerMovement occupiedPlayer;
+    [HideInInspector] public BaseUnit occupiedUnit;
     [SerializeField] private VoidEventChannelSO channel;
     [SerializeField] private GameObject mouseOver;
     [SerializeField] private GameObject target;
@@ -27,7 +27,7 @@ public class CustomTile : MonoBehaviour
         if(ModeManager.Instance.mode == Mode.PathFinding)
         {
             List<CustomTile> path = PathFinding.Instance.GetPath(GameManager.Instance.player.occupiedTile, this);
-            LinePopUp.Create(path, ColorExtension.green);
+            if (path != null) LinePopUp.Create(path, ColorExtension.green);
         }
     }
 
@@ -55,7 +55,7 @@ public class CustomTile : MonoBehaviour
     public int G { get { return _G; } set
         {
             _G = value;
-            if (_G == GridManager.Instance.MAXPATH || !PathFinding.Instance.debugMode)
+            if (_G == GridManager.MAXPATH || !PathFinding.Instance.debugMode)
             {
                 Gtext.text = "";
                 Ftext.text = "";
@@ -72,7 +72,7 @@ public class CustomTile : MonoBehaviour
     public int H { get { return _H; } set
         {
             _H = value;
-            if (_H == GridManager.Instance.MAXPATH || !PathFinding.Instance.debugMode)
+            if (_H == GridManager.MAXPATH || !PathFinding.Instance.debugMode)
             {
                 Htext.text = "";
                 Ftext.text = "";

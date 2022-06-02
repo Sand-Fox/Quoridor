@@ -11,8 +11,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] private CustomTile tilePrefab;
     [SerializeField] private CustomCorner cornerPrefab;
 
-    public readonly int MAXPATH = 100;
-    public readonly int BOUNDS = 9;
+    public static readonly int BOUNDS = 9;
+    public static readonly int MAXPATH = BOUNDS * BOUNDS;
     private Dictionary<Vector2, CustomTile> tilesDico = new Dictionary<Vector2, CustomTile>();
     private Dictionary<Vector2, CustomCorner> cornersDico = new Dictionary<Vector2, CustomCorner>();
 
@@ -73,6 +73,20 @@ public class GridManager : MonoBehaviour
     {
         if (cornersDico.TryGetValue(pos, out var corner)) return corner;
         return null;
+    }
+
+    public CustomTile[] GetFirstRaw()
+    {
+        CustomTile[] firstRaw = new CustomTile[BOUNDS];
+        for (int i = 0; i < BOUNDS; i++) firstRaw[i] = GetTileAtPosition(new Vector2(i, 0));
+        return firstRaw;
+    }
+
+    public CustomTile[] GetLastRaw()
+    {
+        CustomTile[] lastRaw = new CustomTile[BOUNDS];
+        for (int i = 0; i < BOUNDS; i++) lastRaw[i] = GetTileAtPosition(new Vector2(i, BOUNDS - 1));
+        return lastRaw;
     }
 
     public void ResetAllTiles()
