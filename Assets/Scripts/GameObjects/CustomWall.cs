@@ -33,6 +33,10 @@ public abstract class CustomWall : MonoBehaviour
         corner.gameObject.SetActive(false);
         SetUpOnSpawn();
         GameManager.Instance.EndTurn();
+
+        bool orientation = (this is HorizontalWall)?true:false;
+        Coup c = new Coup("wall", position, orientation);
+        RegisterManager.Instance.AddCoup(c);
     }
 
     public abstract bool CanSpawnHere();

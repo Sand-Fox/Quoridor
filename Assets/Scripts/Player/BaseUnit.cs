@@ -34,5 +34,8 @@ public abstract class BaseUnit : MonoBehaviour
         transform.DOMove(tile.transform.position, 0.4f).SetEase(Ease.InOutSine);
 
         GameManager.Instance.EndTurn();
+
+        Coup c = new Coup("move", position, true);
+        RegisterManager.Instance.AddCoup(c);
     }
 }
