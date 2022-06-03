@@ -43,12 +43,7 @@ public class UIManager : MonoBehaviour
     {
         if(newState == GameState.Player1Turn || newState == GameState.Player2Turn) banner.SetActive(false);
 
-        if (GameManager.Instance.isPlayerTurn())
-        {
-            pathButton.EnableButton(true);
-            moveButton.EnableButton(true);
-            wallButton.EnableButton(wallCount > 0);
-        }
+        if (GameManager.Instance.isPlayerTurn()) Invoke("EnableBluttons", 0.5f);
         else
         {
             pathButton.EnableButton(false);
@@ -66,5 +61,12 @@ public class UIManager : MonoBehaviour
             if (optionsPanel.isEnable) optionsPanel.EnablePanel(false);
             winPanel.EnablePanel(true);
         }
+    }
+
+    private void EnableBluttons()
+    {
+        pathButton.EnableButton(true);
+        moveButton.EnableButton(true);
+        wallButton.EnableButton(wallCount > 0);
     }
 }

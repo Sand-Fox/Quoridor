@@ -43,6 +43,17 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         GameState newState = (gameState == GameState.Player1Turn) ? GameState.Player2Turn : GameState.Player1Turn;
+
+        foreach(CustomTile tile in GridManager.Instance.GetLastRaw())
+        {
+            if (tile.occupiedUnit is Player _player && _player.view.IsMine) newState = GameState.Win;
+        }
+
+        foreach (CustomTile tile in GridManager.Instance.GetFirstRaw())
+        {
+            if (tile.occupiedUnit is BaseIA || tile.occupiedUnit is Player _player && !_player.view.IsMine) newState = GameState.Loose;
+        }
+
         UpdateGameState(newState);
     }
 }

@@ -8,7 +8,6 @@ public abstract class BaseUnit : MonoBehaviour
 {
     public CustomTile occupiedTile { get; private set; }
     public PhotonView view { get; private set; }
-    public float delay;
 
     private void Awake()
     {
@@ -32,10 +31,8 @@ public abstract class BaseUnit : MonoBehaviour
         occupiedTile.occupiedUnit = null;
         tile.occupiedUnit = this;
         occupiedTile = tile;
-        transform.DOMove(tile.transform.position, 0.4f).SetEase(Ease.InOutSine).SetDelay(delay);
+        transform.DOMove(tile.transform.position, 0.4f).SetEase(Ease.InOutSine);
 
         GameManager.Instance.EndTurn();
-        if (this is Player && view.IsMine && tile.transform.position.y == 8) GameManager.Instance.UpdateGameState(GameState.Win);
-        if ((this is BaseIA || !view.IsMine) && tile.transform.position.y == 0) GameManager.Instance.UpdateGameState(GameState.Loose);
     }
 }

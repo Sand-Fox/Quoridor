@@ -9,7 +9,7 @@ public abstract class BaseIA : BaseUnit
 
     private void OnGameStateChanged(GameState newState)
     {
-        if (newState == GameState.Player2Turn) PlayIA();
+        if (newState == GameState.Player2Turn) Invoke("PlayIA", 0.5f);
     }
 
     protected abstract void PlayIA();
