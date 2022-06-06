@@ -21,48 +21,28 @@ public static class TileExtension
         return ret + new Vector2(0, 8);
     }
 
-
-    public static CustomTile GetRightTile(this CustomTile centerTile)
+    public static CustomTile GetTileInDirection(this CustomTile centerTile, Vector2 direction, out CustomTile tile2)
     {
-        if (!centerTile.directionDico[Direction.Right]) return null;
+        tile2 = null;
         Vector2 centerTilePos = centerTile.transform.position;
-        return GridManager.Instance.GetTileAtPosition(centerTilePos + Vector2.right);
-    }
+        CustomTile adjacentTile = GridManager.Instance.GetTileAtPosition(centerTilePos + direction);
+        if (!centerTile.directionDico[direction] || adjacentTile == null) return null;
 
-    public static CustomTile GetLeftTile(this CustomTile centerTile)
-    {
-        if (!centerTile.directionDico[Direction.Left]) return null;
-        Vector2 centerTilePos = centerTile.transform.position;
-        return GridManager.Instance.GetTileAtPosition(centerTilePos + Vector2.left);
-    }
-
-    public static CustomTile GetUpTile(this CustomTile centerTile)
-    {
-        if (!centerTile.directionDico[Direction.Up]) return null;
-        Vector2 centerTilePos = centerTile.transform.position;
-        return GridManager.Instance.GetTileAtPosition(centerTilePos + Vector2.up);
-    }
-
-    public static CustomTile GetDownTile(this CustomTile centerTile)
-    {
-        if (!centerTile.directionDico[Direction.Down]) return null;
-        Vector2 centerTilePos = centerTile.transform.position;
-        return GridManager.Instance.GetTileAtPosition(centerTilePos + Vector2.down);
+        if (adjacentTile.occupiedUnit == null) return adjacentTile;
+        if (adjacentTile.directionDico[direction]) return GridManager.Instance.GetTileAtPosition(centerTilePos + 2 * direction);
+        tile2 = adjacentTile.GetTileInDirection(Vector2.Perpendicular(direction), out _);
+        return adjacentTile.GetTileInDirection(-Vector2.Perpendicular(direction), out _);
     }
 
     public static CustomTile[] AdjacentTiles(this CustomTile centerTile)
     {
-        return new CustomTile[] { centerTile.GetRightTile(), centerTile.GetLeftTile(), centerTile.GetUpTile(), centerTile.GetDownTile() };
-    }
+        CustomTile tileA, tileB, tileC, tileD;
 
-    public static CustomTile GetFurtherTiles(this CustomTile centerTile, CustomTile adjacentTile, out CustomTile tile2)
-    {
-        tile2 = null;
-        Vector2 d = centerTile.DirectionTo(adjacentTile);
-        Direction direction = (d == Vector2.right) ? Direction.Right : (d == Vector2.left) ? Direction.Left : (d == Vector2.up) ? Direction.Up : Direction.Down;
-        if (adjacentTile.directionDico[direction]) return GridManager.Instance.GetTileAtPosition((Vector2)adjacentTile.transform.position + d);
+        CustomTile tile1 = centerTile.GetTileInDirection(Vector2.right, out tileA);
+        CustomTile tile2 = centerTile.GetTileInDirection(Vector2.left, out tileB);
+        CustomTile tile3 = centerTile.GetTileInDirection(Vector2.up, out tileC);
+        CustomTile tile4 = centerTile.GetTileInDirection(Vector2.down, out tileD);
 
-        tile2 = GridManager.Instance.GetTileAtPosition((Vector2)adjacentTile.transform.position + Vector2.Perpendicular(d));
-        return GridManager.Instance.GetTileAtPosition((Vector2)adjacentTile.transform.position - Vector2.Perpendicular(d));
+        return new CustomTile[] { tileA, tileB, tileC, tileD, tile1, tile2, tile3, tile4 };
     }
 }

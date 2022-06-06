@@ -11,14 +11,14 @@ public class CustomTile : MonoBehaviour
     [SerializeField] private GameObject target;
     public bool isTarget = false;
 
-    public Dictionary<Direction, bool> directionDico = new Dictionary<Direction, bool>();
+    public Dictionary<Vector2, bool> directionDico = new Dictionary<Vector2, bool>();
 
     private void Awake()
     {
-        directionDico.Add(Direction.Right, true);
-        directionDico.Add(Direction.Left, true);
-        directionDico.Add(Direction.Up, true);
-        directionDico.Add(Direction.Down, true);
+        directionDico.Add(Vector2.right, true);
+        directionDico.Add(Vector2.left, true);
+        directionDico.Add(Vector2.up, true);
+        directionDico.Add(Vector2.down, true);
     }
 
     private void OnMouseEnter()
@@ -102,12 +102,4 @@ public class CustomTile : MonoBehaviour
         }
         return d;
     }
-}
-
-public enum Direction
-{
-    Right,
-    Left,
-    Up,
-    Down
 }

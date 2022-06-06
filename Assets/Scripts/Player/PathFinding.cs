@@ -44,7 +44,7 @@ public class PathFinding : MonoBehaviour
 
             foreach (CustomTile neighbour in current.AdjacentTiles())
             {
-                if (neighbour == null || neighbour.occupiedUnit != null || closed.Contains(neighbour)) continue;
+                if (neighbour == null || closed.Contains(neighbour)) continue;
 
                 if (!open.Contains(neighbour) || current.GetDistanceFromStartTile() + 1 < neighbour.GetDistanceFromStartTile())
                 {

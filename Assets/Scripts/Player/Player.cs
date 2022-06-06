@@ -12,16 +12,9 @@ public class Player : BaseUnit
 
     private void EnableMoveZone()
     {
-        foreach(CustomTile tile in occupiedTile.AdjacentTiles())
+        foreach (CustomTile tile in occupiedTile.AdjacentTiles())
         {
-            if (tile != null && tile.occupiedUnit == null) tile.EnableTarget(true);
-            if (tile != null && tile.occupiedUnit != null)
-            {
-                CustomTile tile1 = occupiedTile.GetFurtherTiles(tile, out CustomTile tile2);
-                if (tile1 != null) tile1.EnableTarget(true);
-                if (tile2 != null) tile2.EnableTarget(true);
-            }
+            if (tile != null) tile.EnableTarget(true);
         }
     }
-    
 }

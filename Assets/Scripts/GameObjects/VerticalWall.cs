@@ -11,10 +11,10 @@ public class VerticalWall : CustomWall
         CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, 0.5f));
         CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, -0.5f));
 
-        if (rightUpTile != null && !rightUpTile.directionDico[Direction.Left]) return false;
-        if (rightDownTile != null && !rightDownTile.directionDico[Direction.Left]) return false;
-        if (leftUpTile != null && !leftUpTile.directionDico[Direction.Right]) return false;
-        if (leftDownTile != null && !leftDownTile.directionDico[Direction.Right]) return false;
+        if (rightUpTile != null && !rightUpTile.directionDico[Vector2.left]) return false;
+        if (rightDownTile != null && !rightDownTile.directionDico[Vector2.left]) return false;
+        if (leftUpTile != null && !leftUpTile.directionDico[Vector2.right]) return false;
+        if (leftDownTile != null && !leftDownTile.directionDico[Vector2.right]) return false;
         return true;
     }
 
@@ -25,9 +25,9 @@ public class VerticalWall : CustomWall
         CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, 0.5f));
         CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, -0.5f));
 
-        rightUpTile.directionDico[Direction.Left] = false;
-        rightDownTile.directionDico[Direction.Left] = false;
-        leftUpTile.directionDico[Direction.Right] = false;
-        leftDownTile.directionDico[Direction.Right] = false;
+        rightUpTile.directionDico[Vector2.left] = false;
+        rightDownTile.directionDico[Vector2.left] = false;
+        leftUpTile.directionDico[Vector2.right] = false;
+        leftDownTile.directionDico[Vector2.right] = false;
     }
 }

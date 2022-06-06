@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coup : MonoBehaviour
+public class Coup
 {
     public string type {get; private set;}
     public Vector3 coord {get; private set;}

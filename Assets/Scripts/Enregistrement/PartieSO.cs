@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 [CreateAssetMenu(menuName = "Enregistrement")]
 public class PartieSO : ScriptableObject
@@ -13,13 +15,14 @@ public class PartieSO : ScriptableObject
 
     public static PartieSO CreatePartie()
     {
-        PartieSO partie =  ScriptableObject.CreateInstance<PartieSO>();
+        PartieSO partie =  CreateInstance<PartieSO>();
+        #if UNITY_EDITOR
         AssetDatabase.CreateAsset(partie, "Assets/Scripts/Enregistrement/Parties/partie"+ count + ".asset" );
         AssetDatabase.SaveAssets();
-        count++;
         EditorUtility.FocusProjectWindow();
         Selection.activeObject = partie;
-
+        #endif
+        count++;
         return partie;
     }
 }
