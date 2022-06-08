@@ -33,4 +33,24 @@ public abstract class BaseIA : BaseUnit
 
         return bestPath;
     }
+
+    protected List<CustomTile> GetPlayerBestPath()
+    {
+        CustomTile[] lastRaw = GridManager.Instance.GetLastRaw();
+        List<CustomTile> bestPath = new List<CustomTile>();
+        int bestDistance = GridManager.MAXPATH;
+
+        foreach (CustomTile tile in lastRaw)
+        {
+            var path = PathFinding.Instance.GetPath(GameManager.Instance.player.occupiedTile, tile);
+            int distance = (path == null) ? GridManager.MAXPATH : path.Count;
+            if (distance < bestDistance)
+            {
+                bestPath = path;
+                bestDistance = distance;
+            }
+        }
+
+        return bestPath;
+    }
 }

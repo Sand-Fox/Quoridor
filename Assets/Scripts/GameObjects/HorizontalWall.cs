@@ -18,7 +18,7 @@ public class HorizontalWall : CustomWall
         return true;
     }
 
-    public override void SetUpOnSpawn()
+    public override void OnSpawn()
     {
         CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, 0.5f));
         CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, -0.5f));
@@ -29,5 +29,18 @@ public class HorizontalWall : CustomWall
         rightDownTile.directionDico[Vector2.up] = false;
         leftUpTile.directionDico[Vector2.down] = false;
         leftDownTile.directionDico[Vector2.up] = false;
+    }
+
+    public override void OnDespawn()
+    {
+        CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, 0.5f));
+        CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, -0.5f));
+        CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, 0.5f));
+        CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, -0.5f));
+
+        rightUpTile.directionDico[Vector2.down] = true;
+        rightDownTile.directionDico[Vector2.up] = true;
+        leftUpTile.directionDico[Vector2.down] = true;
+        leftDownTile.directionDico[Vector2.up] = true;
     }
 }

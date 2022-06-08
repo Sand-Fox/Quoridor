@@ -59,16 +59,13 @@ public class PathFinding : MonoBehaviour
 
     private CustomTile GetLowestFCostInOpen()
     {
-        if(open.Count == 0)
-        {
-            Debug.Log("Liste vide");
-            return null;
-        }
+        if(open.Count == 0) return null;
 
         CustomTile bestTile = open[0];
         foreach(CustomTile tile in open)
         {
             if (tile.F < bestTile.F) bestTile = tile;
+            if (tile.F == bestTile.F && tile.transform.position.y < bestTile.transform.position.y) bestTile = tile;
         }
         return bestTile;
     }

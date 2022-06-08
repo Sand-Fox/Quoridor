@@ -12,16 +12,18 @@ public abstract class CustomWall : MonoBehaviour
 
     private void Awake() => view = GetComponent<PhotonView>();
 
-    public void SetColor(Color color)
-    {
-        wall1.color = color;
-        wall2.color = color;
-    }
-
     public void SetUpPreview()
     {
-        if (CanSpawnHere()) SetColor(ColorExtension.transparent);
-        else SetColor(ColorExtension.transparentRed);
+        if (CanSpawnHere())
+        {
+            wall1.color = ColorExtension.transparent;
+            wall2.color = ColorExtension.transparent;
+        }
+        else
+        {
+            wall1.color = ColorExtension.transparentRed;
+            wall2.color = ColorExtension.transparentRed;
+        }
     }
 
     [PunRPC]
@@ -31,7 +33,7 @@ public abstract class CustomWall : MonoBehaviour
         if (!view.IsMine) corner = GridManager.Instance.GetCornerAtPosition(position.ReflectPosition());
         transform.position = corner.transform.position;
         corner.gameObject.SetActive(false);
-        SetUpOnSpawn();
+        OnSpawn();
         GameManager.Instance.EndTurn();
 
         bool orientation = (this is HorizontalWall)?true:false;
@@ -40,5 +42,6 @@ public abstract class CustomWall : MonoBehaviour
     }
 
     public abstract bool CanSpawnHere();
-    public abstract void SetUpOnSpawn();
+    public abstract void OnSpawn();
+    public abstract void OnDespawn();
 }
