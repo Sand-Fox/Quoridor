@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 public class PlayerSetUpManager : MonoBehaviour
 {
     public static PlayerSetUpManager Instance;
+    private string IAName = "IABestPath";
 
     private void Awake()
     {
@@ -26,7 +27,7 @@ public class PlayerSetUpManager : MonoBehaviour
         GameManager.Instance.player = playerObject.GetComponent<Player>();
         playerObject.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
 
-        if (PhotonNetwork.OfflineMode) PhotonNetwork.Instantiate("IABestPath", new Vector2(4, 4), Quaternion.identity);
+        if (PhotonNetwork.OfflineMode) PhotonNetwork.Instantiate(IAName, new Vector2(4, 4), Quaternion.identity);
     }
 
     private void OnWaitForPlayer()

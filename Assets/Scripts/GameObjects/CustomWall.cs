@@ -6,6 +6,7 @@ using Photon.Pun;
 public abstract class CustomWall : MonoBehaviour
 {
     public PhotonView view;
+    public Orientation orientation;
 
     [SerializeField] private SpriteRenderer wall1;
     [SerializeField] private SpriteRenderer wall2;
@@ -36,7 +37,7 @@ public abstract class CustomWall : MonoBehaviour
         OnSpawn();
         GameManager.Instance.EndTurn();
 
-        bool orientation = (this is HorizontalWall)?true:false;
+        bool orientation = (this is HorizontalWall) ? true : false;
         Coup c = new Coup("wall", position, orientation);
         RegisterManager.Instance.AddCoup(c);
     }

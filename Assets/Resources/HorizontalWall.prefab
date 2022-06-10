@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 0}
+  orientation: 0
   wall1: {fileID: 7057910956326126885}
   wall2: {fileID: 4296404136653485721}
 --- !u!114 &-4488188641423264266

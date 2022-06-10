@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HorizontalWall : CustomWall
 {
+    private void Start() => orientation = Orientation.Horizontal;
+
     public override bool CanSpawnHere()
     {
         CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, 0.5f));
