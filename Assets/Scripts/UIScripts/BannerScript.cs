@@ -30,8 +30,5 @@ public class BannerScript : MonoBehaviour
         TMPtext.text = newText;
     }
 
-    private void OnDestroy()
-    {
-        rectTransform.DOKill();
-    }
+    private void OnDestroy() => rectTransform.DOKill();
 }
