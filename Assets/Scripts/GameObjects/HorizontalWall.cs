@@ -4,45 +4,47 @@ using UnityEngine;
 
 public class HorizontalWall : CustomWall
 {
-    private void Start() => orientation = Orientation.Horizontal;
+    private Orientation _orientation = Orientation.Horizontal;
+    public override Orientation orientation { get => _orientation; }
 
     public override bool CanSpawnHere()
     {
+        CustomCorner corner = GridManager.Instance.GetCornerAtPosition(transform.position);
         CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, 0.5f));
         CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, -0.5f));
         CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, 0.5f));
         CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, -0.5f));
 
-        if (rightUpTile != null && !rightUpTile.directionDico[Vector2.down]) return false;
-        if (rightDownTile != null && !rightDownTile.directionDico[Vector2.up]) return false;
-        if (leftUpTile != null && !leftUpTile.directionDico[Vector2.down]) return false;
-        if (leftDownTile != null && !leftDownTile.directionDico[Vector2.up]) return false;
+        if (!corner.isOpen) return false;
+        if (!rightUpTile.directionDico[Vector2.down]) return false;
+        if (!rightDownTile.directionDico[Vector2.up]) return false;
+        if (!leftUpTile.directionDico[Vector2.down]) return false;
+        if (!leftDownTile.directionDico[Vector2.up]) return false;
         return true;
     }
 
     public override void OnSpawn()
     {
-        CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, 0.5f));
-        CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, -0.5f));
-        CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, 0.5f));
-        CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, -0.5f));
-
-        rightUpTile.directionDico[Vector2.down] = false;
-        rightDownTile.directionDico[Vector2.up] = false;
-        leftUpTile.directionDico[Vector2.down] = false;
-        leftDownTile.directionDico[Vector2.up] = false;
+        EnableAdjacentTiles(false);
     }
 
     public override void OnDespawn()
     {
+        EnableAdjacentTiles(true);
+    }
+
+    private void EnableAdjacentTiles(bool enable)
+    {
+        CustomCorner corner = GridManager.Instance.GetCornerAtPosition(transform.position);
         CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, 0.5f));
         CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, -0.5f));
         CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, 0.5f));
         CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, -0.5f));
 
-        rightUpTile.directionDico[Vector2.down] = true;
-        rightDownTile.directionDico[Vector2.up] = true;
-        leftUpTile.directionDico[Vector2.down] = true;
-        leftDownTile.directionDico[Vector2.up] = true;
+        corner.isOpen = enable;
+        rightUpTile.directionDico[Vector2.down] = enable;
+        rightDownTile.directionDico[Vector2.up] = enable;
+        leftUpTile.directionDico[Vector2.down] = enable;
+        leftDownTile.directionDico[Vector2.up] = enable;
     }
 }

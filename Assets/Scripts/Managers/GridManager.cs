@@ -93,10 +93,18 @@ public class GridManager : MonoBehaviour
     {
         foreach (KeyValuePair<Vector2, CustomTile> pair in tilesDico)
         {
-            pair.Value.EnableTarget(false);
+            pair.Value.EnableVisual(false);
             pair.Value.previousTile = null;
             pair.Value.G = MAXPATH;
             pair.Value.H = MAXPATH;
+        }
+    }
+
+    public void ResetAllCorners()
+    {
+        foreach (KeyValuePair<Vector2, CustomCorner> pair in cornersDico)
+        {
+            pair.Value.EnableVisual(false);
         }
     }
 }

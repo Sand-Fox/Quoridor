@@ -6,7 +6,7 @@ using Photon.Pun;
 public abstract class CustomWall : MonoBehaviour
 {
     public PhotonView view;
-    public Orientation orientation;
+    public abstract Orientation orientation { get; }
 
     [SerializeField] private SpriteRenderer wall1;
     [SerializeField] private SpriteRenderer wall2;
@@ -30,10 +30,8 @@ public abstract class CustomWall : MonoBehaviour
     [PunRPC]
     public void SetWall(Vector3 position)
     {
-        CustomCorner corner = GridManager.Instance.GetCornerAtPosition(position);
-        if (!view.IsMine) corner = GridManager.Instance.GetCornerAtPosition(position.ReflectPosition());
-        transform.position = corner.transform.position;
-        corner.gameObject.SetActive(false);
+        if (!view.IsMine) position = position.ReflectPosition();
+        transform.position = position;
         OnSpawn();
         GameManager.Instance.EndTurn();
 

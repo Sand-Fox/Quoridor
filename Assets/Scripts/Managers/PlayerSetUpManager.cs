@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 public class PlayerSetUpManager : MonoBehaviour
 {
     public static PlayerSetUpManager Instance;
-    private string IAName = "IABestPath";
+    private string IAName = "IAPathWall";
 
     private void Awake()
     {

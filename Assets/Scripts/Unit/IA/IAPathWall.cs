@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class IAPathWall : BaseIA
 {
@@ -9,29 +10,35 @@ public class IAPathWall : BaseIA
 
     protected override void PlayIA()
     {
-        if (UIManager.Instance.wallCount > 0)
+        if (wallCount > 0)
         {
-            Vector2 wallPosition = GetBestWallPosition(out Orientation orientation, out List<CustomTile> bestPathAfterWall);
-            CustomWall wall;
-            if (orientation == Orientation.Horizontal) wall = Instantiate(horizontalWallPrefab);
-            else wall = Instantiate(verticalWallPrefab);
-            wall.SetWall(wallPosition);
-            UIManager.Instance.wallCount--;
-            LinePopUp.Create(bestPathAfterWall, ColorExtension.green);
+            Vector3 wallPosition = GetBestWallPosition(out Orientation orientation);
+            GameObject wallObject = PhotonNetwork.Instantiate(GetWallPrefab(orientation).name, Vector3.zero, Quaternion.identity);
+            wallObject.GetComponent<CustomWall>().view.RPC("SetWall", RpcTarget.All, wallPosition);
+            wallCount--;
+        }
+
+        else
+        {
+            List<CustomTile> path = GetBestPath();
+            if (path != null) SetUnit(path[1].transform.position);
         }
     }
 
+    private CustomWall GetWallPrefab(Orientation orientation)
+    {
+        if (orientation == Orientation.Horizontal) return horizontalWallPrefab;
+        return verticalWallPrefab;
+    }
 
-    private Vector2 GetBestWallPosition(out Orientation orientation, out List<CustomTile> bestPathAfterWall)
+    private Vector2 GetBestWallPosition(out Orientation orientation)
     {
         HorizontalWall horizontalWall = Instantiate(horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(verticalWallPrefab);
         List<CustomTile> playerBestPath = GetPlayerBestPath();
-        foreach (CustomTile tile in playerBestPath) Debug.Log(tile);
 
-        Vector2 bestWallPosition = default;
-        orientation = default;
-        bestPathAfterWall = new List<CustomTile>();
+        Vector2 bestWallPosition = default; orientation = default;
+        int longerPathCount = 0;
 
         for (int i = 0; i < playerBestPath.Count - 1; i++)
         {
@@ -47,19 +54,19 @@ public class IAPathWall : BaseIA
             CustomCorner corner1 = GridManager.Instance.GetCornerAtPosition((Vector2)currentTile.transform.position + 0.5f * direction + 0.5f * Vector2.Perpendicular(direction));
             CustomCorner corner2 = GridManager.Instance.GetCornerAtPosition((Vector2)currentTile.transform.position + 0.5f * direction - 0.5f * Vector2.Perpendicular(direction));
 
-            if(corner1 != null)
+            if (corner1 != null)
             {
+                corner1.EnableVisual(true);
                 wall.transform.position = corner1.transform.position;
-                Debug.Log(corner1);
                 if (wall.CanSpawnHere())
                 {
                     wall.OnSpawn();
                     List<CustomTile> pathAfterWall = GetPlayerBestPath();
-                    if (pathAfterWall.Count > bestPathAfterWall.Count)
+                    if (pathAfterWall.Count > longerPathCount)
                     {
                         bestWallPosition = wall.transform.position;
                         orientation = wall.orientation;
-                        bestPathAfterWall = pathAfterWall;
+                        longerPathCount = pathAfterWall.Count;
                     }
                     wall.OnDespawn();
                 }
@@ -67,17 +74,17 @@ public class IAPathWall : BaseIA
 
             if (corner2 != null)
             {
+                corner2.EnableVisual(true);
                 wall.transform.position = corner2.transform.position;
-                Debug.Log(corner2);
                 if (wall.CanSpawnHere())
                 {
                     wall.OnSpawn();
                     List<CustomTile> pathAfterWall = GetPlayerBestPath();
-                    if (pathAfterWall.Count > bestPathAfterWall.Count)
+                    if (pathAfterWall.Count > longerPathCount)
                     {
                         bestWallPosition = wall.transform.position;
                         orientation = wall.orientation;
-                        bestPathAfterWall = pathAfterWall;
+                        longerPathCount = pathAfterWall.Count;
                     }
                     wall.OnDespawn();
                 }

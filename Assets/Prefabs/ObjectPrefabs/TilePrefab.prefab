@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 944009794}
   - component: {fileID: 944009795}
   m_Layer: 0
-  m_Name: Target
+  m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 7353558523063080907}
   - component: {fileID: 773428341004182803}
   m_Layer: 0
-  m_Name: Visual
+  m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -798,10 +798,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5931565bf8624505b9d4bcdbbed5906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  occupiedPlayer: {fileID: 0}
+  occupiedUnit: {fileID: 0}
   channel: {fileID: 11400000, guid: 4556954bf8e944a9684a93ef17320e92, type: 2}
   mouseOver: {fileID: 1804025589}
-  target: {fileID: 944009793}
+  visual: {fileID: 944009793}
   isTarget: 0
   previousTile: {fileID: 0}
   Gtext: {fileID: 6087620251050943431}

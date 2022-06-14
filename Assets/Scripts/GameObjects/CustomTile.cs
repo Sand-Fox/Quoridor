@@ -8,7 +8,7 @@ public class CustomTile : MonoBehaviour
     [HideInInspector] public BaseUnit occupiedUnit;
     [SerializeField] private VoidEventChannelSO channel;
     [SerializeField] private GameObject mouseOver;
-    [SerializeField] private GameObject target;
+    [SerializeField] private GameObject visual;
     public bool isTarget = false;
 
     public Dictionary<Vector2, bool> directionDico = new Dictionary<Vector2, bool>();
@@ -44,10 +44,10 @@ public class CustomTile : MonoBehaviour
         GameManager.Instance.player.view.RPC("SetUnit", Photon.Pun.RpcTarget.All, transform.position);
     }
 
-    public void EnableTarget(bool enable)
+    public void EnableVisual(bool enable)
     {
         isTarget = enable;
-        target.SetActive(enable);
+        visual.SetActive(enable);
     }
 
     //PathFinding

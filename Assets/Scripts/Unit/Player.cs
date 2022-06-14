@@ -14,7 +14,7 @@ public class Player : BaseUnit
     {
         foreach (CustomTile tile in occupiedTile.AdjacentTiles())
         {
-            if (tile != null) tile.EnableTarget(true);
+            if (tile != null) tile.EnableVisual(true);
         }
     }
 }
