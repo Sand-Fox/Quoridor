@@ -13,7 +13,7 @@ public class IAPathWall : BaseIA
         if (wallCount > 0)
         {
             Vector3 wallPosition = GetBestWallPosition(out Orientation orientation);
-            GameObject wallObject = PhotonNetwork.Instantiate(GetWallPrefab(orientation).name, Vector3.zero, Quaternion.identity);
+            GameObject wallObject = PhotonNetwork.Instantiate("Wall/" + orientation + "Wall", Vector3.zero, Quaternion.identity);
             wallObject.GetComponent<CustomWall>().view.RPC("SetWall", RpcTarget.All, wallPosition);
             wallCount--;
         }
@@ -23,12 +23,6 @@ public class IAPathWall : BaseIA
             List<CustomTile> path = GetBestPath();
             if (path != null) SetUnit(path[1].transform.position);
         }
-    }
-
-    private CustomWall GetWallPrefab(Orientation orientation)
-    {
-        if (orientation == Orientation.Horizontal) return horizontalWallPrefab;
-        return verticalWallPrefab;
     }
 
     private Vector2 GetBestWallPosition(out Orientation orientation)
