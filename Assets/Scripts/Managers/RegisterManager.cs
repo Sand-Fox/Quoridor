@@ -1,14 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class RegisterManager : MonoBehaviour
 {
     public static RegisterManager Instance;
     private PartieSO partieSO;
-
+    
     private void Awake()
-    {
+    { 
         Instance = this;
         GameManager.OnGameStateChanged += OnGameStateChanged;
     }
