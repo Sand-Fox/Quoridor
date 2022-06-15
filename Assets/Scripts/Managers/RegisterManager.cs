@@ -22,5 +22,7 @@ public class RegisterManager : MonoBehaviour
         if(newState == GameState.SpawnPlayers) partieSO = PartieSO.CreatePartie();
     }
 
-    public void AddCoup(Coup c) => partieSO.partie.Add(c);
+    public void AddCoup(Coup c) => partieSO.ListCoups.Add(c);
+
+    public void SavePartie() => partieSO.SavePartie();
 }

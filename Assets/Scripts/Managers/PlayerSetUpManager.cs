@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 public class PlayerSetUpManager : MonoBehaviour
 {
     public static PlayerSetUpManager Instance;
-    private string IAName = "IAPathWall";
+    private string IAName = "Units/IAPathWall";
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class PlayerSetUpManager : MonoBehaviour
 
     private void OnSpawnPlayers()
     {
-        GameObject playerObject = PhotonNetwork.Instantiate("Player", new Vector2(4, 4), Quaternion.identity);
+        GameObject playerObject = PhotonNetwork.Instantiate("Units/Player", new Vector2(4, 4), Quaternion.identity);
         GameManager.Instance.player = playerObject.GetComponent<Player>();
         playerObject.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
 

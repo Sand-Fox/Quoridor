@@ -310,9 +310,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1895252303351407149, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_text
-      value: 'Reset
-
-'
+      value: SAVE
       objectReference: {fileID: 0}
     - target: {fileID: 1895252303351407149, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_fontSize
@@ -421,18 +419,18 @@ PrefabInstance:
     - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2137004823}
+      objectReference: {fileID: 936173599}
     - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResetAllCorners
+      value: SavePartie
       objectReference: {fileID: 0}
     - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GridManager, Assembly-CSharp
+      value: RegisterManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument

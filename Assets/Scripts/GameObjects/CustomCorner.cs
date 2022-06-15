@@ -16,7 +16,11 @@ public class CustomCorner : MonoBehaviour
     public void OnMouseEnter()
     {
         if (!GameManager.Instance.isPlayerTurn() || ModeManager.Instance.mode != Mode.Wall || !isOpen) return;
-        wallPreview = Instantiate(GetWallPrefab(), transform.position, Quaternion.identity);
+        CustomWall prefab;
+        if (orientation == Orientation.Horizontal) prefab = horizontalWallPrefab;
+        else prefab = verticalWallPrefab;
+
+        wallPreview = Instantiate(prefab, transform.position, Quaternion.identity);
         wallPreview.SetUpPreview();
         GridManager.Instance.selectedCorner = this;
     }
@@ -32,16 +36,10 @@ public class CustomCorner : MonoBehaviour
     {
         if (!GameManager.Instance.isPlayerTurn() || ModeManager.Instance.mode != Mode.Wall || !isOpen) return;
         if (!wallPreview.CanSpawnHere()) return;
-        GameObject wallObject = PhotonNetwork.Instantiate(GetWallPrefab().name, Vector3.zero, Quaternion.identity);
+        GameObject wallObject = PhotonNetwork.Instantiate("Wall/" + orientation + "Wall", Vector3.zero, Quaternion.identity);
         wallObject.GetComponent<CustomWall>().view.RPC("SetWall", RpcTarget.All, transform.position);
         UIManager.Instance.wallCount--;
         OnMouseExit();
-    }
-
-    private CustomWall GetWallPrefab()
-    {
-        if (orientation == Orientation.Horizontal) return horizontalWallPrefab;
-        return verticalWallPrefab;
     }
 
     public static void SwitchOrientation()
@@ -57,6 +55,7 @@ public class CustomCorner : MonoBehaviour
 
 public enum Orientation
 {
+    None,
     Horizontal,
     Vertical
 }

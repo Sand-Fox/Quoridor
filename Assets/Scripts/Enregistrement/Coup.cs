@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Coup
+[System.Serializable]
+public struct Coup
 {
-    public string type {get; private set;}
-    public Vector3 coord {get; private set;}
-    public bool orientation {get; private set;}
+    public string type;
+    public Vector3 coord;
+    public Orientation orientation;
 
-    public Coup(string _type, Vector3 _coord, bool _orientation)
+    public Coup(string _type, Vector3 _coord, Orientation _orientation)
     {
         type = _type;
         coord = _coord;
