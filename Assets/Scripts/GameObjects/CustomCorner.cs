@@ -5,8 +5,6 @@ using Photon.Pun;
 
 public class CustomCorner : MonoBehaviour
 {
-    [SerializeField] private HorizontalWall horizontalWallPrefab;
-    [SerializeField] private VerticalWall verticalWallPrefab;
     [SerializeField] private GameObject visual;
     public static Orientation orientation = Orientation.Horizontal;
 
@@ -17,8 +15,8 @@ public class CustomCorner : MonoBehaviour
     {
         if (!GameManager.Instance.isPlayerTurn() || ModeManager.Instance.mode != Mode.Wall || !isOpen) return;
         CustomWall prefab;
-        if (orientation == Orientation.Horizontal) prefab = horizontalWallPrefab;
-        else prefab = verticalWallPrefab;
+        if (orientation == Orientation.Horizontal) prefab = ReferenceManager.Instance.horizontalWallPrefab;
+        else prefab = ReferenceManager.Instance.verticalWallPrefab;
 
         wallPreview = Instantiate(prefab, transform.position, Quaternion.identity);
         wallPreview.SetUpPreview();

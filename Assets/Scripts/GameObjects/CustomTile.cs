@@ -26,7 +26,7 @@ public class CustomTile : MonoBehaviour
         if(ModeManager.Instance.mode == Mode.Move) mouseOver.SetActive(true);
         if(ModeManager.Instance.mode == Mode.PathFinding)
         {
-            List<CustomTile> path = PathFinding.Instance.GetPath(GameManager.Instance.player.occupiedTile, this);
+            List<CustomTile> path = PathFinding.Instance.GetPath(ReferenceManager.Instance.player.occupiedTile, this);
             if (path != null) LinePopUp.Create(path, ColorExtension.green);
         }
     }
@@ -41,7 +41,7 @@ public class CustomTile : MonoBehaviour
     {
         if (!GameManager.Instance.isPlayerTurn() || ModeManager.Instance.mode != Mode.Move || !isTarget) return;
         mouseOver.SetActive(false);
-        GameManager.Instance.player.view.RPC("SetUnit", Photon.Pun.RpcTarget.All, transform.position);
+        ReferenceManager.Instance.player.view.RPC("SetUnit", Photon.Pun.RpcTarget.All, transform.position);
     }
 
     public void EnableVisual(bool enable)

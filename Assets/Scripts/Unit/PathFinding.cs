@@ -57,6 +57,17 @@ public class PathFinding : MonoBehaviour
         }
     }
 
+    //En Cours
+    public int DistanceTo(CustomTile source, CustomTile destination)
+    {
+        Vector2 direction = destination.transform.position - source.transform.position;
+        int distance = (int)(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
+
+        //Enlever 1
+
+        return distance;
+    }
+
     private CustomTile GetLowestFCostInOpen()
     {
         if(open.Count == 0) return null;

@@ -5,9 +5,6 @@ using Photon.Pun;
 
 public class IAPathWall : BaseIA
 {
-    [SerializeField] private HorizontalWall horizontalWallPrefab;
-    [SerializeField] private VerticalWall verticalWallPrefab;
-
     protected override void PlayIA()
     {
         if (wallCount > 0)
@@ -27,8 +24,8 @@ public class IAPathWall : BaseIA
 
     private Vector2 GetBestWallPosition(out Orientation orientation)
     {
-        HorizontalWall horizontalWall = Instantiate(horizontalWallPrefab);
-        VerticalWall verticalWall = Instantiate(verticalWallPrefab);
+        HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
+        VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
         List<CustomTile> playerBestPath = GetPlayerBestPath();
 
         Vector2 bestWallPosition = default; orientation = default;
@@ -50,7 +47,6 @@ public class IAPathWall : BaseIA
 
             if (corner1 != null)
             {
-                corner1.EnableVisual(true);
                 wall.transform.position = corner1.transform.position;
                 if (wall.CanSpawnHere())
                 {
@@ -68,7 +64,6 @@ public class IAPathWall : BaseIA
 
             if (corner2 != null)
             {
-                corner2.EnableVisual(true);
                 wall.transform.position = corner2.transform.position;
                 if (wall.CanSpawnHere())
                 {

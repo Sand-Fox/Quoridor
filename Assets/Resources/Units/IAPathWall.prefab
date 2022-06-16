@@ -96,8 +96,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587850a861fdc4f898221e80a1b42109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalWallPrefab: {fileID: 1376211660787442961, guid: 6022f3e9f171e432a848c9e3bf224f22, type: 3}
-  verticalWallPrefab: {fileID: 2962059572791529325, guid: 72eddf3c964664568a0961c4b18c74b5, type: 3}
 --- !u!114 &5540145901849815927
 MonoBehaviour:
   m_ObjectHideFlags: 0

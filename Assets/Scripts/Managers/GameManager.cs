@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public PhotonView view;
 
-    public Player player;
     public PlayerFaction playerFaction;
     public GameState gameState;
     public static event Action<GameState> OnGameStateChanged;

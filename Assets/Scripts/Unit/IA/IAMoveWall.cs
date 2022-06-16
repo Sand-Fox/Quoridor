@@ -2,21 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using System;
-using Random = System.Random;
+using Random = UnityEngine.Random;
 
 public class IAMoveWall : BaseIA
 {
-    [SerializeField] private HorizontalWall horizontalWallPrefab;
-    [SerializeField] private VerticalWall verticalWallPrefab;
-    Random aleatoire = new System.Random();
-
     protected override void PlayIA()
     {
-        if (wallCount > 0 && aleatoire.Next(100)<50)
+        if (wallCount > 0 && Random.value > 0.5)
         {
             Vector3 wallPosition = GetBestWallPosition(out Orientation orientation);
-            GameObject wallObject = PhotonNetwork.Instantiate(GetWallPrefab(orientation).name, Vector3.zero, Quaternion.identity);
+            GameObject wallObject = PhotonNetwork.Instantiate("Wall/" + orientation + "Wall", Vector3.zero, Quaternion.identity);
             wallObject.GetComponent<CustomWall>().view.RPC("SetWall", RpcTarget.All, wallPosition);
             wallCount--;
         }
@@ -28,16 +23,10 @@ public class IAMoveWall : BaseIA
         }
     }
 
-    private CustomWall GetWallPrefab(Orientation orientation)
-    {
-        if (orientation == Orientation.Horizontal) return horizontalWallPrefab;
-        return verticalWallPrefab;
-    }
-
     private Vector2 GetBestWallPosition(out Orientation orientation)
     {
-        HorizontalWall horizontalWall = Instantiate(horizontalWallPrefab);
-        VerticalWall verticalWall = Instantiate(verticalWallPrefab);
+        HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
+        VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
         List<CustomTile> playerBestPath = GetPlayerBestPath();
 
         Vector2 bestWallPosition = default; orientation = default;
@@ -59,7 +48,6 @@ public class IAMoveWall : BaseIA
 
             if (corner1 != null)
             {
-                corner1.EnableVisual(true);
                 wall.transform.position = corner1.transform.position;
                 if (wall.CanSpawnHere())
                 {
@@ -77,7 +65,6 @@ public class IAMoveWall : BaseIA
 
             if (corner2 != null)
             {
-                corner2.EnableVisual(true);
                 wall.transform.position = corner2.transform.position;
                 if (wall.CanSpawnHere())
                 {

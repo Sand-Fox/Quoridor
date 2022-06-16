@@ -24,10 +24,13 @@ public class PlayerSetUpManager : MonoBehaviour
     private void OnSpawnPlayers()
     {
         GameObject playerObject = PhotonNetwork.Instantiate("Units/Player", new Vector2(4, 4), Quaternion.identity);
-        GameManager.Instance.player = playerObject.GetComponent<Player>();
         playerObject.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
 
-        if (PhotonNetwork.OfflineMode) PhotonNetwork.Instantiate(IAName, new Vector2(4, 4), Quaternion.identity);
+        if (PhotonNetwork.OfflineMode)
+        {
+            GameObject IAObject = PhotonNetwork.Instantiate(IAName, new Vector2(4, 4), Quaternion.identity);
+            ReferenceManager.Instance.enemy = IAObject.GetComponent<BaseIA>();
+        }
     }
 
     private void OnWaitForPlayer()
@@ -46,8 +49,7 @@ public class PlayerSetUpManager : MonoBehaviour
 
     private void CoinToss()
     {
-        int firstPlayer = Random.Range(1, 3);
-        GameState state = (firstPlayer == 1) ? GameState.Player1Turn : GameState.Player2Turn;
+        GameState state = (Random.value > 0.5) ? GameState.Player1Turn : GameState.Player2Turn;
         GameManager.Instance.view.RPC("UpdateGameState", RpcTarget.All, state);
     }
 }
