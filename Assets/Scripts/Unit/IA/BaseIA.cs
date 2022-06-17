@@ -23,7 +23,7 @@ public abstract class BaseIA : BaseUnit
 
         foreach(CustomTile tile in firstRaw)
         {
-            var path = PathFinding.Instance.GetPath(occupiedTile, tile);
+            var path = PathFinding.Instance.GetPath(this, tile);
             int distance = (path == null) ? GridManager.MAXPATH : path.Count;
             if (distance < bestDistance)
             {
@@ -43,7 +43,7 @@ public abstract class BaseIA : BaseUnit
 
         foreach (CustomTile tile in lastRaw)
         {
-            var path = PathFinding.Instance.GetPath(ReferenceManager.Instance.player.occupiedTile, tile);
+            var path = PathFinding.Instance.GetPath(ReferenceManager.Instance.player, tile);
             int distance = (path == null) ? GridManager.MAXPATH : path.Count;
             if (distance < bestDistance)
             {

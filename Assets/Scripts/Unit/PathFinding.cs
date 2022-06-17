@@ -12,9 +12,9 @@ public class PathFinding : MonoBehaviour
     private List<CustomTile> open;
     private List<CustomTile> closed;
 
-    public List<CustomTile> GetPath(CustomTile startTile, CustomTile targetTile)
+    public List<CustomTile> GetPath(BaseUnit unit, CustomTile targetTile)
     {
-        SetUpPath(startTile, targetTile);
+        SetUpPath(unit, targetTile);
         if (targetTile.previousTile == null) return null;
 
         List<CustomTile> path = new List<CustomTile>() { targetTile };
@@ -28,11 +28,11 @@ public class PathFinding : MonoBehaviour
         return path;
     }
 
-    private void SetUpPath(CustomTile startTile, CustomTile targetTile)
+    private void SetUpPath(BaseUnit unit, CustomTile targetTile)
     {
         open = new List<CustomTile>();
         closed = new List<CustomTile>();
-        open.Add(startTile);
+        open.Add(unit.occupiedTile);
 
         while (true)
         {
@@ -50,22 +50,38 @@ public class PathFinding : MonoBehaviour
                 {
                     neighbour.previousTile = current;
                     neighbour.G = neighbour.GetDistanceFromStartTile();
-                    neighbour.H = neighbour.DistanceTo(targetTile);
+                    neighbour.H = DistanceTo(neighbour, targetTile, unit);
                     if (!open.Contains(neighbour)) open.Add(neighbour);
                 }
             }
         }
     }
 
-    //En Cours
-    public int DistanceTo(CustomTile source, CustomTile destination)
+    private int DistanceTo(CustomTile source, CustomTile destination, BaseUnit myUnit)
     {
         Vector2 direction = destination.transform.position - source.transform.position;
         int distance = (int)(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
-
-        //Enlever 1
-
+        BaseUnit otherUnit = (myUnit == ReferenceManager.Instance.player) ? ReferenceManager.Instance.enemy : ReferenceManager.Instance.player;
+        if (UnitIsBetweenSourceAndDestination(otherUnit, source, destination)) distance--;
         return distance;
+    }
+
+    private bool UnitIsBetweenSourceAndDestination(BaseUnit unit, CustomTile sourceTile, CustomTile destinationTile)
+    {
+        Vector2 position = unit.occupiedTile.transform.position;
+        Vector2 source = sourceTile.transform.position;
+        Vector2 dest = destinationTile.transform.position;
+
+        if (position.x < Mathf.Min(source.x, dest.x)) return false;
+        if (position.x > Mathf.Max(source.x, dest.x)) return false;
+        if (position.y < Mathf.Min(source.y, dest.y)) return false;
+        if (position.y > Mathf.Max(source.y, dest.y)) return false;
+        if (position.x == source.x && position.y == dest.y) return false;
+        if (position.x == dest.x && position.y == source.y) return false;
+        if (position == dest) return false;
+        if (position == source) return false;
+
+        return true;
     }
 
     private CustomTile GetLowestFCostInOpen()

@@ -9,12 +9,6 @@ public static class TileExtension
         return destination.transform.position - source.transform.position;
     }
 
-    public static int DistanceTo(this CustomTile source, CustomTile destination)
-    {
-        Vector2 direction = destination.transform.position - source.transform.position;
-        return (int)(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
-    }
-
     public static Vector2 ReflectPosition(this Vector3 position)
     {
         Vector2 ret = Vector2.Reflect(position, new Vector2(0, 1));
