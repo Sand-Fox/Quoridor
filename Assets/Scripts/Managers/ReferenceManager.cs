@@ -9,10 +9,14 @@ public class ReferenceManager : MonoBehaviour
 
     private void Awake() => Instance = this;
 
+    [Header("In Game")]
     public Player player;
     public BaseUnit enemy;
 
+    [Header("Resources Prefabs")]
     public HorizontalWall horizontalWallPrefab;
     public VerticalWall verticalWallPrefab;
-
+    public IAMove IAMove;
+    public IAWall IAWall;
+    public IAMoveWall IAMoveWall;
 }

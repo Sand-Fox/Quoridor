@@ -2,15 +2,15 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-public class SaveSystem
+public static class SaveSystem
 {
-    const string SAVES_PATH = "/Parties";
+    private static string path => Application.persistentDataPath + "/Parties";
+
     public static void Save<T>(T obj, string key)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + SAVES_PATH;
         Directory.CreateDirectory(path);
-        FileStream stream = new FileStream(path+key, FileMode.Create);
+        FileStream stream = new FileStream(path + key, FileMode.Create);
 
         formatter.Serialize(stream, obj);
         stream.Close();
@@ -19,13 +19,11 @@ public class SaveSystem
     public static T Load<T>(string key)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + SAVES_PATH;
-
         T data = default;
         if(File.Exists(path + key))
         {
             Directory.CreateDirectory(path);
-            FileStream stream = new FileStream(path+key, FileMode.Open);
+            FileStream stream = new FileStream(path + key, FileMode.Open);
 
             data = (T)formatter.Deserialize(stream);
             stream.Close();
@@ -37,8 +35,9 @@ public class SaveSystem
         return data;
     }
 
-    public static bool SaveExists(string key){
-        string path = Application.persistentDataPath + SAVES_PATH;
-        return File.Exists(path + key);
+    public static FileInfo[] GetFiles()
+    {
+        var info = new DirectoryInfo(path);
+        return info.GetFiles();
     }
 }

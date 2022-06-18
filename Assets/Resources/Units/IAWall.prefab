@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5540145901849815912}
   - component: {fileID: 5360915073251080848}
-  - component: {fileID: 5540145901849815913}
   - component: {fileID: 5540145901849815927}
+  - component: {fileID: -1237147105968721430}
   m_Layer: 0
-  m_Name: IABestPath
+  m_Name: IAWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,18 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5540145901849815913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5540145901849815914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f15c6d2c54d2345eaaa722d06d763da6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5540145901849815927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,3 +106,15 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-1237147105968721430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5540145901849815914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 587850a861fdc4f898221e80a1b42109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

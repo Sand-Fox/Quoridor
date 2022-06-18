@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class IAPathWall : BaseIA
+public class IAWall : BaseIA
 {
     protected override void PlayIA()
     {

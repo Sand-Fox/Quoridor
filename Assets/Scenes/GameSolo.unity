@@ -406,7 +406,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5377241385986731690, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_Name
-      value: ButtonTest
+      value: Save
       objectReference: {fileID: 0}
     - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -612,6 +612,9 @@ MonoBehaviour:
   enemy: {fileID: 0}
   horizontalWallPrefab: {fileID: 1376211660787442961, guid: 6022f3e9f171e432a848c9e3bf224f22, type: 3}
   verticalWallPrefab: {fileID: 2962059572791529325, guid: 72eddf3c964664568a0961c4b18c74b5, type: 3}
+  IAMove: {fileID: 5540145901849815913, guid: 918f0af2f9fc0404eaf12fd55b8f9786, type: 3}
+  IAWall: {fileID: -1237147105968721430, guid: b16ee62e7aedd4034b6ea686e6bea7b9, type: 3}
+  IAMoveWall: {fileID: 3349986820116969600, guid: 4eb207f1cb4674ba38785e201c843c0f, type: 3}
 --- !u!1001 &555132446
 PrefabInstance:
   m_ObjectHideFlags: 0

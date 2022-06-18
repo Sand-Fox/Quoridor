@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IABestPath : BaseIA
+public class IAMove : BaseIA
 {
     protected override void PlayIA()
     {

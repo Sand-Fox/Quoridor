@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameSolo.unity
     guid: 56579500090bf42b18304fe1405ebe5e
+  - enabled: 1
+    path: Assets/Scenes/Replays.unity
+    guid: b4da82816427f4b1b81ae052eef010ee
   m_configObjects: {}
