@@ -23,7 +23,11 @@ public static class TileExtension
         if (!centerTile.directionDico[direction] || adjacentTile == null) return null;
 
         if (adjacentTile.occupiedUnit == null) return adjacentTile;
-        if (adjacentTile.directionDico[direction]) return GridManager.Instance.GetTileAtPosition(centerTilePos + 2 * direction);
+        if (adjacentTile.directionDico[direction])
+        {
+            CustomTile furtherTile = GridManager.Instance.GetTileAtPosition(centerTilePos + 2 * direction);
+            if (furtherTile != null) return furtherTile;
+        }
         tile2 = adjacentTile.GetTileInDirection(Vector2.Perpendicular(direction), out _);
         return adjacentTile.GetTileInDirection(-Vector2.Perpendicular(direction), out _);
     }

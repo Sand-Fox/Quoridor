@@ -36,7 +36,7 @@ public abstract class CustomWall : MonoBehaviour
         GameManager.Instance.EndTurn();
 
         Orientation orientation = (this is HorizontalWall) ? Orientation.Horizontal : Orientation.Vertical;
-        Coup c = new Coup("wall", position, orientation);
+        CoupWall c = new CoupWall(position, orientation);
         RegisterManager.Instance.AddCoup(c);
     }
 

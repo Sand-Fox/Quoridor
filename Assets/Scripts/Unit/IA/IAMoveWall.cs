@@ -19,7 +19,7 @@ public class IAMoveWall : BaseIA
         else
         {
             List<CustomTile> path = GetBestPath();
-            if (path != null) SetUnit(path[1].transform.position);
+            if (path.Count != 0) SetUnit(path[1].transform.position);
         }
     }
 
@@ -27,8 +27,8 @@ public class IAMoveWall : BaseIA
     {
         HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
-        List<CustomTile> playerBestPath = GetPlayerBestPath();
 
+        List<CustomTile> playerBestPath = GetPlayerBestPath();
         Vector2 bestWallPosition = default; orientation = default;
         int longerPathCount = 0;
 

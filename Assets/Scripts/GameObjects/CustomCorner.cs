@@ -53,7 +53,6 @@ public class CustomCorner : MonoBehaviour
 
 public enum Orientation
 {
-    None,
     Horizontal,
     Vertical
 }

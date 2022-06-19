@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System.IO;
+using TMPro;
 
 public class ScrollbarScript : MonoBehaviour
 {
-    [SerializeField] private GameObject partiePanelPrefab;
+    [SerializeField] private PartieButton partiePanelPrefab;
 
     private void Start()
     {
         foreach(FileInfo file in SaveSystem.GetFiles())
         {
-            GameObject partiePanel = Instantiate(partiePanelPrefab, transform);
-            partiePanel.GetComponentInChildren<TextMeshProUGUI>().text = file.Name;
+            PartieButton partiePanel = Instantiate(partiePanelPrefab, transform);
+            partiePanel.SetUp(file);
         }
     }
 }

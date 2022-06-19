@@ -10,8 +10,7 @@ public static class SaveSystem
     {
         BinaryFormatter formatter = new BinaryFormatter();
         Directory.CreateDirectory(path);
-        FileStream stream = new FileStream(path + key, FileMode.Create);
-
+        FileStream stream = new FileStream(path + "/" + key, FileMode.Create);
         formatter.Serialize(stream, obj);
         stream.Close();
     }
@@ -20,18 +19,13 @@ public static class SaveSystem
     {
         BinaryFormatter formatter = new BinaryFormatter();
         T data = default;
-        if(File.Exists(path + key))
+        if(File.Exists(path + "/" + key))
         {
-            Directory.CreateDirectory(path);
-            FileStream stream = new FileStream(path + key, FileMode.Open);
-
+            FileStream stream = new FileStream(path + "/" + key, FileMode.Open);
             data = (T)formatter.Deserialize(stream);
             stream.Close();
         }
-        else
-        {
-            Debug.LogError("Save not found in " + path + key);
-        }
+        else Debug.LogError("Save not found in " + path + "/" + key);
         return data;
     }
 

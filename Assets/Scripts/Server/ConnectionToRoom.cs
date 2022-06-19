@@ -31,12 +31,18 @@ public class ConnectionToRoom : MonoBehaviourPunCallbacks
     //Leave Room
     public void LeaveCurrentRoom()
     {
-        GameManager.Instance.view.RPC("UpdateGameState", RpcTarget.Others, GameState.Win);
         PhotonNetwork.LeaveRoom();
     }
 
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("Lobby");
+    }
+
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        if (GameManager.Instance.gameState != GameState.Loose && GameManager.Instance.gameState != GameState.Win)
+            GameManager.Instance.UpdateGameState(GameState.Win);
     }
 }

@@ -549,7 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d3b0e7af7354deeb16391c4e9c721b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partiePanelPrefab: {fileID: 1416526282046489666, guid: 8a42f95d975fb4109ae3809d336305b6, type: 3}
+  partiePanelPrefab: {fileID: 7524325225120390814, guid: 8a42f95d975fb4109ae3809d336305b6, type: 3}
 --- !u!1 &857081358
 GameObject:
   m_ObjectHideFlags: 0

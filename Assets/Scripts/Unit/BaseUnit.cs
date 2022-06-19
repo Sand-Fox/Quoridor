@@ -35,7 +35,7 @@ public abstract class BaseUnit : MonoBehaviour
 
         GameManager.Instance.EndTurn();
 
-        Coup c = new Coup("move", position, Orientation.None);
+        CoupMove c = new CoupMove(position);
         RegisterManager.Instance.AddCoup(c);
     }
 }

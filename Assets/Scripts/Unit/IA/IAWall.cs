@@ -18,7 +18,7 @@ public class IAWall : BaseIA
         else
         {
             List<CustomTile> path = GetBestPath();
-            if (path != null) SetUnit(path[1].transform.position);
+            if (path.Count != 0) SetUnit(path[1].transform.position);
         }
     }
 
