@@ -1,27 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Node : MonoBehaviour
+public class Node
 {
-    private Dictionary<Vector2, CustomTile> plateau;
-    private int score;
-    private int depth;
+    public int score = -10000;
+    public int depth;
+    public Coup coup;
     private List<Node> nextNodes = new List<Node>();
 
-    private Node(Dictionary<Vector2, CustomTile> plateau, int depth)
+    public Node(Coup coup, int depth)
     {
-        this.plateau = plateau;
+        this.coup = coup;
         this.depth = depth;
     }
 
 
     public void AddNode(Node n) => this.nextNodes.Add(n);
-    public void setScore(int score) => this.score = score;
-
-    public int generateNextCoup()
-    {
-        return 1;
-    }
-
 }

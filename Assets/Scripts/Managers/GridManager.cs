@@ -14,7 +14,7 @@ public class GridManager : MonoBehaviour
     public static readonly int BOUNDS = 9;
     public static readonly int MAXPATH = BOUNDS * BOUNDS;
     private Dictionary<Vector2, CustomTile> tilesDico = new Dictionary<Vector2, CustomTile>();
-    private Dictionary<Vector2, CustomCorner> cornersDico = new Dictionary<Vector2, CustomCorner>();
+    public Dictionary<Vector2, CustomCorner> cornersDico = new Dictionary<Vector2, CustomCorner>();
 
     [HideInInspector] public CustomCorner selectedCorner;
 
