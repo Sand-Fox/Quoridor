@@ -5,6 +5,8 @@ using Photon.Pun;
 
 public class IAWall : BaseIA
 {
+    public static string description = "IA qui utilise tous ses murs avant de se déplacer";
+
     protected override void PlayIA()
     {
         if (wallCount > 0)

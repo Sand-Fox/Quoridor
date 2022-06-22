@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IAMove : BaseIA
 {
+    public static string description = "IA qui se déplace uniquement";
+
     protected override void PlayIA()
     {
         List<CustomTile> path = GetBestPath();
