@@ -7,11 +7,24 @@ public class SliderIADescription : MonoBehaviour
 {
     public TextMeshProUGUI TmpText;
 
+    private void Start(){
+        OnSliderChanged(1);
+    }
+
     public void OnSliderChanged(float value)
     {
-        if (value == 1) TmpText.text = IAMove.description;
-        else if (value == 2) TmpText.text = IAWall.description;
-        else if (value == 3) TmpText.text = IAMoveWall.description;
+        if (value == 1) {
+            TmpText.text = IAMove.description;
+            PlayerSetUpManager.IAName = "Units/IAMove";
+        }
+        else if (value == 2) {
+            TmpText.text = IAWall.description;
+            PlayerSetUpManager.IAName = "Units/IAWall";
+        }
+        else if (value == 3) {
+            TmpText.text = IAMoveWall.description;
+            PlayerSetUpManager.IAName = "Units/IAMoveWall";
+        }
         else TmpText.text = "" + value;
     }
 }
