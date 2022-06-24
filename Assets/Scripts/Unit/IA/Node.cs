@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 public class Node
 {
-    public int score = -10000;
+    public int score;
     public int depth;
     public Coup coup;
     private List<Node> nextNodes = new List<Node>();
 
-    public Node(Coup coup, int depth)
+    public Node(Coup coup, int score, int depth)
     {
         this.coup = coup;
         this.depth = depth;

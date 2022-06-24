@@ -30,7 +30,7 @@ public class SliderIADescription : MonoBehaviour
         }
         else if (value == 4)
         {
-            TmpText.text = IAMoveWall.description;
+            TmpText.text = "IA MINMAX";//IAMiniMax.description;
             PlayerSetUpManager.IAName = "Units/IAMiniMax";
         }
         else TmpText.text = "" + value;
