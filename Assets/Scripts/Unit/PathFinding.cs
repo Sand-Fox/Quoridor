@@ -19,11 +19,15 @@ public class PathFinding : MonoBehaviour
 
         List<CustomTile> path = new List<CustomTile>() { targetTile };
         CustomTile currentTile = targetTile;
-        while (currentTile.previousTile != null)
+
+        int flag = 0;
+        while (currentTile.previousTile != null && flag < 100)
         {
+            flag++;
             currentTile = currentTile.previousTile;
             path.Add(currentTile);
         }
+        if (flag == 100) Debug.Log("Flag atteint dans GetPath");
         path.Reverse();
         return path;
     }
@@ -34,8 +38,10 @@ public class PathFinding : MonoBehaviour
         closed = new List<CustomTile>();
         open.Add(unit.occupiedTile);
 
-        while (true)
+        int flag = 0;
+        while (flag < 100)
         {
+            flag++;
             CustomTile current = GetLowestFCostInOpen(unit);
             if (current == null) return;
             open.Remove(current);
@@ -55,6 +61,7 @@ public class PathFinding : MonoBehaviour
                 }
             }
         }
+        if (flag == 100) Debug.Log("Flag atteint dans SetUpPath");
     }
 
     private int DistanceTo(CustomTile source, CustomTile destination, BaseUnit myUnit)

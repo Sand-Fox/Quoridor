@@ -33,9 +33,23 @@ public abstract class BaseUnit : MonoBehaviour
         occupiedTile = tile;
         transform.DOMove(tile.transform.position, 0.4f).SetEase(Ease.InOutSine);
 
-        GameManager.Instance.EndTurn();
-
-        CoupMove c = new CoupMove(position);
+        CoupMove c = new CoupMove(tile.transform.position);
         RegisterManager.Instance.AddCoup(c);
+        GameManager.Instance.EndTurn();
+    }
+
+    public void SetUnitNoAnimation(Vector3 position)
+    {
+        CustomTile tile = GridManager.Instance.GetTileAtPosition(position);
+        if (!view.IsMine) tile = GridManager.Instance.GetTileAtPosition(position.ReflectPosition());
+
+        if (tile.occupiedUnit != null) Debug.LogWarning("Attention, il y a déjà un Unit sur cette case.");
+
+        occupiedTile.occupiedUnit = null;
+        tile.occupiedUnit = this;
+        occupiedTile = tile;
+        transform.position = tile.transform.position;
+
+        GridManager.Instance.ResetAllTiles();
     }
 }
