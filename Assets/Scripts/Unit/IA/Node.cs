@@ -7,12 +7,12 @@ public class Node
     public Coup coup;
     private List<Node> nextNodes = new List<Node>();
 
-    public Node(Coup coup, int score, int depth)
+    public Node(Coup _coup, int initialScore, int _depth)
     {
-        this.coup = coup;
-        this.depth = depth;
+        coup = _coup;
+        score = initialScore;
+        depth = _depth;
     }
 
-
-    public void AddNode(Node n) => this.nextNodes.Add(n);
+    public void AddNode(Node n) => nextNodes.Add(n);
 }
