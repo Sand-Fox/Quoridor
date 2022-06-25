@@ -36,7 +36,7 @@ public class PathFinding : MonoBehaviour
 
         while (true)
         {
-            CustomTile current = GetLowestFCostInOpen();
+            CustomTile current = GetLowestFCostInOpen(unit);
             if (current == null) return;
             open.Remove(current);
             closed.Add(current);
@@ -44,7 +44,7 @@ public class PathFinding : MonoBehaviour
 
             foreach (CustomTile neighbour in current.AdjacentTiles())
             {
-                if (neighbour == null || closed.Contains(neighbour)) continue;
+                if (closed.Contains(neighbour)) continue;
 
                 if (!open.Contains(neighbour) || current.GetDistanceFromStartTile() + 1 < neighbour.GetDistanceFromStartTile())
                 {
@@ -84,7 +84,7 @@ public class PathFinding : MonoBehaviour
         return true;
     }
 
-    private CustomTile GetLowestFCostInOpen()
+    private CustomTile GetLowestFCostInOpen(BaseUnit unit)
     {
         if(open.Count == 0) return null;
 
@@ -92,7 +92,8 @@ public class PathFinding : MonoBehaviour
         foreach(CustomTile tile in open)
         {
             if (tile.F < bestTile.F) bestTile = tile;
-            if (tile.F == bestTile.F && tile.transform.position.y < bestTile.transform.position.y) bestTile = tile;
+            if (tile.F == bestTile.F && tile.transform.position.y < bestTile.transform.position.y && unit == ReferenceManager.Instance.enemy) bestTile = tile;
+            if (tile.F == bestTile.F && tile.transform.position.y > bestTile.transform.position.y && unit == ReferenceManager.Instance.player) bestTile = tile;
         }
         return bestTile;
     }
