@@ -49,7 +49,5 @@ public abstract class BaseUnit : MonoBehaviour
         tile.occupiedUnit = this;
         occupiedTile = tile;
         transform.position = tile.transform.position;
-
-        GridManager.Instance.ResetAllTiles();
     }
 }

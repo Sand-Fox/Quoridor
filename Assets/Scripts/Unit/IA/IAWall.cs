@@ -19,8 +19,8 @@ public class IAWall : BaseIA
 
         else
         {
-            List<CustomTile> path = GetBestPath();
-            if (path.Count != 0) SetUnit(path[1].transform.position);
+            List<CustomTile> path = PathFinding.Instance.GetWiningPath(this);
+            if (path.Count != 0) SetUnit(path[0].transform.position);
         }
     }
 
@@ -28,7 +28,7 @@ public class IAWall : BaseIA
     {
         HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
-        List<CustomTile> playerBestPath = GetPlayerBestPath();
+        List<CustomTile> playerBestPath = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
 
         Vector2 bestWallPosition = default; orientation = default;
         int longerPathCount = 0;
@@ -53,7 +53,7 @@ public class IAWall : BaseIA
                 if (wall.CanSpawnHere())
                 {
                     wall.OnSpawn();
-                    List<CustomTile> pathAfterWall = GetPlayerBestPath();
+                    List<CustomTile> pathAfterWall = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
                     if (pathAfterWall.Count > longerPathCount)
                     {
                         bestWallPosition = wall.transform.position;
@@ -70,7 +70,7 @@ public class IAWall : BaseIA
                 if (wall.CanSpawnHere())
                 {
                     wall.OnSpawn();
-                    List<CustomTile> pathAfterWall = GetPlayerBestPath();
+                    List<CustomTile> pathAfterWall = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
                     if (pathAfterWall.Count > longerPathCount)
                     {
                         bestWallPosition = wall.transform.position;

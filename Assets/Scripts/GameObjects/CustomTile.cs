@@ -23,23 +23,43 @@ public class CustomTile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if(ModeManager.Instance.mode == Mode.Move) mouseOver.SetActive(true);
+        if (!GameManager.Instance.isPlayerTurn()) return;
+
+        if (ModeManager.Instance.mode == Mode.Move) mouseOver.SetActive(true);
         if(ModeManager.Instance.mode == Mode.PathFinding)
         {
-            List<CustomTile> path = PathFinding.Instance.GetPath(ReferenceManager.Instance.player, this);
-            if (path != null) LinePopUp.Create(path, ColorExtension.green);
+            Player player = ReferenceManager.Instance.player;
+            List<CustomTile> bestPath = PathFinding.Instance.GetPath(player, this);
+            if (bestPath != null)
+            {
+                List<CustomTile> path = new List<CustomTile>();
+                path.Add(player.occupiedTile);
+                path.AddRange(bestPath);
+                LinePopUp.Create(path, ColorExtension.green);
+            }
+
+            if (PathFinding.Instance.debugMode) GridManager.Instance.UpdateAllTilesText();
+
         }
     }
 
     public void OnMouseExit()
     {
-        mouseOver.SetActive(false);
-        channel.RaiseEvent();
+        if (!GameManager.Instance.isPlayerTurn()) return;
+
+        if (ModeManager.Instance.mode == Mode.Move) mouseOver.SetActive(false);
+        if (ModeManager.Instance.mode == Mode.PathFinding)
+        {
+            channel.RaiseEvent();
+            if (PathFinding.Instance.debugMode) GridManager.Instance.ResetAllTilesText();
+        }
     }
 
     private void OnMouseDown()
     {
-        if (!GameManager.Instance.isPlayerTurn() || ModeManager.Instance.mode != Mode.Move || !isTarget) return;
+        if (!GameManager.Instance.isPlayerTurn()) return;
+
+        if (ModeManager.Instance.mode != Mode.Move || !isTarget) return;
         mouseOver.SetActive(false);
         ReferenceManager.Instance.player.view.RPC("SetUnit", Photon.Pun.RpcTarget.All, transform.position);
     }
@@ -51,40 +71,7 @@ public class CustomTile : MonoBehaviour
     }
 
     //PathFinding
-    private int _G;
-    public int G { get { return _G; } set
-        {
-            _G = value;
-            if (_G == GridManager.MAXPATH || !PathFinding.Instance.debugMode)
-            {
-                Gtext.text = "";
-                Ftext.text = "";
-            }
-            else
-            {
-                Gtext.text = _G.ToString();
-                Ftext.text = F.ToString();
-            }
-        }
-    }
-
-    private int _H;
-    public int H { get { return _H; } set
-        {
-            _H = value;
-            if (_H == GridManager.MAXPATH || !PathFinding.Instance.debugMode)
-            {
-                Htext.text = "";
-                Ftext.text = "";
-            }
-            else
-            {
-                Htext.text = _H.ToString();
-                Ftext.text = F.ToString();
-            }
-        }
-    }
-
+    public int G, H;
     public int F => G + H;
     public CustomTile previousTile;
 
@@ -92,14 +79,36 @@ public class CustomTile : MonoBehaviour
     [SerializeField] private TextMeshProUGUI Htext;
     [SerializeField] private TextMeshProUGUI Ftext;
 
+    public void ResetText()
+    {
+        G = GridManager.MAXPATH;
+        H = GridManager.MAXPATH;
+
+        UpdateText();
+    }
+
+    public void UpdateText()
+    {
+        if (G == GridManager.MAXPATH) Gtext.text = "";
+        else Gtext.text = G.ToString();
+
+        if (H == GridManager.MAXPATH) Htext.text = "";
+        else Htext.text = H.ToString();
+
+        if (F == 2 * GridManager.MAXPATH) Ftext.text = "";
+        else Ftext.text = F.ToString();
+    }
+
     public int GetDistanceFromStartTile()
     {
-        int d = 0;
+        int flag = 0;
         CustomTile currentTile = this;
-        while(currentTile.previousTile != null)
+        while(currentTile.previousTile != null && flag < 100)
         {
-            currentTile = currentTile.previousTile; d++;
+            flag++;
+            currentTile = currentTile.previousTile;
         }
-        return d;
+        if (flag == 100) Debug.Log("Flag atteint dans GetDistanceFromStartTile");
+        return flag;
     }
 }

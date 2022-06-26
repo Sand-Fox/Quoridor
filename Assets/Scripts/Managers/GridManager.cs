@@ -36,7 +36,7 @@ public class GridManager : MonoBehaviour
         if (gameState == GameState.GenerateGrid) GenerateGrid();
     }
 
-    private void OnModeChanged(Mode newMode) => ResetAllTiles();
+    private void OnModeChanged(Mode newMode) => ResetAllTilesVisual();
 
     public void GenerateGrid()
     {
@@ -89,22 +89,18 @@ public class GridManager : MonoBehaviour
         return lastRaw;
     }
 
-    public void ResetAllTiles()
+    public void ResetAllTilesVisual()
     {
-        foreach (KeyValuePair<Vector2, CustomTile> pair in tilesDico)
-        {
-            pair.Value.EnableVisual(false);
-            pair.Value.previousTile = null;
-            pair.Value.G = MAXPATH;
-            pair.Value.H = MAXPATH;
-        }
+        foreach (KeyValuePair<Vector2, CustomTile> pair in tilesDico) pair.Value.EnableVisual(false);
     }
 
-    public void ResetAllCorners()
+    public void ResetAllTilesText()
     {
-        foreach (KeyValuePair<Vector2, CustomCorner> pair in cornersDico)
-        {
-            pair.Value.EnableVisual(false);
-        }
+        foreach (KeyValuePair<Vector2, CustomTile> pair in tilesDico) pair.Value.ResetText();
+    }
+
+    public void UpdateAllTilesText()
+    {
+        foreach (KeyValuePair<Vector2, CustomTile> pair in tilesDico) pair.Value.UpdateText();
     }
 }

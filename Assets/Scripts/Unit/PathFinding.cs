@@ -12,20 +12,45 @@ public class PathFinding : MonoBehaviour
     private List<CustomTile> open;
     private List<CustomTile> closed;
 
+    public List<CustomTile> GetWiningPath(BaseUnit unit)
+    {
+        CustomTile[] endRaw;
+        if (unit == ReferenceManager.Instance.player) endRaw = GridManager.Instance.GetLastRaw();
+        else endRaw = GridManager.Instance.GetFirstRaw();
+
+        List<CustomTile> bestPath = new List<CustomTile>();
+        int bestDistance = GridManager.MAXPATH;
+
+        foreach (CustomTile tile in endRaw)
+        {
+            var path = GetPath(unit, tile);
+            int distance = (path == null) ? GridManager.MAXPATH : path.Count;
+            if (distance < bestDistance)
+            {
+                bestPath = path;
+                bestDistance = distance;
+            }
+        }
+
+        return bestPath;
+    }
+
     public List<CustomTile> GetPath(BaseUnit unit, CustomTile targetTile)
     {
-        SetUpPath(unit, targetTile);
-        if (targetTile.previousTile == null) return null;
+        if(targetTile.occupiedUnit != null) return null;
 
-        List<CustomTile> path = new List<CustomTile>() { targetTile };
+        SetUpPath(unit, targetTile);
+        if (targetTile != unit.occupiedTile && targetTile.previousTile == null) return null;
+
+        List<CustomTile> path = new List<CustomTile>();
         CustomTile currentTile = targetTile;
 
         int flag = 0;
-        while (currentTile.previousTile != null && flag < 100)
+        while (currentTile != unit.occupiedTile && flag < 100)
         {
             flag++;
-            currentTile = currentTile.previousTile;
             path.Add(currentTile);
+            currentTile = currentTile.previousTile;
         }
         if (flag == 100) Debug.Log("Flag atteint dans GetPath");
         path.Reverse();
@@ -36,6 +61,7 @@ public class PathFinding : MonoBehaviour
     {
         open = new List<CustomTile>();
         closed = new List<CustomTile>();
+        unit.occupiedTile.previousTile = null;
         open.Add(unit.occupiedTile);
 
         int flag = 0;

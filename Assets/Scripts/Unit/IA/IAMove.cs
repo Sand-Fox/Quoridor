@@ -8,7 +8,7 @@ public class IAMove : BaseIA
 
     protected override void PlayIA()
     {
-        List<CustomTile> path = GetBestPath();
-        if (path.Count != 0) SetUnit(path[1].transform.position);
+        List<CustomTile> path = PathFinding.Instance.GetWiningPath(this);
+        if (path.Count != 0) SetUnit(path[0].transform.position);
     }
 }
