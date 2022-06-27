@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IAMove : BaseIA
 {
-    public static string description = "IA qui se déplace en utilisant un algorithme A*";
+    public static string description = "IA qui se déplace en utilisant \n l'algorithme A*";
 
     protected override void PlayIA()
     {

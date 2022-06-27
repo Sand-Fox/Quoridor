@@ -16,15 +16,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PanelScript winPanel;
     [SerializeField] private PanelScript loosePanel;
 
-    private int _wallCount;
-    public int wallCount { get { return _wallCount; } set { _wallCount = value;  wallButton.ChangeMainText("Wall (" + _wallCount + ")"); } }
-
     private void Awake()
     {
         Instance = this;
         ModeManager.OnModeChanged += OnModeChanged;
         GameManager.OnGameStateChanged += OnGameStateChanged;
-        wallCount = 10;
     }
 
     private void OnDestroy()
@@ -67,6 +63,11 @@ public class UIManager : MonoBehaviour
     {
         pathButton.EnableButton(true);
         moveButton.EnableButton(true);
-        wallButton.EnableButton(wallCount > 0);
+        wallButton.EnableButton(ReferenceManager.Instance.player.wallCount > 0);
+    }
+
+    public void UpdateWallCountText()
+    {
+        wallButton.ChangeMainText("Wall (" + ReferenceManager.Instance.player.wallCount + ")");
     }
 }

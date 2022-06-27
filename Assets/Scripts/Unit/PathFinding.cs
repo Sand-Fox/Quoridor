@@ -63,6 +63,7 @@ public class PathFinding : MonoBehaviour
         open = new List<CustomTile>();
         closed = new List<CustomTile>();
         unit.occupiedTile.previousTile = null;
+        targetTile.previousTile = null;
         open.Add(unit.occupiedTile);
 
         int flag = 0;

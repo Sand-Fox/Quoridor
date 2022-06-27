@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class BaseIA : BaseUnit
 {
-    protected int wallCount = 10;
     private void OnEnable() => GameManager.OnGameStateChanged += OnGameStateChanged;
     private void OnDisable() => GameManager.OnGameStateChanged -= OnGameStateChanged;
 

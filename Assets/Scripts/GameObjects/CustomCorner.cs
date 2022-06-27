@@ -36,7 +36,8 @@ public class CustomCorner : MonoBehaviour
         if (!wallPreview.CanSpawnHere()) return;
         GameObject wallObject = PhotonNetwork.Instantiate("Wall/" + orientation + "Wall", Vector3.zero, Quaternion.identity);
         wallObject.GetComponent<CustomWall>().view.RPC("SetWall", RpcTarget.All, transform.position);
-        UIManager.Instance.wallCount--;
+        ReferenceManager.Instance.player.wallCount--;
+        UIManager.Instance.UpdateWallCountText();
         OnMouseExit();
     }
 

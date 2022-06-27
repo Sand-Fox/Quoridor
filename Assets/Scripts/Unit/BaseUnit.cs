@@ -8,6 +8,7 @@ public abstract class BaseUnit : MonoBehaviour
 {
     public CustomTile occupiedTile { get; private set; }
     public PhotonView view { get; private set; }
+    public int wallCount = 10;
 
     private void Awake()
     {

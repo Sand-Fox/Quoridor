@@ -6,10 +6,17 @@ using Debug = UnityEngine.Debug;
 
 public class IAMiniMax : BaseIA
 {
-    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant un algorithme Mini Max";
+    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Mini Max";
 
     protected override void PlayIA()
     {
+        if (wallCount == 0)
+        {
+            List<CustomTile> path = PathFinding.Instance.GetWiningPath(this);
+            if (path.Count != 0) SetUnit(path[0].transform.position);
+            return;
+        }
+
         Node node = new Node(null, 0);
         Coup coup = Max(node, 2);
 
@@ -33,9 +40,9 @@ public class IAMiniMax : BaseIA
         List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
         List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
         int nbWallIA = wallCount;
-        int nbWallP = UIManager.Instance.wallCount;
+        int nbWallP = ReferenceManager.Instance.player.wallCount;
 
-        int score = -pathIA.Count;
+        int score = -pathIA.Count + pathP.Count + nbWallIA - nbWallP;
         return score;
     }
 
@@ -51,12 +58,12 @@ public class IAMiniMax : BaseIA
         HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
 
-        
         foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
         {
             horizontalWall.transform.position = pair.Key;
             if (horizontalWall.CanSpawnHere())
             {
+                wallCount--;
                 horizontalWall.OnSpawn();
                 CoupWall coupWall = new CoupWall(horizontalWall.transform.position, Orientation.Horizontal);
                 Node node = new Node(coupWall, current.depth + 1);
@@ -71,12 +78,12 @@ public class IAMiniMax : BaseIA
                     bestCoup = node.coup;
                 }
                 horizontalWall.OnDespawn();
+                wallCount++;
             }
 
             //Vertical Wall
         }
         
-
         CustomTile IATile = occupiedTile;
 
         foreach (CustomTile tile in IATile.AdjacentTiles())
@@ -110,15 +117,16 @@ public class IAMiniMax : BaseIA
         }
 
         Coup bestCoup = null;
+        BaseUnit player = ReferenceManager.Instance.player;
         HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
 
-        
         foreach (KeyValuePair<Vector2, CustomCorner> pair in GridManager.Instance.cornersDico)
         {
             horizontalWall.transform.position = pair.Key;
             if (horizontalWall.CanSpawnHere())
             {
+                player.wallCount--;
                 horizontalWall.OnSpawn();
                 CoupWall coupWall = new CoupWall(horizontalWall.transform.position, Orientation.Horizontal);
                 Node node = new Node(coupWall, current.depth + 1);
@@ -132,13 +140,12 @@ public class IAMiniMax : BaseIA
                     bestCoup = node.coup;
                 }
                 horizontalWall.OnDespawn();
+                player.wallCount++;
             }
 
             //Vertical Wall
         }
         
-
-        BaseUnit player = ReferenceManager.Instance.player;
         CustomTile playerTile = player.occupiedTile;
 
         foreach (CustomTile tile in playerTile.AdjacentTiles())
