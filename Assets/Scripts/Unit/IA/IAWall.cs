@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class IAWall : BaseIA
 {
-    public static string description = "IA qui utilise tous ses murs avant de se déplacer";
+    public static string description = "IA qui pose un mur à l'endroit adéquat sur le meilleur chemin du joueur";
 
     protected override void PlayIA()
     {
@@ -29,6 +29,7 @@ public class IAWall : BaseIA
         HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
         List<CustomTile> playerBestPath = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
+        playerBestPath.Insert(0, ReferenceManager.Instance.player.occupiedTile);
 
         Vector2 bestWallPosition = default; orientation = default;
         int longerPathCount = 0;

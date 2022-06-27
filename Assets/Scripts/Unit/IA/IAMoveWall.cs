@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class IAMoveWall : BaseIA
 {
-    public static string description = "IA qui choisi aléatoirement entre poser un mur et se déplacer";
+    public static string description = "IA qui choisit aléatoirement entre poser un mur et se déplacer";
 
     protected override void PlayIA()
     {
@@ -29,8 +29,9 @@ public class IAMoveWall : BaseIA
     {
         HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
-
         List<CustomTile> playerBestPath = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
+        playerBestPath.Insert(0, ReferenceManager.Instance.player.occupiedTile);
+
         Vector2 bestWallPosition = default; orientation = default;
         int longerPathCount = 0;
 

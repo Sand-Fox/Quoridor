@@ -37,10 +37,11 @@ public class PathFinding : MonoBehaviour
 
     public List<CustomTile> GetPath(BaseUnit unit, CustomTile targetTile)
     {
-        if(targetTile.occupiedUnit != null) return null;
+        if(targetTile.occupiedUnit == unit) return new List<CustomTile>();
+        if (targetTile.occupiedUnit != null) return null;
 
         SetUpPath(unit, targetTile);
-        if (targetTile != unit.occupiedTile && targetTile.previousTile == null) return null;
+        if (targetTile.previousTile == null) return null;
 
         List<CustomTile> path = new List<CustomTile>();
         CustomTile currentTile = targetTile;

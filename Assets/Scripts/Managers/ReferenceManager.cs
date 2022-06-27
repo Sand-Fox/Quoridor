@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 public class ReferenceManager : MonoBehaviour
 {
@@ -16,7 +15,4 @@ public class ReferenceManager : MonoBehaviour
     [Header("Resources Prefabs")]
     public HorizontalWall horizontalWallPrefab;
     public VerticalWall verticalWallPrefab;
-    public IAMove IAMove;
-    public IAWall IAWall;
-    public IAMoveWall IAMoveWall;
 }

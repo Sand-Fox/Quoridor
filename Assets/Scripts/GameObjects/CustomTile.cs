@@ -32,10 +32,8 @@ public class CustomTile : MonoBehaviour
             List<CustomTile> bestPath = PathFinding.Instance.GetPath(player, this);
             if (bestPath != null)
             {
-                List<CustomTile> path = new List<CustomTile>();
-                path.Add(player.occupiedTile);
-                path.AddRange(bestPath);
-                LinePopUp.Create(path, ColorExtension.green);
+                bestPath.Insert(0, player.occupiedTile);
+                LinePopUp.Create(bestPath, ColorExtension.green);
             }
 
             if (PathFinding.Instance.debugMode) GridManager.Instance.UpdateAllTilesText();

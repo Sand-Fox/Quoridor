@@ -6,7 +6,7 @@ using Debug = UnityEngine.Debug;
 
 public class IAMiniMax : BaseIA
 {
-    public static string description = "Mini Max IA";
+    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant un algorithme Mini Max";
 
     protected override void PlayIA()
     {
@@ -51,7 +51,7 @@ public class IAMiniMax : BaseIA
         HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
 
-        /*
+        
         foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
         {
             horizontalWall.transform.position = pair.Key;
@@ -67,7 +67,6 @@ public class IAMiniMax : BaseIA
 
                 if (current.score < node.score || current.score == Node.initialScore)
                 {
-                    Debug.Log("Nouveau max trouvé : Current score - " + current.score + ", Node Score - " + node.score + ", Coup - " + node.coup);
                     current.score = node.score;
                     bestCoup = node.coup;
                 }
@@ -76,7 +75,7 @@ public class IAMiniMax : BaseIA
 
             //Vertical Wall
         }
-        */
+        
 
         CustomTile IATile = occupiedTile;
 
@@ -114,7 +113,7 @@ public class IAMiniMax : BaseIA
         HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
         VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
 
-        /*
+        
         foreach (KeyValuePair<Vector2, CustomCorner> pair in GridManager.Instance.cornersDico)
         {
             horizontalWall.transform.position = pair.Key;
@@ -129,7 +128,6 @@ public class IAMiniMax : BaseIA
 
                 if (node.score < current.score || current.score == Node.initialScore)
                 {
-                    Debug.Log("Nouveau min trouvé : Current score - " + current.score + ", Node Score - " + node.score + ", Coup - " + node.coup);
                     current.score = node.score;
                     bestCoup = node.coup;
                 }
@@ -138,7 +136,7 @@ public class IAMiniMax : BaseIA
 
             //Vertical Wall
         }
-        */
+        
 
         BaseUnit player = ReferenceManager.Instance.player;
         CustomTile playerTile = player.occupiedTile;

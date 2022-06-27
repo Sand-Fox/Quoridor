@@ -1008,7 +1008,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "IA qui se d\xE9place uniquement"
+  m_text: Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 85cbc449baf9d408aaffaf407c1c9e4f, type: 2}
   m_sharedMaterial: {fileID: -6674877404949003427, guid: 85cbc449baf9d408aaffaf407c1c9e4f, type: 2}
