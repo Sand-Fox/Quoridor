@@ -35,6 +35,23 @@ public class PathFinding : MonoBehaviour
         return bestPath;
     }
 
+    public bool existPath(BaseUnit unit)
+    {
+        CustomTile[] endRaw;
+        if (unit == ReferenceManager.Instance.player) endRaw = GridManager.Instance.GetLastRaw();
+        else endRaw = GridManager.Instance.GetFirstRaw();
+
+        foreach(CustomTile tile in endRaw)
+        {
+            var path = GetPath(unit, tile);
+            if(path !=null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<CustomTile> GetPath(BaseUnit unit, CustomTile targetTile)
     {
         if(targetTile.occupiedUnit == unit) return new List<CustomTile>();

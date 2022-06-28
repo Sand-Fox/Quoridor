@@ -4,9 +4,9 @@ using UnityEngine;
 using Photon.Pun;
 using Debug = UnityEngine.Debug;
 
-public class IAMiniMax : BaseIA
+public class IAAlphaBeta : BaseIA
 {
-    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Mini Max";
+    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Alpha Beta";
 
     protected override void PlayIA()
     {
@@ -18,7 +18,7 @@ public class IAMiniMax : BaseIA
         }
 
         Node node = new Node(null, 0);
-        Coup coup = Max(node, 2);
+        Coup coup = Max(node, 2, -10000, 10000);
 
         if (coup is CoupWall coupWall)
         {
@@ -49,15 +49,43 @@ public class IAMiniMax : BaseIA
         return score;
     }
 
-    private Coup Max(Node current, int maxDepth)
+    private Coup Max(Node current, int maxDepth, int alpha, int beta)
     {
         if (current.depth == maxDepth)
         {
             current.score = CalculScore();
             return current.coup;
         }
-
         Coup bestCoup = null;
+
+        /*since moving is mostlikely going to be a better move we shall evaluate them first*/
+
+        CustomTile IATile = occupiedTile;
+        foreach (CustomTile tile in IATile.AdjacentTiles())
+        {
+            SetUnitNoAnimation(tile.transform.position);
+            
+            CoupMove move = new CoupMove(tile.transform.position);
+            Node node = new Node(move, current.depth + 1);
+            Min(node, maxDepth, alpha, beta);
+
+            if (current.score < node.score || current.score == Node.initialScore)
+            {
+                current.score = node.score;
+                bestCoup = node.coup;
+            }
+
+            alpha = (alpha<node.score)?node.score:alpha;
+            if(beta<=alpha)
+            {
+                SetUnitNoAnimation(IATile.transform.position);
+                return bestCoup;
+            } 
+        }
+
+        SetUnitNoAnimation(IATile.transform.position);
+
+
 
         if(wallCount >0){
             
@@ -76,7 +104,7 @@ public class IAMiniMax : BaseIA
 
                     current.AddChild(node);
 
-                    Min(node, maxDepth);
+                    Min(node, maxDepth, alpha, beta);
 
                     if (current.score < node.score || current.score == Node.initialScore)
                     {
@@ -85,6 +113,14 @@ public class IAMiniMax : BaseIA
                     }
                     horizontalWall.OnDespawn();
                     wallCount++;
+
+                    alpha = (alpha<node.score)?node.score:alpha;
+                    if(beta<=alpha)
+                    {
+                        Destroy(horizontalWall.gameObject);
+                        Destroy(verticalWall.gameObject);
+                        return bestCoup;
+                    }
                 }
             }
 
@@ -101,7 +137,7 @@ public class IAMiniMax : BaseIA
 
                     current.AddChild(node);
 
-                    Min(node, maxDepth);
+                    Min(node, maxDepth, alpha, beta);
 
                     if (current.score < node.score || current.score == Node.initialScore)
                     {
@@ -110,36 +146,27 @@ public class IAMiniMax : BaseIA
                     }
                     verticalWall.OnDespawn();
                     wallCount++;
+
+                    alpha = (alpha<node.score)?node.score:alpha;
+                    if(beta<=alpha)
+                    {
+                        Destroy(horizontalWall.gameObject);
+                        Destroy(verticalWall.gameObject);
+                        return bestCoup;
+                    }
                 }
             }
             Destroy(horizontalWall.gameObject);
             Destroy(verticalWall.gameObject);
         }
-
-        CustomTile IATile = occupiedTile;
-
-        foreach (CustomTile tile in IATile.AdjacentTiles())
-        {
-            SetUnitNoAnimation(tile.transform.position);
-            
-            CoupMove move = new CoupMove(tile.transform.position);
-            Node node = new Node(move, current.depth + 1);
-            Min(node, maxDepth);
-
-            if (current.score < node.score || current.score == Node.initialScore)
-            {
-                current.score = node.score;
-                bestCoup = node.coup;
-            }
-        }
-
-        SetUnitNoAnimation(IATile.transform.position);
-
         
         return bestCoup;
     }
 
-    private Coup Min(Node current, int maxDepth)
+
+
+
+    private Coup Min(Node current, int maxDepth, int alpha, int beta)
     {
         if (current.depth == maxDepth)
         {
@@ -149,6 +176,30 @@ public class IAMiniMax : BaseIA
 
         BaseUnit player = ReferenceManager.Instance.player;
         Coup bestCoup = null;
+
+        /*since moving is mostlikely going to be a better move we shall evaluate them first*/
+        CustomTile playerTile = player.occupiedTile;
+
+        foreach (CustomTile tile in playerTile.AdjacentTiles())
+        {
+            player.SetUnitNoAnimation(tile.transform.position);
+
+            CoupMove move = new CoupMove(tile.transform.position);
+            Node node = new Node(move, current.depth + 1);
+            Max(node, maxDepth, alpha, beta);
+
+            if (current.score > node.score || current.score == Node.initialScore)
+            {
+                current.score = node.score;
+                bestCoup = node.coup;
+            }
+            beta = (beta>node.score)?node.score:beta;
+            if(beta<=alpha)
+            {
+                SetUnitNoAnimation(playerTile.transform.position);
+                return bestCoup;
+            }
+        }
 
         if(player.wallCount>0){
             HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
@@ -165,7 +216,7 @@ public class IAMiniMax : BaseIA
                     Node node = new Node(coupWall, current.depth + 1);
                     current.AddChild(node);
 
-                    Max(node, maxDepth);
+                    Max(node, maxDepth, alpha, beta);
 
                     if (node.score < current.score || current.score == Node.initialScore)
                     {
@@ -174,12 +225,16 @@ public class IAMiniMax : BaseIA
                     }
                     horizontalWall.OnDespawn();
                     player.wallCount++;
-                }
 
-                //Vertical Wall
+                    beta = (beta>node.score)?node.score:beta;
+                    if(beta<=alpha)
+                    {
+                        Destroy(horizontalWall.gameObject);
+                        Destroy(verticalWall.gameObject);
+                        return bestCoup;
+                    }
+                }             
             }
-        
-        
 
             foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
             {
@@ -193,7 +248,7 @@ public class IAMiniMax : BaseIA
 
                     current.AddChild(node);
 
-                    Max(node, maxDepth);
+                    Max(node, maxDepth, alpha, beta);
 
                     if (current.score < node.score || current.score == Node.initialScore)
                     {
@@ -202,28 +257,22 @@ public class IAMiniMax : BaseIA
                     }
                     verticalWall.OnDespawn();
                     wallCount++;
+
+                    beta = (beta>node.score)?node.score:beta;
+                    if(beta<=alpha)
+                    {
+                        Destroy(horizontalWall.gameObject);
+                        Destroy(verticalWall.gameObject);
+                        return bestCoup;
+                    }
                 }
+                
             }
             Destroy(horizontalWall.gameObject);
             Destroy(verticalWall.gameObject);
         }
 
-        CustomTile playerTile = player.occupiedTile;
-
-        foreach (CustomTile tile in playerTile.AdjacentTiles())
-        {
-            player.SetUnitNoAnimation(tile.transform.position);
-
-            CoupMove move = new CoupMove(tile.transform.position);
-            Node node = new Node(move, current.depth + 1);
-            Max(node, maxDepth);
-
-            if (current.score > node.score || current.score == Node.initialScore)
-            {
-                current.score = node.score;
-                bestCoup = node.coup;
-            }
-        }
+        
 
         player.SetUnitNoAnimation(playerTile.transform.position);
 

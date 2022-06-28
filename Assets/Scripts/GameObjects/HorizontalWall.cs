@@ -20,6 +20,21 @@ public class HorizontalWall : CustomWall
         if (!rightDownTile.directionDico[Vector2.up]) return false;
         if (!leftUpTile.directionDico[Vector2.down]) return false;
         if (!leftDownTile.directionDico[Vector2.up]) return false;
+
+        OnSpawn();
+
+        if (!PathFinding.Instance.existPath(ReferenceManager.Instance.enemy)) 
+        {
+            OnDespawn();
+            return false;
+        }
+        if (!PathFinding.Instance.existPath(ReferenceManager.Instance.player))
+        {
+            OnDespawn();
+            return false;
+        } 
+        
+        OnDespawn();
         return true;
     }
 

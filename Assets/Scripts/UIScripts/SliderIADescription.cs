@@ -33,6 +33,11 @@ public class SliderIADescription : MonoBehaviour
             TmpText.text = IAMiniMax.description;
             PlayerSetUpManager.IAName = "Units/IAMiniMax";
         }
+        else if (value == 5)
+        {
+            TmpText.text = IAAlphaBeta.description;
+            PlayerSetUpManager.IAName = "Units/IAAlphaBeta";
+        }
         else TmpText.text = "" + value;
     }
 }

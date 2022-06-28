@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5540145901849815912}
   - component: {fileID: 5360915073251080848}
   - component: {fileID: 5540145901849815927}
-  - component: {fileID: 8386900331547028952}
+  - component: {fileID: 395162029383853093}
   m_Layer: 0
-  m_Name: IAMiniMax
+  m_Name: IAAlphaBeta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8386900331547028952
+--- !u!114 &395162029383853093
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5540145901849815914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88d503112bb5b4044a33500b7c291b6b, type: 3}
+  m_Script: {fileID: 11500000, guid: f6c7a9b1c275ed84b8e051f1178829f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wallCount: 10

@@ -20,6 +20,21 @@ public class VerticalWall : CustomWall
         if (!rightDownTile.directionDico[Vector2.left]) return false;
         if (!leftUpTile.directionDico[Vector2.right]) return false;
         if (!leftDownTile.directionDico[Vector2.right]) return false;
+
+        OnSpawn();
+
+        if (!PathFinding.Instance.existPath(ReferenceManager.Instance.enemy)) 
+        {
+            OnDespawn();
+            return false;
+        }
+        if (!PathFinding.Instance.existPath(ReferenceManager.Instance.player))
+        {
+            OnDespawn();
+            return false;
+        } 
+        
+        OnDespawn();
         return true;
     }
 
