@@ -182,7 +182,7 @@ public class IAAlphaBeta : BaseIA
             {
                 if (HorizontalWall.CanSpawnHere(pair.Value))
                 {
-                    SpawnWallWhenTesting(pair.Key, Orientation.Horizontal);
+                    player.SpawnWallWhenTesting(pair.Key, Orientation.Horizontal);
                     CoupWall coupWall = new CoupWall(pair.Key, Orientation.Horizontal);
                     Node node = new Node(coupWall, current.depth + 1);
 
@@ -193,7 +193,7 @@ public class IAAlphaBeta : BaseIA
                         current.score = node.score;
                         bestCoup = node.coup;
                     }
-                    DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
+                    player.DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
 
                     beta = (beta > node.score) ? node.score : beta;
                     if (beta <= alpha) return bestCoup;
@@ -204,7 +204,7 @@ public class IAAlphaBeta : BaseIA
             {
                 if (VerticalWall.CanSpawnHere(pair.Value))
                 {
-                    SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
+                    player.SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
                     CoupWall coupWall = new CoupWall(pair.Key, Orientation.Vertical);
                     Node node = new Node(coupWall, current.depth + 1);
 
@@ -215,7 +215,7 @@ public class IAAlphaBeta : BaseIA
                         current.score = node.score;
                         bestCoup = node.coup;
                     }
-                    DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
+                    player.DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
 
                     beta = (beta > node.score) ? node.score : beta;
                     if (beta <= alpha) return bestCoup;

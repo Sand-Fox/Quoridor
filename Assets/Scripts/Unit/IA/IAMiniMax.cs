@@ -137,7 +137,7 @@ public class IAMiniMax : BaseIA
             {
                 if (HorizontalWall.CanSpawnHere(pair.Value))
                 {
-                    SpawnWallWhenTesting(pair.Key, Orientation.Horizontal);
+                    player.SpawnWallWhenTesting(pair.Key, Orientation.Horizontal);
                     CoupWall coupWall = new CoupWall(pair.Key, Orientation.Horizontal);
                     Node node = new Node(coupWall, current.depth + 1);
 
@@ -148,7 +148,7 @@ public class IAMiniMax : BaseIA
                         current.score = node.score;
                         bestCoup = node.coup;
                     }
-                    DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
+                    player.DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
                 }
             }
         
@@ -156,7 +156,7 @@ public class IAMiniMax : BaseIA
             {
                 if (VerticalWall.CanSpawnHere(pair.Value))
                 {
-                    SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
+                    player.SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
                     CoupWall coupWall = new CoupWall(pair.Key, Orientation.Vertical);
                     Node node = new Node(coupWall, current.depth + 1);
 
@@ -167,7 +167,7 @@ public class IAMiniMax : BaseIA
                         current.score = node.score;
                         bestCoup = node.coup;
                     }
-                    DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
+                    player.DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
                 }
             }
         }
