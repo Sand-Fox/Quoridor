@@ -7,13 +7,12 @@ public class HorizontalWall : CustomWall
     private Orientation _orientation = Orientation.Horizontal;
     public override Orientation orientation { get => _orientation; }
 
-    public override bool CanSpawnHere()
+    public static bool CanSpawnHere(CustomCorner corner)
     {
-        CustomCorner corner = GridManager.Instance.GetCornerAtPosition(transform.position);
-        CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, 0.5f));
-        CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, -0.5f));
-        CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, 0.5f));
-        CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, -0.5f));
+        CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(corner.transform.position + new Vector3(0.5f, 0.5f));
+        CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(corner.transform.position + new Vector3(0.5f, -0.5f));
+        CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(corner.transform.position + new Vector3(-0.5f, 0.5f));
+        CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(corner.transform.position + new Vector3(-0.5f, -0.5f));
 
         if (!corner.isOpen) return false;
         if (!rightUpTile.directionDico[Vector2.down]) return false;
@@ -21,20 +20,20 @@ public class HorizontalWall : CustomWall
         if (!leftUpTile.directionDico[Vector2.down]) return false;
         if (!leftDownTile.directionDico[Vector2.up]) return false;
 
-        OnSpawn();
+        corner.horizontalWall.OnSpawn();
 
         if (!PathFinding.Instance.existPath(ReferenceManager.Instance.enemy)) 
         {
-            OnDespawn();
+            corner.horizontalWall.OnDespawn();
             return false;
         }
         if (!PathFinding.Instance.existPath(ReferenceManager.Instance.player))
         {
-            OnDespawn();
+            corner.horizontalWall.OnDespawn();
             return false;
-        } 
-        
-        OnDespawn();
+        }
+
+        corner.horizontalWall.OnDespawn();
         return true;
     }
 

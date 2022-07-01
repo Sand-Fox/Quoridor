@@ -19,20 +19,12 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        ModeManager.OnModeChanged += OnModeChanged;
         GameManager.OnGameStateChanged += OnGameStateChanged;
     }
 
     private void OnDestroy()
     {
-        ModeManager.OnModeChanged -= OnModeChanged;
         GameManager.OnGameStateChanged -= OnGameStateChanged;
-    }
-
-    private void OnModeChanged(Mode newMode)
-    {
-        if (newMode == Mode.Wall) cornersFolder.SetActive(true);
-        else cornersFolder.SetActive(false);
     }
 
     private void OnGameStateChanged(GameState newState)

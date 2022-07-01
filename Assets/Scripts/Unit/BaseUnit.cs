@@ -39,10 +39,9 @@ public abstract class BaseUnit : MonoBehaviour
         GameManager.Instance.EndTurn();
     }
 
-    public void SetUnitNoAnimation(Vector3 position)
+    public void SetUnitWhenTesting(Vector3 position)
     {
         CustomTile tile = GridManager.Instance.GetTileAtPosition(position);
-        if (!view.IsMine) tile = GridManager.Instance.GetTileAtPosition(position.ReflectPosition());
 
         if (tile.occupiedUnit != null) Debug.LogWarning("Attention, il y a déjà un Unit sur cette case.");
 
@@ -50,5 +49,46 @@ public abstract class BaseUnit : MonoBehaviour
         tile.occupiedUnit = this;
         occupiedTile = tile;
         transform.position = tile.transform.position;
+    }
+
+    [PunRPC]
+    public void SpawnWall(Vector3 position, Orientation orientation)
+    {
+        CustomCorner corner = GridManager.Instance.GetCornerAtPosition(position);
+        if (!view.IsMine) corner = GridManager.Instance.GetCornerAtPosition(position.ReflectPosition());
+
+        if (!corner.isOpen) Debug.LogWarning("Attention, il y a déjà un mur sur ce coin.");
+
+        CustomWall wall = (orientation == Orientation.Horizontal) ? corner.horizontalWall : corner.verticalWall;
+        wall.EnableVisual();
+        wall.OnSpawn();
+        wallCount--;
+        UIManager.Instance.UpdateWallCountText();
+
+        CoupWall c = new CoupWall(position, orientation);
+        RegisterManager.Instance.AddCoup(c);
+        GameManager.Instance.EndTurn();
+    }
+
+    public void SpawnWallWhenTesting(Vector3 position, Orientation orientation)
+    {
+        CustomCorner corner = GridManager.Instance.GetCornerAtPosition(position);
+
+        if (!corner.isOpen) Debug.LogWarning("Attention, il y a déjà un mur sur ce coin.");
+
+        CustomWall wall = (orientation == Orientation.Horizontal) ? corner.horizontalWall : corner.verticalWall;
+        wall.OnSpawn();
+        wallCount--;
+    }
+
+    public void DespawnWallWhenTesting(Vector3 position, Orientation orientation)
+    {
+        CustomCorner corner = GridManager.Instance.GetCornerAtPosition(position);
+
+        if (corner.isOpen) Debug.LogWarning("Attention, il n'y a pas de mur actif sur ce coin.");
+
+        CustomWall wall = (orientation == Orientation.Horizontal) ? corner.horizontalWall : corner.verticalWall;
+        wall.OnDespawn();
+        wallCount++;
     }
 }

@@ -16,9 +16,9 @@ public class InputManager : MonoBehaviour
         if (!GameManager.Instance.isPlayerTurn() || ModeManager.Instance.mode != Mode.Wall) return;
         if (Input.GetMouseButtonDown(1))
         {
-            CustomCorner.SwitchOrientation();
             CustomCorner corner = GridManager.Instance.selectedCorner;
             corner?.OnMouseExit();
+            CustomCorner.SwitchOrientation();
             corner?.OnMouseEnter();
         }
     }

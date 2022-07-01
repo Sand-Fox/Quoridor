@@ -7,13 +7,12 @@ public class VerticalWall : CustomWall
     private Orientation _orientation = Orientation.Vertical;
     public override Orientation orientation { get => _orientation; }
 
-    public override bool CanSpawnHere()
+    public static bool CanSpawnHere(CustomCorner corner)
     {
-        CustomCorner corner = GridManager.Instance.GetCornerAtPosition(transform.position);
-        CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, 0.5f));
-        CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(0.5f, -0.5f));
-        CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, 0.5f));
-        CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(transform.position + new Vector3(-0.5f, -0.5f));
+        CustomTile rightUpTile = GridManager.Instance.GetTileAtPosition(corner.transform.position + new Vector3(0.5f, 0.5f));
+        CustomTile rightDownTile = GridManager.Instance.GetTileAtPosition(corner.transform.position + new Vector3(0.5f, -0.5f));
+        CustomTile leftUpTile = GridManager.Instance.GetTileAtPosition(corner.transform.position + new Vector3(-0.5f, 0.5f));
+        CustomTile leftDownTile = GridManager.Instance.GetTileAtPosition(corner.transform.position + new Vector3(-0.5f, -0.5f));
 
         if (!corner.isOpen) return false;
         if (!rightUpTile.directionDico[Vector2.left]) return false;
@@ -21,20 +20,20 @@ public class VerticalWall : CustomWall
         if (!leftUpTile.directionDico[Vector2.right]) return false;
         if (!leftDownTile.directionDico[Vector2.right]) return false;
 
-        OnSpawn();
+        corner.verticalWall.OnSpawn();
 
         if (!PathFinding.Instance.existPath(ReferenceManager.Instance.enemy)) 
         {
-            OnDespawn();
+            corner.verticalWall.OnDespawn();
             return false;
         }
         if (!PathFinding.Instance.existPath(ReferenceManager.Instance.player))
         {
-            OnDespawn();
+            corner.verticalWall.OnDespawn();
             return false;
-        } 
-        
-        OnDespawn();
+        }
+
+        corner.verticalWall.OnDespawn();
         return true;
     }
 

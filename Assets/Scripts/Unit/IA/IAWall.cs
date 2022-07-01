@@ -12,9 +12,7 @@ public class IAWall : BaseIA
         if (wallCount > 0)
         {
             Vector3 wallPosition = GetBestWallPosition(out Orientation orientation);
-            GameObject wallObject = PhotonNetwork.Instantiate("Wall/" + orientation + "Wall", Vector3.zero, Quaternion.identity);
-            wallObject.GetComponent<CustomWall>().view.RPC("SetWall", RpcTarget.All, wallPosition);
-            wallCount--;
+            SpawnWall(wallPosition, orientation);
         }
 
         else
@@ -24,14 +22,12 @@ public class IAWall : BaseIA
         }
     }
 
-    private Vector2 GetBestWallPosition(out Orientation orientation)
+    private Vector2 GetBestWallPosition(out Orientation bestOrientation)
     {
-        HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
-        VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
         List<CustomTile> playerBestPath = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
         playerBestPath.Insert(0, ReferenceManager.Instance.player.occupiedTile);
 
-        Vector2 bestWallPosition = default; orientation = default;
+        Vector2 bestWallPosition = default; bestOrientation = default;
         int longerPathCount = 0;
 
         for (int i = 0; i < playerBestPath.Count - 1; i++)
@@ -40,53 +36,55 @@ public class IAWall : BaseIA
             CustomTile nextTile = playerBestPath[i + 1];
             Vector2 direction = nextTile.transform.position - currentTile.transform.position;
 
-            CustomWall wall = null;
-            if (direction == Vector2.up || direction == Vector2.down) wall = horizontalWall;
-            if (direction == Vector2.right || direction == Vector2.left) wall = verticalWall;
-            if (direction != Vector2.up && direction != Vector2.down && direction != Vector2.right && direction != Vector2.left) continue;
-
             CustomCorner corner1 = GridManager.Instance.GetCornerAtPosition((Vector2)currentTile.transform.position + 0.5f * direction + 0.5f * Vector2.Perpendicular(direction));
             CustomCorner corner2 = GridManager.Instance.GetCornerAtPosition((Vector2)currentTile.transform.position + 0.5f * direction - 0.5f * Vector2.Perpendicular(direction));
 
             if (corner1 != null)
             {
-                wall.transform.position = corner1.transform.position;
-                if (wall.CanSpawnHere())
+                Orientation orientation;
+                if (direction == Vector2.up || direction == Vector2.down) orientation = Orientation.Horizontal;
+                else if (direction == Vector2.right || direction == Vector2.left) orientation = Orientation.Vertical;
+                else continue;
+
+                bool canSpawnHere = (orientation == Orientation.Horizontal) ? HorizontalWall.CanSpawnHere(corner1) : VerticalWall.CanSpawnHere(corner1);
+                if (canSpawnHere)
                 {
-                    wall.OnSpawn();
+                    SpawnWallWhenTesting(corner1.transform.position, orientation);
                     List<CustomTile> pathAfterWall = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
                     if (pathAfterWall.Count > longerPathCount)
                     {
-                        bestWallPosition = wall.transform.position;
-                        orientation = wall.orientation;
+                        bestWallPosition = corner1.transform.position;
+                        bestOrientation = orientation;
                         longerPathCount = pathAfterWall.Count;
                     }
-                    wall.OnDespawn();
+                    DespawnWallWhenTesting(corner1.transform.position, orientation);
                 }
             }
 
             if (corner2 != null)
             {
-                wall.transform.position = corner2.transform.position;
-                if (wall.CanSpawnHere())
+                Orientation orientation;
+                if (direction == Vector2.up || direction == Vector2.down) orientation = Orientation.Horizontal;
+                else if (direction == Vector2.right || direction == Vector2.left) orientation = Orientation.Vertical;
+                else continue;
+
+                bool canSpawnHere = (orientation == Orientation.Horizontal) ? HorizontalWall.CanSpawnHere(corner2) : VerticalWall.CanSpawnHere(corner2);
+                if (canSpawnHere)
                 {
-                    wall.OnSpawn();
+                    SpawnWallWhenTesting(corner2.transform.position, orientation);
                     List<CustomTile> pathAfterWall = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
                     if (pathAfterWall.Count > longerPathCount)
                     {
-                        bestWallPosition = wall.transform.position;
-                        orientation = wall.orientation;
+                        bestWallPosition = corner2.transform.position;
+                        bestOrientation = orientation;
                         longerPathCount = pathAfterWall.Count;
                     }
-                    wall.OnDespawn();
+                    DespawnWallWhenTesting(corner2.transform.position, orientation);
                 }
             }
         }
 
-        Destroy(horizontalWall.gameObject);
-        Destroy(verticalWall.gameObject);
         return bestWallPosition;
     }
 
-    
 }

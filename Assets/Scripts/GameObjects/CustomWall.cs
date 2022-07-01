@@ -1,46 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 public abstract class CustomWall : MonoBehaviour
 {
-    public PhotonView view;
     public abstract Orientation orientation { get; }
 
+    [SerializeField] private CustomCorner corner;
     [SerializeField] private SpriteRenderer wall1;
     [SerializeField] private SpriteRenderer wall2;
 
-    private void Awake() => view = GetComponent<PhotonView>();
-
-    public void SetUpPreview()
+    public void EnablePreview(bool enable)
     {
-        if (CanSpawnHere())
+        if (enable)
         {
-            wall1.color = ColorExtension.transparent;
-            wall2.color = ColorExtension.transparent;
+            gameObject.SetActive(true);
+            bool canSpawnHere = (orientation == Orientation.Horizontal) ? HorizontalWall.CanSpawnHere(corner) : VerticalWall.CanSpawnHere(corner);
+            if (canSpawnHere)
+            {
+                wall1.color = ColorExtension.transparent;
+                wall2.color = ColorExtension.transparent;
+            }
+            else
+            {
+                wall1.color = ColorExtension.transparentRed;
+                wall2.color = ColorExtension.transparentRed;
+            }
         }
-        else
-        {
-            wall1.color = ColorExtension.transparentRed;
-            wall2.color = ColorExtension.transparentRed;
-        }
+
+        else gameObject.SetActive(false);
     }
 
-    [PunRPC]
-    public void SetWall(Vector3 position)
+    public void EnableVisual()
     {
-        if (!view.IsMine) position = position.ReflectPosition();
-        transform.position = position;
-        OnSpawn();
-        GameManager.Instance.EndTurn();
-
-        Orientation orientation = (this is HorizontalWall) ? Orientation.Horizontal : Orientation.Vertical;
-        CoupWall c = new CoupWall(position, orientation);
-        RegisterManager.Instance.AddCoup(c);
+        gameObject.SetActive(true);
+        wall1.color = Color.white;
+        wall2.color = Color.white;
     }
 
-    public abstract bool CanSpawnHere();
     public abstract void OnSpawn();
     public abstract void OnDespawn();
 }

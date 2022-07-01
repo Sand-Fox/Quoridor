@@ -22,10 +22,9 @@ public class IAAlphaBeta : BaseIA
 
         if (coup is CoupWall coupWall)
         {
-            GameObject wallObject = PhotonNetwork.Instantiate("Wall/" + coupWall.orientation + "Wall", Vector3.zero, Quaternion.identity);
-            Vector3 position = new Vector3(coupWall.coord[0], coupWall.coord[1], 0);
-            wallObject.GetComponent<CustomWall>().view.RPC("SetWall", RpcTarget.All, position);
-            wallCount--;
+            Vector3 wallPosition = new Vector3(coupWall.coord[0], coupWall.coord[1], 0);
+            Orientation orientation = coupWall.orientation;
+            SpawnWall(wallPosition, orientation);
         }
 
         if(coup is CoupMove coupMove)
@@ -63,10 +62,10 @@ public class IAAlphaBeta : BaseIA
         CustomTile IATile = occupiedTile;
         foreach (CustomTile tile in IATile.AdjacentTiles())
         {
-            SetUnitNoAnimation(tile.transform.position);
-            
+            SetUnitWhenTesting(tile.transform.position);
             CoupMove move = new CoupMove(tile.transform.position);
             Node node = new Node(move, current.depth + 1);
+
             Min(node, maxDepth, alpha, beta);
 
             if (current.score < node.score || current.score == Node.initialScore)
@@ -75,34 +74,25 @@ public class IAAlphaBeta : BaseIA
                 bestCoup = node.coup;
             }
 
-            alpha = (alpha<node.score)?node.score:alpha;
-            if(beta<=alpha)
+            alpha = (alpha < node.score) ? node.score : alpha;
+            if(beta <= alpha)
             {
-                SetUnitNoAnimation(IATile.transform.position);
+                SetUnitWhenTesting(IATile.transform.position);
                 return bestCoup;
             } 
         }
 
-        SetUnitNoAnimation(IATile.transform.position);
+        SetUnitWhenTesting(IATile.transform.position);
 
-
-
-        if(wallCount >0){
-            
-            HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
-            VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
-
+        if(wallCount > 0)
+        {
             foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
             {
-                horizontalWall.transform.position = pair.Key;
-                if (horizontalWall.CanSpawnHere())
+                if (HorizontalWall.CanSpawnHere(pair.Value))
                 {
-                    wallCount--;
-                    horizontalWall.OnSpawn();
-                    CoupWall coupWall = new CoupWall(horizontalWall.transform.position, Orientation.Horizontal);
+                    SpawnWallWhenTesting(pair.Key, Orientation.Horizontal);
+                    CoupWall coupWall = new CoupWall(pair.Key, Orientation.Horizontal);
                     Node node = new Node(coupWall, current.depth + 1);
-
-                    current.AddChild(node);
 
                     Min(node, maxDepth, alpha, beta);
 
@@ -111,31 +101,21 @@ public class IAAlphaBeta : BaseIA
                         current.score = node.score;
                         bestCoup = node.coup;
                     }
-                    horizontalWall.OnDespawn();
-                    wallCount++;
+                    DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
 
-                    alpha = (alpha<node.score)?node.score:alpha;
-                    if(beta<=alpha)
-                    {
-                        Destroy(horizontalWall.gameObject);
-                        Destroy(verticalWall.gameObject);
-                        return bestCoup;
-                    }
+                    alpha = (alpha < node.score) ? node.score : alpha;
+                    if (beta <= alpha) return bestCoup;
                 }
             }
 
 
             foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
             {
-                verticalWall.transform.position = pair.Key;
-                if (verticalWall.CanSpawnHere())
+                if (VerticalWall.CanSpawnHere(pair.Value))
                 {
-                    wallCount--;
-                    verticalWall.OnSpawn();
-                    CoupWall coupWall = new CoupWall(verticalWall.transform.position, Orientation.Vertical);
+                    SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
+                    CoupWall coupWall = new CoupWall(pair.Key, Orientation.Vertical);
                     Node node = new Node(coupWall, current.depth + 1);
-
-                    current.AddChild(node);
 
                     Min(node, maxDepth, alpha, beta);
 
@@ -144,20 +124,12 @@ public class IAAlphaBeta : BaseIA
                         current.score = node.score;
                         bestCoup = node.coup;
                     }
-                    verticalWall.OnDespawn();
-                    wallCount++;
+                    DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
 
-                    alpha = (alpha<node.score)?node.score:alpha;
-                    if(beta<=alpha)
-                    {
-                        Destroy(horizontalWall.gameObject);
-                        Destroy(verticalWall.gameObject);
-                        return bestCoup;
-                    }
+                    alpha = (alpha < node.score) ? node.score : alpha;
+                    if (beta <= alpha) return bestCoup;
                 }
             }
-            Destroy(horizontalWall.gameObject);
-            Destroy(verticalWall.gameObject);
         }
         
         return bestCoup;
@@ -182,10 +154,10 @@ public class IAAlphaBeta : BaseIA
 
         foreach (CustomTile tile in playerTile.AdjacentTiles())
         {
-            player.SetUnitNoAnimation(tile.transform.position);
-
+            player.SetUnitWhenTesting(tile.transform.position);
             CoupMove move = new CoupMove(tile.transform.position);
             Node node = new Node(move, current.depth + 1);
+
             Max(node, maxDepth, alpha, beta);
 
             if (current.score > node.score || current.score == Node.initialScore)
@@ -193,28 +165,26 @@ public class IAAlphaBeta : BaseIA
                 current.score = node.score;
                 bestCoup = node.coup;
             }
-            beta = (beta>node.score)?node.score:beta;
-            if(beta<=alpha)
+
+            beta = (beta > node.score) ? node.score : beta;
+            if(beta <= alpha)
             {
-                SetUnitNoAnimation(playerTile.transform.position);
+                player.SetUnitWhenTesting(playerTile.transform.position); //corrigé ici : ajout d'un "player."
                 return bestCoup;
             }
         }
 
-        if(player.wallCount>0){
-            HorizontalWall horizontalWall = Instantiate(ReferenceManager.Instance.horizontalWallPrefab);
-            VerticalWall verticalWall = Instantiate(ReferenceManager.Instance.verticalWallPrefab);
+        player.SetUnitWhenTesting(playerTile.transform.position); //corrigé ici : ajout de cette ligne qui avait été déplacée plus bas
 
+        if (player.wallCount > 0)
+        {
             foreach (KeyValuePair<Vector2, CustomCorner> pair in GridManager.Instance.cornersDico)
             {
-                horizontalWall.transform.position = pair.Key;
-                if (horizontalWall.CanSpawnHere())
+                if (HorizontalWall.CanSpawnHere(pair.Value))
                 {
-                    player.wallCount--;
-                    horizontalWall.OnSpawn();
-                    CoupWall coupWall = new CoupWall(horizontalWall.transform.position, Orientation.Horizontal);
+                    SpawnWallWhenTesting(pair.Key, Orientation.Horizontal);
+                    CoupWall coupWall = new CoupWall(pair.Key, Orientation.Horizontal);
                     Node node = new Node(coupWall, current.depth + 1);
-                    current.AddChild(node);
 
                     Max(node, maxDepth, alpha, beta);
 
@@ -223,30 +193,20 @@ public class IAAlphaBeta : BaseIA
                         current.score = node.score;
                         bestCoup = node.coup;
                     }
-                    horizontalWall.OnDespawn();
-                    player.wallCount++;
+                    DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
 
-                    beta = (beta>node.score)?node.score:beta;
-                    if(beta<=alpha)
-                    {
-                        Destroy(horizontalWall.gameObject);
-                        Destroy(verticalWall.gameObject);
-                        return bestCoup;
-                    }
+                    beta = (beta > node.score) ? node.score : beta;
+                    if (beta <= alpha) return bestCoup;
                 }             
             }
 
             foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
             {
-                verticalWall.transform.position = pair.Key;
-                if (verticalWall.CanSpawnHere())
+                if (VerticalWall.CanSpawnHere(pair.Value))
                 {
-                    wallCount--;
-                    verticalWall.OnSpawn();
-                    CoupWall coupWall = new CoupWall(verticalWall.transform.position, Orientation.Vertical);
+                    SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
+                    CoupWall coupWall = new CoupWall(pair.Key, Orientation.Vertical);
                     Node node = new Node(coupWall, current.depth + 1);
-
-                    current.AddChild(node);
 
                     Max(node, maxDepth, alpha, beta);
 
@@ -255,28 +215,15 @@ public class IAAlphaBeta : BaseIA
                         current.score = node.score;
                         bestCoup = node.coup;
                     }
-                    verticalWall.OnDespawn();
-                    wallCount++;
+                    DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
 
-                    beta = (beta>node.score)?node.score:beta;
-                    if(beta<=alpha)
-                    {
-                        Destroy(horizontalWall.gameObject);
-                        Destroy(verticalWall.gameObject);
-                        return bestCoup;
-                    }
+                    beta = (beta > node.score) ? node.score : beta;
+                    if (beta <= alpha) return bestCoup;
                 }
                 
             }
-            Destroy(horizontalWall.gameObject);
-            Destroy(verticalWall.gameObject);
         }
 
-        
-
-        player.SetUnitNoAnimation(playerTile.transform.position);
-
-        
         return bestCoup;
     }
 }

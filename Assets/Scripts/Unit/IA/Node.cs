@@ -8,14 +8,10 @@ public class Node
     public int depth;
     public Coup coup;
 
-    private List<Node> children = new List<Node>();
-
     public Node(Coup _coup, int _depth)
     {
         coup = _coup;
         depth = _depth;
         score = initialScore;
     }
-
-    public void AddChild(Node n) => children.Add(n);
 }
