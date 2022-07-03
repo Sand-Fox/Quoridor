@@ -38,13 +38,17 @@ public class IAAlphaBeta : BaseIA
     {
         List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
         List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
+        List<CustomTile> pathPtoIA = PathFinding.Instance.GetPath(this, ReferenceManager.Instance.player);
+
         int nbWallIA = wallCount;
         int nbWallP = ReferenceManager.Instance.player.wallCount;
 
         int distMax = GridManager.MAXPATH;
         int distP = pathP.Count;
         int distIA = pathIA.Count;
-        int score = distP*distP - distIA*distIA + nbWallIA - nbWallP;
+        int distPtoIA = pathPtoIA.Count;
+        
+        int score = distP - distIA + nbWallIA - nbWallP;
         return score;
     }
 
@@ -106,11 +110,6 @@ public class IAAlphaBeta : BaseIA
                     alpha = (alpha < node.score) ? node.score : alpha;
                     if (beta <= alpha) return bestCoup;
                 }
-            }
-
-
-            foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
-            {
                 if (VerticalWall.CanSpawnHere(pair.Value))
                 {
                     SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
@@ -130,8 +129,7 @@ public class IAAlphaBeta : BaseIA
                     if (beta <= alpha) return bestCoup;
                 }
             }
-        }
-        
+        }        
         return bestCoup;
     }
 
@@ -197,11 +195,7 @@ public class IAAlphaBeta : BaseIA
 
                     beta = (beta > node.score) ? node.score : beta;
                     if (beta <= alpha) return bestCoup;
-                }             
-            }
-
-            foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
-            {
+                }
                 if (VerticalWall.CanSpawnHere(pair.Value))
                 {
                     player.SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
@@ -220,7 +214,6 @@ public class IAAlphaBeta : BaseIA
                     beta = (beta > node.score) ? node.score : beta;
                     if (beta <= alpha) return bestCoup;
                 }
-                
             }
         }
 
