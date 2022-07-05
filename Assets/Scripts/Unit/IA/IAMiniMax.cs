@@ -37,9 +37,9 @@ public class IAMiniMax : BaseIA
     private int CalculScore()
     {
         List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
-        List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
+        List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(OtherUnit());
         int nbWallIA = wallCount;
-        int nbWallP = ReferenceManager.Instance.player.wallCount;
+        int nbWallP = OtherUnit().wallCount;
 
         int distMax = GridManager.MAXPATH;
         int distP = pathP.Count;
@@ -128,7 +128,7 @@ public class IAMiniMax : BaseIA
             return current.coup;
         }
 
-        BaseUnit player = ReferenceManager.Instance.player;
+        BaseUnit player = OtherUnit();
         Coup bestCoup = null;
 
         if (player.wallCount > 0)

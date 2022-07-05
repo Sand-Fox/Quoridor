@@ -35,7 +35,7 @@ public class PathFinding : MonoBehaviour
         return bestPath;
     }
 
-    public bool existPath(BaseUnit unit)
+    public bool ExistPath(BaseUnit unit)
     {
         CustomTile[] endRaw;
         if (unit == ReferenceManager.Instance.player) endRaw = GridManager.Instance.GetLastRaw();

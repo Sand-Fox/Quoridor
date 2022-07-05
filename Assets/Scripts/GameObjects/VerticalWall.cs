@@ -22,12 +22,12 @@ public class VerticalWall : CustomWall
 
         corner.verticalWall.OnSpawn();
 
-        if (!PathFinding.Instance.existPath(ReferenceManager.Instance.enemy)) 
+        if (!PathFinding.Instance.ExistPath(ReferenceManager.Instance.enemy)) 
         {
             corner.verticalWall.OnDespawn();
             return false;
         }
-        if (!PathFinding.Instance.existPath(ReferenceManager.Instance.player))
+        if (!PathFinding.Instance.ExistPath(ReferenceManager.Instance.player))
         {
             corner.verticalWall.OnDespawn();
             return false;

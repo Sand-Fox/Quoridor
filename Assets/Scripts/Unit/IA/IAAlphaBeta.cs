@@ -37,13 +37,13 @@ public class IAAlphaBeta : BaseIA
     private int CalculScore()
     {
         List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
-        List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
-        List<CustomTile> pathPtoIA = PathFinding.Instance.GetPath(this, ReferenceManager.Instance.player.occupiedTile);
+        List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(OtherUnit());
+        List<CustomTile> pathPtoIA = PathFinding.Instance.GetPath(this, OtherUnit().occupiedTile);
         // Attention ici ça ne marche pas car le joueur occupe sa tile, tu ne peux donc pas te rendre sur elle.
         // Le pathPtoIA est donc à priori null.
 
         int nbWallIA = wallCount;
-        int nbWallP = ReferenceManager.Instance.player.wallCount;
+        int nbWallP = OtherUnit().wallCount;
 
         int distMax = GridManager.MAXPATH;
         int distP = pathP.Count;
@@ -146,7 +146,7 @@ public class IAAlphaBeta : BaseIA
             return current.coup;
         }
 
-        BaseUnit player = ReferenceManager.Instance.player;
+        BaseUnit player = OtherUnit();
         Coup bestCoup = null;
 
         /*since moving is mostlikely going to be a better move we shall evaluate them first*/

@@ -10,7 +10,7 @@ public abstract class BaseUnit : MonoBehaviour
     public PhotonView view { get; private set; }
     public int wallCount = 10;
 
-    public static readonly float movementDuration = 0.4f;
+    public static readonly float movementDuration = 0.2f;
 
     protected virtual void Awake()
     {

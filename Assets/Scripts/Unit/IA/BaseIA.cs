@@ -15,4 +15,12 @@ public abstract class BaseIA : BaseUnit
     }
 
     protected abstract void PlayIA();
+
+    protected BaseUnit OtherUnit()
+    {
+        if (ReferenceManager.Instance.player == this)
+            return ReferenceManager.Instance.enemy;
+
+        return ReferenceManager.Instance.player;
+    }
 }

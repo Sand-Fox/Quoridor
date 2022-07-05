@@ -22,12 +22,12 @@ public class HorizontalWall : CustomWall
 
         corner.horizontalWall.OnSpawn();
 
-        if (!PathFinding.Instance.existPath(ReferenceManager.Instance.enemy)) 
+        if (!PathFinding.Instance.ExistPath(ReferenceManager.Instance.enemy)) 
         {
             corner.horizontalWall.OnDespawn();
             return false;
         }
-        if (!PathFinding.Instance.existPath(ReferenceManager.Instance.player))
+        if (!PathFinding.Instance.ExistPath(ReferenceManager.Instance.player))
         {
             corner.horizontalWall.OnDespawn();
             return false;
