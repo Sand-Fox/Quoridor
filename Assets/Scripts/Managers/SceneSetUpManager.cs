@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using Random = UnityEngine.Random;
+using System.Collections;
 
 public class SceneSetUpManager : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class SceneSetUpManager : MonoBehaviour
     public static string playMode;
     public static string IAName1;
     public static string IAName2;
-
 
     private void Awake()
     {
@@ -42,6 +42,7 @@ public class SceneSetUpManager : MonoBehaviour
         {
             GameObject IAObject1 = PhotonNetwork.Instantiate(IAName1, new Vector2(4, 4), Quaternion.identity);
             ReferenceManager.Instance.player = IAObject1.GetComponent<BaseIA>();
+            IAObject1.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
 
             GameObject IAObject2 = PhotonNetwork.Instantiate(IAName2, new Vector2(4, 4), Quaternion.identity);
             ReferenceManager.Instance.enemy = IAObject2.GetComponent<BaseIA>();
@@ -53,14 +54,15 @@ public class SceneSetUpManager : MonoBehaviour
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            CoinToss();
+            StartCoroutine(CoinToss());
         }
 
-        if (PhotonNetwork.OfflineMode) CoinToss();
+        if (PhotonNetwork.OfflineMode) StartCoroutine(CoinToss());
     }
 
-    private void CoinToss()
+    private IEnumerator CoinToss()
     {
+        yield return new WaitForEndOfFrame();
         GameState state = (Random.value > 0.5) ? GameState.Player1Turn : GameState.Player2Turn;
         GameManager.Instance.view.RPC("UpdateGameState", RpcTarget.All, state);
     }

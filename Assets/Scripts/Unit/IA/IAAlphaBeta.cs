@@ -38,7 +38,9 @@ public class IAAlphaBeta : BaseIA
     {
         List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
         List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(ReferenceManager.Instance.player);
-        List<CustomTile> pathPtoIA = PathFinding.Instance.GetPath(this, ReferenceManager.Instance.player);
+        List<CustomTile> pathPtoIA = PathFinding.Instance.GetPath(this, ReferenceManager.Instance.player.occupiedTile);
+        // Attention ici ça ne marche pas car le joueur occupe sa tile, tu ne peux donc pas te rendre sur elle.
+        // Le pathPtoIA est donc à priori null.
 
         int nbWallIA = wallCount;
         int nbWallP = ReferenceManager.Instance.player.wallCount;

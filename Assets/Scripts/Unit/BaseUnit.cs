@@ -10,7 +10,12 @@ public abstract class BaseUnit : MonoBehaviour
     public PhotonView view { get; private set; }
     public int wallCount = 10;
 
-    protected virtual void Awake() => view = GetComponent<PhotonView>();
+    public static readonly float movementDuration = 0.4f;
+
+    protected virtual void Awake()
+    {
+        view = GetComponent<PhotonView>();
+    }
 
     private void Start()
     {
@@ -32,7 +37,7 @@ public abstract class BaseUnit : MonoBehaviour
         occupiedTile.occupiedUnit = null;
         tile.occupiedUnit = this;
         occupiedTile = tile;
-        transform.DOMove(tile.transform.position, 0.4f).SetEase(Ease.InOutSine);
+        transform.DOMove(tile.transform.position, movementDuration).SetEase(Ease.InOutSine);
 
         CoupMove c = new CoupMove(tile.transform.position);
         RegisterManager.Instance.AddCoup(c);
