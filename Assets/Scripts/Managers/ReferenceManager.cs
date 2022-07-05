@@ -9,7 +9,7 @@ public class ReferenceManager : MonoBehaviour
     private void Awake() => Instance = this;
 
     [Header("In Game")]
-    public Player player;
+    public BaseUnit player;
     public BaseUnit enemy;
 
     [Header("Resources Prefabs")]

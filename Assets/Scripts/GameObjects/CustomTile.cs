@@ -28,7 +28,7 @@ public class CustomTile : MonoBehaviour
         if (ModeManager.Instance.mode == Mode.Move) mouseOver.SetActive(true);
         if(ModeManager.Instance.mode == Mode.PathFinding)
         {
-            Player player = ReferenceManager.Instance.player;
+            BaseUnit player = ReferenceManager.Instance.player;
             List<CustomTile> bestPath = PathFinding.Instance.GetPath(player, this);
             if (bestPath != null)
             {

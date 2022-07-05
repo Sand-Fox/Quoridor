@@ -5,8 +5,9 @@ public class Player : BaseUnit
     private void OnEnable() => ModeManager.OnModeChanged += OnModeChanged;
     private void OnDisable() => ModeManager.OnModeChanged -= OnModeChanged;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         if (view.IsMine) ReferenceManager.Instance.player = this;
         else ReferenceManager.Instance.enemy = this;
     }

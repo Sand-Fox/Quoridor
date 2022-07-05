@@ -10,12 +10,12 @@ public abstract class BaseUnit : MonoBehaviour
     public PhotonView view { get; private set; }
     public int wallCount = 10;
 
-    private void Awake()
-    {
-        view = GetComponent<PhotonView>();
+    protected virtual void Awake() => view = GetComponent<PhotonView>();
 
+    private void Start()
+    {
         CustomTile tile = GridManager.Instance.GetTileAtPosition(new Vector2(4, 0));
-        if (!view.IsMine || this is BaseIA) tile = GridManager.Instance.GetTileAtPosition(new Vector2(4, 8));
+        if (this == ReferenceManager.Instance.enemy) tile = GridManager.Instance.GetTileAtPosition(new Vector2(4, 8));
         tile.occupiedUnit = this;
         occupiedTile = tile;
         transform.position = tile.transform.position;

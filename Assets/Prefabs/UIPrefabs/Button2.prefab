@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1895252303351407149, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_text
-      value: Options
+      value: player vs ia
       objectReference: {fileID: 0}
     - target: {fileID: 2969982022185223549, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_Pivot.x
@@ -98,6 +98,34 @@ PrefabInstance:
     - target: {fileID: 5377241385986731690, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_Name
       value: Button2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SceneSwitchManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Player vs IA
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724292287017282821, guid: e411081c799704b3d8648d20945560ae, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e411081c799704b3d8648d20945560ae, type: 3}
