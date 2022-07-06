@@ -77,10 +77,7 @@ public class IAMiniMax : BaseIA
                     }
                     DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
                 }
-            }
-
-            foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
-            {
+            
                 if (VerticalWall.CanSpawnHere(pair.Value))
                 {
                     SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
@@ -150,10 +147,7 @@ public class IAMiniMax : BaseIA
                     }
                     player.DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
                 }
-            }
-        
-            foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
-            {
+            
                 if (VerticalWall.CanSpawnHere(pair.Value))
                 {
                     player.SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
