@@ -18,11 +18,11 @@ public class IAAlphaBeta : BaseIA
         }
 
         Node node = new Node(null, 0);
-        Coup coup = Max(node, 2, -10000, 10000, false);
+        Coup coup = Max(node, 2, -10000, 10000, false, true);
 
         if (coup is CoupWall coupWall)
         {
-            Debug.Log("Coup is wall :" + "(" + coup.coord[0]+ ","+ coup.coord[1] + ")");
+            Debug.Log("Coup is wall : (" + coup.coord[0]+ ","+ coup.coord[1] + ")");
             Vector3 wallPosition = new Vector3(coupWall.coord[0], coupWall.coord[1], 0);
             Orientation orientation = coupWall.orientation;
             SpawnWall(wallPosition, orientation);
@@ -30,7 +30,7 @@ public class IAAlphaBeta : BaseIA
 
         if(coup is CoupMove coupMove)
         {
-            Debug.Log("Coup is Move :" + coup.coord[0]+ ","+ coup.coord[1] + ")");
+            Debug.Log("Coup is Move : (" + coup.coord[0]+ ","+ coup.coord[1] + ")");
             Vector3 position = new Vector3(coupMove.coord[0], coupMove.coord[1], 0);
             SetUnit(position);
         }
@@ -46,14 +46,12 @@ public class IAAlphaBeta : BaseIA
         int distMax = GridManager.MAXPATH;
         int distP = pathP.Count;
         int distIA = pathIA.Count;
-        int score = -distIA;
+        int score = distP - distIA;
         return score;
     }
 
-    private Coup Max(Node current, int maxDepth, int alpha, int beta, bool doesWall=true)
+    private Coup Max(Node current, int maxDepth, int alpha, int beta, bool doesWall=true, bool doesMove=true)
     {
-        if(current.depth!=0)
-        Debug.Log("Max : profondeur : " + current.depth + "type : " + ((current.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + current.coup.coord[0]+ ","+ current.coup.coord[1] + ")");
         
         if (current.depth == maxDepth)
         {
@@ -63,7 +61,7 @@ public class IAAlphaBeta : BaseIA
         Coup bestCoup = null;
 
         CustomTile IATile = occupiedTile;
-
+        if(doesMove)
         foreach (CustomTile tile in IATile.AdjacentTiles())
         {
             SetUnitWhenTesting(tile.transform.position);
@@ -71,6 +69,7 @@ public class IAAlphaBeta : BaseIA
             Node node = new Node(move, current.depth + 1);
 
             Min(node, maxDepth, alpha, beta, doesWall);
+            Debug.Log("Min : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + node.coup.coord[0]+ ","+ node.coup.coord[1] + ")" + "\n SCORE = "+ node.score);
 
             if (current.score < node.score || current.score == Node.initialScore)
             {
@@ -100,6 +99,7 @@ public class IAAlphaBeta : BaseIA
                     Node node = new Node(coupWall, current.depth + 1);
 
                     Min(node, maxDepth, alpha, beta, doesWall);
+                    Debug.Log("Min : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + node.coup.coord[0]+ ","+ node.coup.coord[1] + ")" + "\n SCORE = "+ node.score);
 
                     if (current.score < node.score || current.score == Node.initialScore)
                     {
@@ -123,6 +123,7 @@ public class IAAlphaBeta : BaseIA
                     Node node = new Node(coupWall, current.depth + 1);
 
                     Min(node, maxDepth, alpha, beta, doesWall);
+                    Debug.Log("Min : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + node.coup.coord[0]+ ","+ node.coup.coord[1] + ")" + "\n SCORE = "+ node.score);
 
                     if (current.score < node.score || current.score == Node.initialScore)
                     {
@@ -140,15 +141,12 @@ public class IAAlphaBeta : BaseIA
                 }
             }
         }
-        Debug.Log("Max: return best coup = " + "(" + bestCoup.coord[0]+ ","+ bestCoup.coord[1] + ")");
+        Debug.Log("Max: return wall Vertical = " + "(" + bestCoup.coord[0]+ ","+ bestCoup.coord[1] + ")");
         return bestCoup;
     }
 
-    private Coup Min(Node current, int maxDepth, int alpha, int beta, bool doesWall)
+    private Coup Min(Node current, int maxDepth, int alpha, int beta, bool doesWall=true, bool doesMove = true)
     {
-        if (current.depth !=0)
-        Debug.Log("Min : profondeur : " + current.depth + "type : " + ((current.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + current.coup.coord[0]+ ","+ current.coup.coord[1] + ")");
-
         if (current.depth == maxDepth)
         {
             current.score = CalculScore();
@@ -159,6 +157,7 @@ public class IAAlphaBeta : BaseIA
         Coup bestCoup = null;
         CustomTile playerTile = player.occupiedTile;
 
+        if(doesMove)
         foreach (CustomTile tile in playerTile.AdjacentTiles())
         {
             player.SetUnitWhenTesting(tile.transform.position);
@@ -166,6 +165,7 @@ public class IAAlphaBeta : BaseIA
             Node node = new Node(move, current.depth + 1);
 
             Max(node, maxDepth, alpha, beta, doesWall);
+            Debug.Log("Max : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + node.coup.coord[0]+ ","+ node.coup.coord[1] + ")" + "\n SCORE = "+ node.score);
 
             if (current.score > node.score || current.score == Node.initialScore)
             {
@@ -196,6 +196,7 @@ public class IAAlphaBeta : BaseIA
                     Node node = new Node(coupWall, current.depth + 1);
 
                     Max(node, maxDepth, alpha, beta, doesWall);
+                    Debug.Log("Max : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + node.coup.coord[0]+ ","+ node.coup.coord[1] + ")" + "\n SCORE = "+ node.score);
 
                     if (node.score < current.score || current.score == Node.initialScore)
                     {
@@ -207,6 +208,7 @@ public class IAAlphaBeta : BaseIA
                     beta = Mathf.Min(beta, node.score);
                     if (beta <= alpha)
                     {
+                        Debug.Log("Min: return move = " + "(" + bestCoup.coord[0]+ ","+ bestCoup.coord[1] + ")");
                         return bestCoup;
                     }
                 }
@@ -218,6 +220,7 @@ public class IAAlphaBeta : BaseIA
                     Node node = new Node(coupWall, current.depth + 1);
 
                     Max(node, maxDepth, alpha, beta, doesWall);
+                    Debug.Log("Max : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + node.coup.coord[0]+ ","+ node.coup.coord[1] + ")" + "\n SCORE = "+ node.score);
 
                     if (current.score < node.score || current.score == Node.initialScore)
                     {
@@ -229,6 +232,7 @@ public class IAAlphaBeta : BaseIA
                     beta = Mathf.Min(beta, node.score);
                     if (beta <= alpha)
                     {
+                        Debug.Log("Min: return move = " + "(" + bestCoup.coord[0]+ ","+ bestCoup.coord[1] + ")");
                         return bestCoup;
                     }
                 }
