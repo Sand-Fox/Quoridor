@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 using Debug = UnityEngine.Debug;
 
 public class IAAlphaBeta : BaseIA
@@ -44,7 +43,6 @@ public class IAAlphaBeta : BaseIA
         int nbWallIA = wallCount;
         int nbWallP = OtherUnit().wallCount;
 
-        int distMax = GridManager.MAXPATH;
         int distP = pathP.Count;
         int distIA = pathIA.Count;
         float score = weight[0]*distP + weight[1]*distIA + weight[2]* nbWallP + weight[3]*nbWallIA;
@@ -55,42 +53,44 @@ public class IAAlphaBeta : BaseIA
 
     private Coup Max(Node current, int maxDepth, float alpha, float beta, bool doesWall=true, bool doesMove=true)
     {
-        
         if (current.depth == maxDepth)
         {
             current.score = CalculScore();
             return current.coup;
         }
+
         Coup bestCoup = null;
-
         CustomTile IATile = occupiedTile;
-        if(doesMove)
-        foreach (CustomTile tile in IATile.AdjacentTiles())
+
+        if (doesMove)
         {
-            SetUnitWhenTesting(tile.transform.position);
-            CoupMove move = new CoupMove(tile.transform.position);
-            Node node = new Node(move, current.depth + 1);
-
-            Min(node, maxDepth, alpha, beta, doesWall, doesMove);
-            Debug.Log("Min : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + node.coup.coord[0]+ ","+ node.coup.coord[1] + ")" + "\n SCORE = "+ node.score);
-
-            if (current.score < node.score || current.score == Node.initialScore)
+            foreach (CustomTile tile in IATile.AdjacentTiles())
             {
-                current.score = node.score;
-                bestCoup = node.coup;
-            }
+                SetUnitWhenTesting(tile.transform.position);
+                CoupMove move = new CoupMove(tile.transform.position);
+                Node node = new Node(move, current.depth + 1);
 
-            alpha = Mathf.Max(alpha, node.score);
+                Min(node, maxDepth, alpha, beta, doesWall, doesMove);
+                Debug.Log("Min : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove) ? "Move " : "Wall") + "; coup : (" + node.coup.coord[0] + "," + node.coup.coord[1] + ")" + "\n SCORE = " + node.score);
 
-            if (beta <= alpha)
-            {
-                this.SetUnitWhenTesting(IATile.transform.position);
-                return bestCoup;
+                if (current.score < node.score || current.score == Node.initialScore)
+                {
+                    current.score = node.score;
+                    bestCoup = node.coup;
+                }
+
+                alpha = Mathf.Max(alpha, node.score);
+
+                if (beta <= alpha)
+                {
+                    SetUnitWhenTesting(IATile.transform.position);
+                    return bestCoup;
+                }
+
             }
-            
+            SetUnitWhenTesting(IATile.transform.position);
         }
-        SetUnitWhenTesting(IATile.transform.position);
-
+        
         if (doesWall && wallCount > 0)
         {
             foreach(KeyValuePair < Vector2, CustomCorner > pair in GridManager.Instance.cornersDico)
@@ -156,38 +156,39 @@ public class IAAlphaBeta : BaseIA
             return current.coup;
         }
 
-        BaseUnit player = OtherUnit();
         Coup bestCoup = null;
+        BaseUnit player = OtherUnit();
         CustomTile playerTile = player.occupiedTile;
 
-        if(doesMove)
-        foreach (CustomTile tile in playerTile.AdjacentTiles())
+        if (doesMove)
         {
-            player.SetUnitWhenTesting(tile.transform.position);
-            CoupMove move = new CoupMove(tile.transform.position);
-            Node node = new Node(move, current.depth + 1);
-
-            Max(node, maxDepth, alpha, beta, doesWall, doesMove);
-            Debug.Log("Max : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove)?"Move ":"Wall" )+  "; coup : (" + node.coup.coord[0]+ ","+ node.coup.coord[1] + ")" + "\n SCORE = "+ node.score);
-
-            if (current.score > node.score || current.score == Node.initialScore)
+            foreach (CustomTile tile in playerTile.AdjacentTiles())
             {
-                current.score = node.score;
-                bestCoup = node.coup;
-            }
+                player.SetUnitWhenTesting(tile.transform.position);
+                CoupMove move = new CoupMove(tile.transform.position);
+                Node node = new Node(move, current.depth + 1);
 
-            beta = Mathf.Min(beta, node.score);
-        
-            if (beta <= alpha)
-            {
-                player.SetUnitWhenTesting(playerTile.transform.position);
-                Debug.Log("Min: return move = " + "(" + bestCoup.coord[0]+ ","+ bestCoup.coord[1] + ")");
-                return bestCoup;
+                Max(node, maxDepth, alpha, beta, doesWall, doesMove);
+                Debug.Log("Max : profondeur : " + node.depth + ", type : " + ((node.coup is CoupMove) ? "Move " : "Wall") + "; coup : (" + node.coup.coord[0] + "," + node.coup.coord[1] + ")" + "\n SCORE = " + node.score);
+
+                if (current.score > node.score || current.score == Node.initialScore)
+                {
+                    current.score = node.score;
+                    bestCoup = node.coup;
+                }
+
+                beta = Mathf.Min(beta, node.score);
+
+                if (beta <= alpha)
+                {
+                    player.SetUnitWhenTesting(playerTile.transform.position);
+                    Debug.Log("Min: return move = " + "(" + bestCoup.coord[0] + "," + bestCoup.coord[1] + ")");
+                    return bestCoup;
+                }
             }
-        }
             player.SetUnitWhenTesting(playerTile.transform.position);
-
-
+        }
+        
         if (doesWall && player.wallCount > 0)
         {
             foreach (KeyValuePair<Vector2, CustomCorner> pair in GridManager.Instance.cornersDico)
