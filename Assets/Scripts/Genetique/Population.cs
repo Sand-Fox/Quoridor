@@ -37,7 +37,7 @@ public class Population : MonoBehaviour
         Vector4 ia1 = population[rd.Next(0, population.Count)];
         Vector4 ia2 = population[rd.Next(0, population.Count)];
 
-        PrivateRoom.CreatePrivateRoom();
+        PrivateRoom.Instance.CreatePrivateRoom();
     }
 
 

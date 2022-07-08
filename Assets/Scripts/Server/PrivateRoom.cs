@@ -4,6 +4,8 @@ using Photon.Pun;
 
 public class PrivateRoom : MonoBehaviourPunCallbacks
 {
+    public static PrivateRoom Instance;
+    private void Avake() => Instance = this; 
     public void CreatePrivateRoom()
     {
         PhotonNetwork.OfflineMode = true;
