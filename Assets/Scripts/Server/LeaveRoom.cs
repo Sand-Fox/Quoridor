@@ -4,6 +4,9 @@ using Photon.Pun;
 
 public class LeaveRoom : MonoBehaviourPunCallbacks
 {
+    public static LeaveRoom Instance;
+    private void Awake() => Instance = this;
+
     public void LeaveCurrentRoom()
     {
         PhotonNetwork.LeaveRoom();
