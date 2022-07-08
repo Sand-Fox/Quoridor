@@ -10,13 +10,13 @@ public class Population : MonoBehaviour
     public static Population Instance;
 
     public List<IAAlphaBeta> population = new List<IAAlphaBeta>();
-
+    public int maxPop = 10
     private void Awake() => Instance = this;
 
 
-    public void GeneratePopulation(int number)
+    public void GeneratePopulation()
     {
-        for(int i = 0; i<number; i++)
+        for(int i = 0; i<maxPop; i++)
         {
             IAAlphaBeta ia = new IAAlphaBeta();
             ia.weight = new float[]{UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value};
@@ -44,6 +44,19 @@ public class Population : MonoBehaviour
             ia.weight[car] = ia.weight[car] *(1+ (UnityEngine.Random.value-1)/5);
         }
         return ia;
+    }
+
+    public void Kill(IAAlphaBeta victim) => population.Remove(victim);
+
+    public List<IAAlphaBeta> newGeneration()
+    {
+        List<IAAlphaBeta> newGen = new List<IAAlphaBeta>();
+        int counter = 0;
+        while(counter < maxPop)
+        {
+            IAAlphaBeta father = 
+        }
+
     }
 }
 
