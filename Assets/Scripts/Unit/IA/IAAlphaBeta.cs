@@ -6,7 +6,7 @@ using Debug = UnityEngine.Debug;
 public class IAAlphaBeta : BaseIA
 {
     public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Alpha Beta";
-    public float[] weight = new float[4];
+    public Vector4 weight = new Vector4(1, 1, 1, 1);
 
     protected override void PlayIA()
     {
@@ -45,8 +45,7 @@ public class IAAlphaBeta : BaseIA
 
         int distP = pathP.Count;
         int distIA = pathIA.Count;
-        float score = weight[0]*distP + weight[1]*distIA + weight[2]* nbWallP + weight[3]*nbWallIA;
-
+        float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
         
         return score;
     }
