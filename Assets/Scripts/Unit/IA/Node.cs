@@ -4,7 +4,7 @@ public class Node
 {
     public static readonly int initialScore = 10000;
 
-    public int score;
+    public float score;
     public int depth;
     public Coup coup;
 

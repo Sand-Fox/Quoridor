@@ -7,6 +7,9 @@ using Debug = UnityEngine.Debug;
 public class IAMiniMax : BaseIA
 {
     public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Mini Max";
+    
+    public float[] weight = new float[]{1, -1, -2, 2};
+
 
     protected override void PlayIA()
     {
@@ -34,7 +37,7 @@ public class IAMiniMax : BaseIA
         }
     }
 
-    private int CalculScore()
+    private float CalculScore()
     {
         List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
         List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(OtherUnit());
@@ -44,7 +47,7 @@ public class IAMiniMax : BaseIA
         int distMax = GridManager.MAXPATH;
         int distP = pathP.Count;
         int distIA = pathIA.Count;
-        int score = distP*distP - distIA*distIA + nbWallIA - nbWallP;
+        float score =  distP - distIA;
         return score;
     }
 
