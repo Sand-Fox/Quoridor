@@ -63,8 +63,8 @@ public class IANegaAlphaBeta : BaseIA
         int nbWallP = OtherUnit().wallCount;
 
         // Calcul du score
-        float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
-        //float score = weight.x*distP;
+        //float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
+        float score = weight.x*distP;
         //float score = -weight.y*distIA;
         return score;
     }
@@ -160,6 +160,26 @@ public class IANegaAlphaBeta : BaseIA
         Coup bestCoup= default;
         float value = -10000;
 
+
+        
+        BaseUnit playing = (maximazingPlayer == 1)?this:OtherUnit();
+        CustomTile usedTile = playing.occupiedTile;
+
+        // Enfant ou le joueur bouge
+        foreach(CustomTile tile in usedTile.AdjacentTiles())
+        {
+            playing.SetUnitWhenTesting(tile.transform.position);
+            CoupMove coupMove = new CoupMove(tile.transform.position);
+            float score = -negaMax(depth-1, -beta, -alpha, -maximazingPlayer);
+            if(score>value)
+            {
+                value = score;
+                bestCoup = coupMove;
+            }
+            alpha = Mathf.Max(alpha, value);
+        }
+        playing.SetUnitWhenTesting(usedTile.transform.position);
+
         // Si maximazingPlayer = 1, c'est cet Unit qui veut jouer, sinon c'est l'autre unit
         if((maximazingPlayer == 1)?wallCount > 0: OtherUnit().wallCount>0)
         {
@@ -178,7 +198,6 @@ public class IANegaAlphaBeta : BaseIA
                     }
                     DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
                     alpha = Mathf.Max(alpha, value);
-                    if(alpha>=beta) return bestCoup;
                 }
                 // Enfant ou le mur est pose verticalement
                 if(VerticalWall.CanSpawnHere(pair.Value))
@@ -193,30 +212,10 @@ public class IANegaAlphaBeta : BaseIA
                     }
                     DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
                     alpha = Mathf.Max(alpha, value);
-                    if(alpha>=beta) return bestCoup;
                 }
             }
         }
 
-        // Enfant ou le joueur bouge
-        BaseUnit playing = (maximazingPlayer == 1)?this:OtherUnit();
-        CustomTile usedTile = playing.occupiedTile;
-
-        foreach(CustomTile tile in usedTile.AdjacentTiles())
-        {
-            playing.SetUnitWhenTesting(tile.transform.position);
-            CoupMove coupMove = new CoupMove(tile.transform.position);
-            float score = -negaMax(depth-1, -beta, -alpha, -maximazingPlayer);
-            if(score>value)
-            {
-                value = score;
-                bestCoup = coupMove;
-            }
-            alpha = Mathf.Max(alpha, value);
-            if(alpha>=beta) break;
-
-        }
-        playing.SetUnitWhenTesting(usedTile.transform.position);
         
         return bestCoup;
     }

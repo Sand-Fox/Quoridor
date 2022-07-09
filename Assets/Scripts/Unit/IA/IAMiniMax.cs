@@ -8,7 +8,7 @@ public class IAMiniMax : BaseIA
     public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Mini Max";
     
     public Vector4 weight = new Vector4(1, 1, 1, 1);
-
+    public static int defaultDepth = 2;
 
     protected override void PlayIA()
     {
@@ -29,7 +29,7 @@ public class IAMiniMax : BaseIA
         }
 
         Node node = new Node(null, 0);
-        Coup coup = Max(node, 1);
+        Coup coup = Max(node, defaultDepth);
 
         if (coup is CoupWall coupWall)
         {
