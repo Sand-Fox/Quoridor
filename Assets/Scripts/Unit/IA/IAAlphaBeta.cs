@@ -7,6 +7,7 @@ public class IAAlphaBeta : BaseIA
 {
     public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Alpha Beta";
     public Vector4 weight = new Vector4(1, 1, 1, 1);
+    public static int defaultDepth = 2;
 
     protected override void PlayIA()
     {
@@ -15,7 +16,7 @@ public class IAAlphaBeta : BaseIA
 
         if (pathIA == null)
         {
-            Debug.Log("Pas de meiileur chemin trouvé");
+            Debug.Log("Pas de meilleur chemin trouvé");
             SetUnit(occupiedTile.AdjacentTiles()[0].transform.position);
             return;
         }
@@ -27,7 +28,7 @@ public class IAAlphaBeta : BaseIA
         }
 
         Node node = new Node(null, 0);
-        Coup coup = Max(node, 2, -100000000, 100000000, true, true);
+        Coup coup = Max(node, defaultDepth, -100000000, 100000000, true, true);
 
         if (coup is CoupWall coupWall)
         {
@@ -60,7 +61,7 @@ public class IAAlphaBeta : BaseIA
         int distP = pathP.Count;
         int distIA = pathIA.Count;
         float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
-        
+        //float score = -weight.y * distIA;
         return score;
     }
 

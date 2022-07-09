@@ -7,7 +7,7 @@ public class IAMiniMax : BaseIA
 {
     public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Mini Max";
     
-    public float[] weight = new float[]{1, -1, -2, 2};
+    public Vector4 weight = new Vector4(1, 1, 1, 1);
 
 
     protected override void PlayIA()
@@ -29,7 +29,7 @@ public class IAMiniMax : BaseIA
         }
 
         Node node = new Node(null, 0);
-        Coup coup = Max(node, 2);
+        Coup coup = Max(node, 1);
 
         if (coup is CoupWall coupWall)
         {
@@ -47,14 +47,19 @@ public class IAMiniMax : BaseIA
 
     private float CalculScore()
     {
-        List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
-        List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(OtherUnit());
+        // Recuperation des caracteristiques d'evaluation
+
+        // Pour l'IA
+        int distIA = PathFinding.Instance.GetWiningPath(this).Count;
         int nbWallIA = wallCount;
+        // Pour le joueur
+        int distP = PathFinding.Instance.GetWiningPath(OtherUnit()).Count;
         int nbWallP = OtherUnit().wallCount;
 
-        int distP = pathP.Count;
-        int distIA = pathIA.Count;
-        float score =  distP - distIA;
+        // Calcul du score
+        //float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
+        //float score = weight.x*distP;
+        float score = -weight.y*distIA;
         return score;
     }
 

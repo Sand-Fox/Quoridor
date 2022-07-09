@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-public class IANegaMax : BaseIA
+public class IANegaAlphaBeta : BaseIA
 {
-    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme NegaMax";
+    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme NegaMax avec l'élagage de Alpha Beta";
     public Vector4 weight = new Vector4(1, 1, 1, 1);
+    public static int defaultDepth = 2;
 
     // Fonction qui va determiner le coup fait par l'IA
     protected override void PlayIA()
@@ -25,12 +26,13 @@ public class IANegaMax : BaseIA
         // Si on n'a pas de mur on parcourt le plus court chemin
         if (pathP == null || wallCount == 0)
         {
+            Debug.Log("path p == null ou wallcount == 0");
             SetUnit(pathIA[0].transform.position);
             return;
         }
 
         // Génération du coup, on va maximiser le coup que l'on va jouer donc on appelle Max
-        Coup coup = BestCoup(1, 1);
+        Coup coup = BestCoup(defaultDepth,-10000, 10000, 1);
 
         //Distinction de cas MUR et MOUVEMENT
         
@@ -68,7 +70,7 @@ public class IANegaMax : BaseIA
     }
 
     // On utilise une addaptation de MiniMax qui permet moins de code
-    private float negaMax(int depth, int maximazingPlayer)
+    private float negaMax(int depth, float alpha, float beta, int maximazingPlayer)
     {
         /*
         Node current : Node a evaluer
@@ -82,6 +84,27 @@ public class IANegaMax : BaseIA
         // Initialisation du meilleur coup
         float value = -10000;
 
+        // Enfant ou le joueur bouge
+        BaseUnit playing = (maximazingPlayer == 1)?this:OtherUnit();
+        CustomTile usedTile = playing.occupiedTile;
+
+        foreach(CustomTile tile in usedTile.AdjacentTiles())
+        {
+            playing.SetUnitWhenTesting(tile.transform.position);
+            value = Mathf.Max(value, -negaMax(depth-1, -beta, -alpha, -maximazingPlayer));
+
+            alpha = Mathf.Max(alpha, value);
+            if(alpha>=beta) 
+            {
+                Debug.Log("Elagage Move");
+                playing.SetUnitWhenTesting(usedTile.transform.position);
+                return value;
+            }
+        }
+        playing.SetUnitWhenTesting(usedTile.transform.position);
+
+
+
         // Si maximazingPlayer = 1, c'est cet Unit qui veut jouer, sinon c'est l'autre unit
         if((maximazingPlayer == 1)?wallCount > 0: OtherUnit().wallCount>0)
         {
@@ -91,42 +114,47 @@ public class IANegaMax : BaseIA
                 if(HorizontalWall.CanSpawnHere(pair.Value))
                 {
                     SpawnWallWhenTesting(pair.Key, Orientation.Horizontal);
-                    value = Mathf.Max(value, -negaMax(depth-1, -maximazingPlayer));
+                    value = Mathf.Max(value, -negaMax(depth-1, -beta, -alpha, -maximazingPlayer));
                     DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
+
+                    alpha = Mathf.Max(alpha, value);
+                    if(alpha>=beta)
+                    {
+                        Debug.Log("Elagage Mur H");
+                        break;
+                    }
                 }
                 // Enfant ou le mur est pose verticalement
                 if(VerticalWall.CanSpawnHere(pair.Value))
                 {
                     SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
-                    value = Mathf.Max(value, -negaMax(depth-1, -maximazingPlayer));
+                    value = Mathf.Max(value, -negaMax(depth-1, -beta, -alpha, -maximazingPlayer));
                     DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
+
+                    alpha = Mathf.Max(alpha, value);
+                    if(alpha>=beta)
+                    {
+                        Debug.Log("Elagage Mur V");
+                        break;
+                    }
                 }
             }
         }
 
-        // Enfant ou le joueur bouge
-        BaseUnit playing = (maximazingPlayer == 1)?this:OtherUnit();
-        CustomTile usedTile = playing.occupiedTile;
 
-        foreach(CustomTile tile in usedTile.AdjacentTiles())
-        {
-            playing.SetUnitWhenTesting(tile.transform.position);
-            value = Mathf.Max(value, -negaMax(depth-1, -maximazingPlayer));
-        }
-        playing.SetUnitWhenTesting(usedTile.transform.position);
         return value;
     }
 
     // En réalité le même algorithme que plus haut
     //il renvoit le coup de la derniere hauteur au lieu du score
-    private Coup BestCoup(int maxDepth, int maximazingPlayer)
+    private Coup BestCoup(int depth, float alpha, float beta, int maximazingPlayer)
     {
         /*
         Node current : Node a evaluer
         int maxDepth : Profondeur a laquelle on doit aller
         int maximazingPlayer : 1 si le joueur veut maximiser, -1 si le joueur veut minimiser
         */
-        if (maxDepth <= 0) return default;
+        if (depth <= 0) return default;
         
         // Initialisation du meilleur coup
         Coup bestCoup= default;
@@ -142,27 +170,30 @@ public class IANegaMax : BaseIA
                 {
                     SpawnWallWhenTesting(pair.Key, Orientation.Horizontal);
                     CoupWall coupWall = new CoupWall(pair.Key, Orientation.Horizontal);
-                    float score = -negaMax(maxDepth-1, -maximazingPlayer);
+                    float score = -negaMax(depth-1, -beta, -alpha, -maximazingPlayer);
                     if(score>value)
                     {
                         value = score;
                         bestCoup = coupWall; 
                     }
-                    
                     DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
+                    alpha = Mathf.Max(alpha, value);
+                    if(alpha>=beta) return bestCoup;
                 }
                 // Enfant ou le mur est pose verticalement
                 if(VerticalWall.CanSpawnHere(pair.Value))
                 {
                     SpawnWallWhenTesting(pair.Key, Orientation.Vertical);
                     CoupWall coupWall = new CoupWall(pair.Key, Orientation.Vertical);
-                    float score = -negaMax(maxDepth-1, -maximazingPlayer);
+                    float score = -negaMax(depth-1, -beta, -alpha, -maximazingPlayer);
                     if(score>value)
                     {
                         value = score;
                         bestCoup = coupWall; 
                     }
                     DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
+                    alpha = Mathf.Max(alpha, value);
+                    if(alpha>=beta) return bestCoup;
                 }
             }
         }
@@ -175,12 +206,15 @@ public class IANegaMax : BaseIA
         {
             playing.SetUnitWhenTesting(tile.transform.position);
             CoupMove coupMove = new CoupMove(tile.transform.position);
-            float score = -negaMax(maxDepth-1, -maximazingPlayer);
+            float score = -negaMax(depth-1, -beta, -alpha, -maximazingPlayer);
             if(score>value)
             {
                 value = score;
-                bestCoup = coupMove; 
+                bestCoup = coupMove;
             }
+            alpha = Mathf.Max(alpha, value);
+            if(alpha>=beta) break;
+
         }
         playing.SetUnitWhenTesting(usedTile.transform.position);
         
