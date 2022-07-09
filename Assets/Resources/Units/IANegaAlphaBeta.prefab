@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5540145901849815912}
   - component: {fileID: 5360915073251080848}
   - component: {fileID: 5540145901849815927}
-  - component: {fileID: 8386900331547028952}
+  - component: {fileID: -8393514905542218649}
   m_Layer: 0
-  m_Name: IAMiniMax
+  m_Name: IANegaAlphaBeta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8386900331547028952
+--- !u!114 &-8393514905542218649
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,8 +115,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5540145901849815914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88d503112bb5b4044a33500b7c291b6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 017811ee30f28a94da6ed414750d2b81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wallCount: 10
   weight: {x: 1, y: 1, z: 1, w: 1}
+  defaultDepth: 1

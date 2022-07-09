@@ -43,7 +43,12 @@ public class SliderIADescription : MonoBehaviour
         else if (value == 6)
         {
             TmpText.text = IANegaMax.description;
-            SceneSetUpManager.IAName2 = "Units/IANegaMax";
+            SceneSetUpManager.IAName1 = "Units/IANegaMax";
+        }
+        else if (value == 7)
+        {
+            TmpText.text = IANegaAlphaBeta.description;
+            SceneSetUpManager.IAName1 = "Units/IANegaAlphaBeta";
         }
         else TmpText.text = "" + value;
     }
@@ -79,6 +84,11 @@ public class SliderIADescription : MonoBehaviour
         {
             TmpText.text = IANegaMax.description;
             SceneSetUpManager.IAName2 = "Units/IANegaMax";
+        }
+        else if (value == 7)
+        {
+            TmpText.text = IANegaAlphaBeta.description;
+            SceneSetUpManager.IAName2 = "Units/IANegaAlphaBeta";
         }
         else TmpText.text = "" + value;
     }

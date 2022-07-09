@@ -42,15 +42,16 @@ public static class TileExtension
         CustomTile tile3 = centerTile.GetTileInDirection(Vector2.up, out tileC);
         CustomTile tile4 = centerTile.GetTileInDirection(Vector2.down, out tileD);
 
-        if (tile1 != null) list.Add(tile1);
-        if (tile2 != null) list.Add(tile2);
         if (tile3 != null) list.Add(tile3);
         if (tile4 != null) list.Add(tile4);
-
-        if (tileA != null) list.Add(tileA);
-        if (tileB != null) list.Add(tileB);
+        if (tile1 != null) list.Add(tile1);
+        if (tile2 != null) list.Add(tile2);
+        
         if (tileC != null) list.Add(tileC);
         if (tileD != null) list.Add(tileD);
+        if (tileA != null) list.Add(tileA);
+        if (tileB != null) list.Add(tileB);
+        
 
         return list.ToArray();
     }
