@@ -108,8 +108,8 @@ public class Population : MonoBehaviour
             Vector4 child1 = Reproduce(father, mother);
             Vector4 child2 = Reproduce(father, mother);
 
-            if(UnityEngine.Random.value < 0.1) child1 = Mutation(child1);
-            if(UnityEngine.Random.value < 0.1) child2 = Mutation(child2);
+            if(UnityEngine.Random.value < 0.01) child1 = Mutation(child1);
+            if(UnityEngine.Random.value < 0.01) child2 = Mutation(child2);
             
             newGen.Add(child1);
             newGen.Add(child2);
