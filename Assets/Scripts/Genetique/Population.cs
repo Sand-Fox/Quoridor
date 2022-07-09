@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using Photon.Pun;
 
 public class Population : MonoBehaviour
@@ -10,16 +11,49 @@ public class Population : MonoBehaviour
     public static List<Vector4> population = new List<Vector4>();
     public static List<Vector4> winner = new List<Vector4>();
 
-    private int nbIndividus = 4;
+    private int nbIndividuals = 4;
     private int nbGenerations = 2;
 
-    public static int indexIndividus = 0;
+    public static int indexIndividuals = 0;
     public static int indexGenerations = 0;
+
+    [SerializeField] private TMP_InputField TmpIndividuals;
+    [SerializeField] private TMP_InputField TmpGenerations;
 
     private void Awake()
     {
         Instance = this;
         GameManager.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    public void OnIndividualTextChange(string text)
+    {
+        if (int.TryParse(text, out int result))
+        {
+            int finalResult =  Mathf.Abs(result) + result % 2;
+            nbIndividuals = finalResult;
+            TmpIndividuals.text = finalResult.ToString();
+        }
+        else
+        {
+            nbIndividuals = 4;
+            TmpIndividuals.text = 4.ToString();
+        }
+    }
+
+    public void OnGenerationTextChange(string text)
+    {
+        if (int.TryParse(text, out int result))
+        {
+            int finalResult = Mathf.Abs(result);
+            nbGenerations = finalResult;
+            TmpGenerations.text = finalResult.ToString();
+        }
+        else
+        {
+            nbGenerations = 2;
+            TmpGenerations.text = 2.ToString();
+        }
     }
 
     private void OnGameStateChanged(GameState newState)
@@ -30,25 +64,25 @@ public class Population : MonoBehaviour
 
     public void Play()
     {
-        indexIndividus = 0;
+        indexIndividuals = 0;
         indexGenerations = 0;
         GeneratePopulation();
         Match();
     }
 
-    public void OnEndGame(bool stateIsWin)
+    private void OnEndGame(bool stateIsWin)
     {
-        indexIndividus += 2;
+        indexIndividuals += 2;
 
         IAAlphaBeta IAWinner;
         if (stateIsWin) IAWinner = ReferenceManager.Instance.player as IAAlphaBeta;
         else IAWinner = ReferenceManager.Instance.enemy as IAAlphaBeta;
         winner.Add(IAWinner.weight);
 
-        if (indexIndividus == nbIndividus)
+        if (indexIndividuals == nbIndividuals)
         {
             indexGenerations++;
-            indexIndividus = 0;
+            indexIndividuals = 0;
 
             if (indexGenerations == nbGenerations)
             {
@@ -68,7 +102,7 @@ public class Population : MonoBehaviour
 
     private void GeneratePopulation()
     {
-        for(int i = 0; i < nbIndividus; i++)
+        for(int i = 0; i < nbIndividuals; i++)
         {
             Vector4 weight = new Vector4(Random.value, Random.value, Random.value, Random.value);
             population.Add(weight);
