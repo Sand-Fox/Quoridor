@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/IA vs IA.unity
     guid: 3e73d1a702ff341e890595053c53411f
   - enabled: 1
+    path: Assets/Scenes/Algo Genetique.unity
+    guid: 68af00a4f83c04c74a3b3c32f4d50505
+  - enabled: 1
     path: Assets/Scenes/Replays.unity
     guid: b4da82816427f4b1b81ae052eef010ee
   - enabled: 1

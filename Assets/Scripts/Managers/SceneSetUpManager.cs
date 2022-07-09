@@ -9,6 +9,8 @@ public class SceneSetUpManager : MonoBehaviour
     public static string playMode;
     public static string IAName1;
     public static string IAName2;
+    public static Vector4 IAWeight1;
+    public static Vector4 IAWeight2;
 
     private void Awake()
     {
@@ -35,18 +37,34 @@ public class SceneSetUpManager : MonoBehaviour
         if (playMode == "Player vs IA")
         {
             GameObject IAObject = PhotonNetwork.Instantiate(IAName1, new Vector2(4, 4), Quaternion.identity);
-            ReferenceManager.Instance.enemy = IAObject.GetComponent<BaseIA>();
+            BaseIA IA = IAObject.GetComponent<BaseIA>();
+            ReferenceManager.Instance.enemy = IA;
         }
 
         if (playMode == "IA vs IA")
         {
             GameObject IAObject1 = PhotonNetwork.Instantiate(IAName1, new Vector2(4, 4), Quaternion.identity);
-            ReferenceManager.Instance.player = IAObject1.GetComponent<BaseIA>();
             IAObject1.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
+            ReferenceManager.Instance.player = IAObject1.GetComponent<BaseIA>();
 
             GameObject IAObject2 = PhotonNetwork.Instantiate(IAName2, new Vector2(4, 4), Quaternion.identity);
             ReferenceManager.Instance.enemy = IAObject2.GetComponent<BaseIA>();
         }
+
+        if (playMode == "Algo Genetique")
+        {
+            GameObject IAObject1 = PhotonNetwork.Instantiate("Units/IAAlphaBeta", new Vector2(4, 4), Quaternion.identity);
+            IAObject1.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
+            IAAlphaBeta IA1 = IAObject1.GetComponent<IAAlphaBeta>();
+            ReferenceManager.Instance.player = IA1;
+            IA1.weight = IAWeight1;
+
+            GameObject IAObject2 = PhotonNetwork.Instantiate("Units/IAAlphaBeta", new Vector2(4, 4), Quaternion.identity);
+            IAAlphaBeta IA2 = IAObject2.GetComponent<IAAlphaBeta>();
+            ReferenceManager.Instance.enemy = IA2;
+            IA2.weight = IAWeight2;
+        }
+
     }
 
     private void OnWaitForPlayer()

@@ -18,7 +18,8 @@ public class IAMoveWall : BaseIA
         else
         {
             List<CustomTile> path = PathFinding.Instance.GetWiningPath(this);
-            if (path.Count != 0) SetUnit(path[0].transform.position);
+            if (path != null) SetUnit(path[0].transform.position);
+            else SetUnit(occupiedTile.AdjacentTiles()[0].transform.position);
         }
     }
 

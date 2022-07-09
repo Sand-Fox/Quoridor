@@ -12,10 +12,19 @@ public class IAMiniMax : BaseIA
 
     protected override void PlayIA()
     {
-        if (wallCount == 0)
+        List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
+        List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(OtherUnit());
+
+        if (pathIA == null)
         {
-            List<CustomTile> path = PathFinding.Instance.GetWiningPath(this);
-            if (path.Count != 0) SetUnit(path[0].transform.position);
+            Debug.Log("Pas de meiileur chemin trouvé");
+            SetUnit(occupiedTile.AdjacentTiles()[0].transform.position);
+            return;
+        }
+
+        if (pathP == null || wallCount == 0)
+        {
+            SetUnit(pathIA[0].transform.position);
             return;
         }
 
@@ -43,7 +52,6 @@ public class IAMiniMax : BaseIA
         int nbWallIA = wallCount;
         int nbWallP = OtherUnit().wallCount;
 
-        int distMax = GridManager.MAXPATH;
         int distP = pathP.Count;
         int distIA = pathIA.Count;
         float score =  distP - distIA;

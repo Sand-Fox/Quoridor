@@ -1,94 +1,132 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = System.Random;
-
+using Photon.Pun;
 
 public class Population : MonoBehaviour
 {
-    Random rd = new Random();
     public static Population Instance;
 
     public static List<Vector4> population = new List<Vector4>();
     public static List<Vector4> winner = new List<Vector4>();
-    public int maxPop = 20;
-    
-    private void Awake() => Instance = this;
 
+    private int nbIndividus = 4;
+    private int nbGenerations = 2;
 
-    public void Launch(int nbGeneration)
+    public static int indexIndividus = 0;
+    public static int indexGenerations = 0;
+
+    private void Awake()
     {
-        GeneratePopulation();
-        SceneSetUpManager.IAName1 = "IAAlphaBeta";
-        SceneSetUpManager.IAName2 = "IAAlphaBeta";
+        Instance = this;
+        GameManager.OnGameStateChanged += OnGameStateChanged;
+    }
 
-        for(int i = 0; i<nbGeneration; i++)
-        {
-            Match();
-            population = NewGeneration();
-        }
+    private void OnGameStateChanged(GameState newState)
+    {
+        if (newState == GameState.Win && SceneSetUpManager.playMode == "Algo Genetique") OnEndGame(true);
+        if (newState == GameState.Loose && SceneSetUpManager.playMode == "Algo Genetique") OnEndGame(false);
+    }
+
+    public void Play()
+    {
+        indexIndividus = 0;
+        indexGenerations = 0;
+        GeneratePopulation();
         Match();
     }
 
-
-
-    public void Match()
+    public void OnEndGame(bool stateIsWin)
     {
-        Vector4 ia1 = population[rd.Next(0, population.Count)];
-        Vector4 ia2 = population[rd.Next(0, population.Count)];
+        indexIndividus += 2;
 
-        PrivateRoom.Instance.CreatePrivateRoom();
+        IAAlphaBeta IAWinner;
+        if (stateIsWin) IAWinner = ReferenceManager.Instance.player as IAAlphaBeta;
+        else IAWinner = ReferenceManager.Instance.enemy as IAAlphaBeta;
+        winner.Add(IAWinner.weight);
+
+        if (indexIndividus == nbIndividus)
+        {
+            indexGenerations++;
+            indexIndividus = 0;
+
+            if (indexGenerations == nbGenerations)
+            {
+                string messageFinal = "Fin de l'algorithme génétique : \n";
+                foreach (Vector4 weight in winner) messageFinal += weight + "\n";
+                Debug.Log(messageFinal);
+                return;
+            }
+
+            population = NewGeneration();
+            Match();
+            return;
+        }
+
+        Match();
     }
 
-
-
-    public void GeneratePopulation()
+    private void GeneratePopulation()
     {
-        for(int i = 0; i<maxPop; i++)
+        for(int i = 0; i < nbIndividus; i++)
         {
-            Vector4 weight = new Vector4(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+            Vector4 weight = new Vector4(Random.value, Random.value, Random.value, Random.value);
             population.Add(weight);
         }
     }
 
-    public Vector4 Reproduce(Vector4 father, Vector4 mother)
+    public void Match()
     {
-        Vector4 ia = new Vector4((rd.Next(0,2)==0)?father.x:mother.x,
-                        (rd.Next(0,2)==0)?father.y:mother.y,
-                        (rd.Next(0,2)==0)?father.z:mother.z,
-                        (rd.Next(0,1)==0)?father.w:mother.w
-                    ); 
-        return ia;
+        Vector4 weight1 = population[Random.Range(0, population.Count)];
+        population.Remove(weight1);
+
+        Vector4 weight2 = population[Random.Range(0, population.Count)];
+        population.Remove(weight2);
+
+        SceneSetUpManager.IAWeight1 = weight1;
+        SceneSetUpManager.IAWeight2 = weight2;
+
+        if (PhotonNetwork.InRoom) PhotonNetwork.LoadLevel("Game");
+        else PrivateRoom.Instance.CreatePrivateRoom();
     }
 
-    public Vector4 Modif(Vector4 original, int n)
+    private Vector4 Reproduce(Vector4 father, Vector4 mother)
     {
-        if(n==0) return new Vector4(original.x *(1+(UnityEngine.Random.value-0.5f)/5), original.y, original.z, original.w);
-        if(n==1) return new Vector4(original.x, original.y*(1+(UnityEngine.Random.value-0.5f)/5), original.z, original.w);
-        if(n==2) return new Vector4(original.x, original.y, original.z*(1+(UnityEngine.Random.value-0.5f)/5), original.w);
-        if(n==3) return new Vector4(original.x, original.y, original.z, original.w*(1+(UnityEngine.Random.value-0.5f)/5));
+        Vector4 son = new Vector4(
+            (Random.value < 0.5) ? father.x : mother.x,
+            (Random.value < 0.5) ? father.y : mother.y,
+            (Random.value < 0.5) ? father.z : mother.z,
+            (Random.value < 0.5) ? father.w : mother.w); 
+        return son;
+    }
+
+    private Vector4 Modify(Vector4 father, int geneIndex)
+    {
+        if (geneIndex == 0) return new Vector4(father.x * (1 + Random.Range(-0.1f, 0.1f)), father.y, father.z, father.w);
+        if (geneIndex == 1) return new Vector4(father.x, father.y * (1 + Random.Range(-0.1f, 0.1f)), father.z, father.w);
+        if (geneIndex == 2) return new Vector4(father.x, father.y, father.z * (1 + Random.Range(-0.1f, 0.1f)), father.w);
+        if (geneIndex == 3) return new Vector4(father.x, father.y, father.z, father.w * (1 + Random.Range(-0.1f, 0.1f)));
         Debug.LogWarning("n is not in range of Vector4");
         return default;
     }
 
-    public Vector4 Mutation(Vector4 father)
+    private Vector4 Mutation(Vector4 father)
     {
-        Vector4 ia = new Vector4();
-        int nbGenes = rd.Next(1,5);
-        for(int i = 0; i<nbGenes; i++)
+        Vector4 son = new Vector4();
+        int nbGenes = Random.Range(1, 5);
+
+        for(int i = 0; i < nbGenes; i++)
         {
-            int gene = rd.Next(0,5);
-            ia = Modif(father, gene);
+            int geneIndex = Random.Range(0, 4);
+            son = Modify(father, geneIndex);
         }
-        return ia;
+        return son;
     }
 
-    public void Kill(Vector4 victim) => winner.Remove(victim);
-
-    public List<Vector4> NewGeneration()
+    private List<Vector4> NewGeneration()
     {
         List<Vector4> newGen = new List<Vector4>();
-        while(winner.Count>0)
+        while(winner.Count > 0)
         {
             if (winner.Count == 1)
             {
@@ -96,11 +134,12 @@ public class Population : MonoBehaviour
                 winner.Remove(winner[0]);
                 break;
             }
-            Vector4 father = winner[rd.Next(0, population.Count)];
-            Kill(father);
-            
-            Vector4 mother = winner[rd.Next(0, population.Count)];
-            Kill(mother);
+
+            Vector4 father = winner[Random.Range(0, winner.Count)];
+            winner.Remove(father);
+
+            Vector4 mother = winner[Random.Range(0, winner.Count)];
+            winner.Remove(mother);
 
             newGen.Add(father);
             newGen.Add(mother);
@@ -108,8 +147,9 @@ public class Population : MonoBehaviour
             Vector4 child1 = Reproduce(father, mother);
             Vector4 child2 = Reproduce(father, mother);
 
-            if(UnityEngine.Random.value < 0.01) child1 = Mutation(child1);
-            if(UnityEngine.Random.value < 0.01) child2 = Mutation(child2);
+
+            if (Random.value < 0.01) child1 = Mutation(child1);
+            if (Random.value < 0.01) child2 = Mutation(child2);
             
             newGen.Add(child1);
             newGen.Add(child2);
