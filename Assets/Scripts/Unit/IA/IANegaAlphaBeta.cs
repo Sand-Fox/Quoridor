@@ -9,7 +9,6 @@ public class IANegaAlphaBeta : BaseIA
     public Vector4 weight = new Vector4(1, 1, 1, 1);
     public int defaultDepth = 2;
 
-    // Fonction qui va determiner le coup fait par l'IA
     protected override void PlayIA()
     {
         List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
@@ -33,8 +32,6 @@ public class IANegaAlphaBeta : BaseIA
 
         // Génération du coup, on va maximiser le coup que l'on va jouer donc on appelle Max
         Coup coup = BestCoup(defaultDepth,-10000, 10000, 1);
-
-        //Distinction de cas MUR et MOUVEMENT
         
         if (coup is CoupWall coupWall)
         {
@@ -50,20 +47,22 @@ public class IANegaAlphaBeta : BaseIA
         }
     }
 
-    // Utilise pour evaluer une position a un instant t
+
     private float CalculScore()
     {
-        // Recuperation des caracteristiques d'evaluation
+        List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
+        List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(OtherUnit());
 
-        // Pour l'IA
-        int distIA = PathFinding.Instance.GetWiningPath(this).Count;
+        if (pathIA == null || pathP == null)
+        {
+            Debug.Log("Ce chemin est bloquant");
+            return 0;
+        }
+
         int nbWallIA = wallCount;
-        // Pour le joueur
-        int distP = PathFinding.Instance.GetWiningPath(OtherUnit()).Count;
         int nbWallP = OtherUnit().wallCount;
 
-        // Calcul du score
-        float score = weight.x*distP*distP - weight.y*distIA*distIA - weight.z* nbWallP + weight.w*nbWallIA;
+        float score = weight.x * pathP.Count * pathP.Count - weight.y * pathIA.Count * pathIA.Count - weight.z * nbWallP + weight.w * nbWallIA;
         //float score = weight.x * distP - weight.y * distIA - weight.z * nbWallP + weight.w * nbWallIA;
         //float score = weight.x*distP;
         //float score = -weight.y*distIA;

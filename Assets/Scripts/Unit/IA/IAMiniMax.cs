@@ -46,19 +46,21 @@ public class IAMiniMax : BaseIA
 
     private float CalculScore()
     {
-        // Recuperation des caracteristiques d'evaluation
+        List<CustomTile> pathIA = PathFinding.Instance.GetWiningPath(this);
+        List<CustomTile> pathP = PathFinding.Instance.GetWiningPath(OtherUnit());
 
-        // Pour l'IA
-        int distIA = PathFinding.Instance.GetWiningPath(this).Count;
+        if (pathIA == null || pathP == null)
+        {
+            Debug.Log("Ce chemin est bloquant");
+            return 0;
+        }
+
         int nbWallIA = wallCount;
-        // Pour le joueur
-        int distP = PathFinding.Instance.GetWiningPath(OtherUnit()).Count;
         int nbWallP = OtherUnit().wallCount;
 
-        // Calcul du score
-        float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
-        //float score = weight.x*distP;
-        //float score = -weight.y*distIA;
+        float score = weight.x * pathP.Count - weight.y * pathIA.Count - weight.z * nbWallP + weight.w * nbWallIA;
+        //float score = weight.x * distP;
+        //float score = -weight.y * distIA;
         return score;
     }
 
