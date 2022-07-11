@@ -120,4 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallCount: 10
   weight: {x: 1, y: 1, z: 1, w: 1}
-  defaultDepth: 1
+  defaultDepth: 2

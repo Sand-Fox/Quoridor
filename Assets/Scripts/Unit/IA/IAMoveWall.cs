@@ -12,15 +12,16 @@ public class IAMoveWall : BaseIA
         if (wallCount > 0 && Random.value > 0.5)
         {
             Vector3 wallPosition = GetBestWallPosition(out Orientation orientation);
-            SpawnWall(wallPosition, orientation);
+            if (wallPosition != default)
+            {
+                SpawnWall(wallPosition, orientation);
+                return;
+            }
         }
 
-        else
-        {
-            List<CustomTile> path = PathFinding.Instance.GetWiningPath(this);
-            if (path != null) SetUnit(path[0].transform.position);
-            else SetUnit(occupiedTile.AdjacentTiles()[0].transform.position);
-        }
+        List<CustomTile> path = PathFinding.Instance.GetWiningPath(this);
+        if (path != null) SetUnit(path[0].transform.position);
+        else SetUnit(occupiedTile.AdjacentTiles()[0].transform.position);
     }
 
     private Vector2 GetBestWallPosition(out Orientation bestOrientation)
