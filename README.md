@@ -24,7 +24,7 @@ This project simulate the game of Quoridor. Implemented by [Henri Besancenot](ht
 	
 
 ## Setup
-To run this project, [download the file]() and execute Quoridor.
+To run this project, choose and run one of the builds above (the mac version may not work).
 
 ## Features
 * Play a game of Quoridor with a friend on server.
