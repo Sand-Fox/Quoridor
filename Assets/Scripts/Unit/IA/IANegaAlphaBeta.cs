@@ -6,8 +6,8 @@ using Debug = UnityEngine.Debug;
 public class IANegaAlphaBeta : BaseIA
 {
     public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme NegaMax avec l'élagage de Alpha Beta";
-    public Vector4 weight = new Vector4(1, 1, 1, 1);
-    public static int defaultDepth = 2;
+    public Vector4 weight = new Vector4(1, 1, 2, 2);
+    public int defaultDepth = 2;
 
     // Fonction qui va determiner le coup fait par l'IA
     protected override void PlayIA()
@@ -63,8 +63,8 @@ public class IANegaAlphaBeta : BaseIA
         int nbWallP = OtherUnit().wallCount;
 
         // Calcul du score
-        //float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
-        float score = weight.x*distP;
+        float score = weight.x*distP*distP - weight.y*distIA*distIA - weight.z* nbWallP + weight.w*nbWallIA;
+        //float score = weight.x*distP;
         //float score = -weight.y*distIA;
         return score;
     }
