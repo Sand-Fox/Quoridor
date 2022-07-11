@@ -6,9 +6,8 @@ using Debug = UnityEngine.Debug;
 public class IAMiniMax : BaseIA
 {
     public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Mini Max";
-    
     public Vector4 weight = new Vector4(1, 1, 1, 1);
-    public static int defaultDepth = 2;
+    public int defaultDepth = 2;
 
     protected override void PlayIA()
     {
@@ -58,8 +57,8 @@ public class IAMiniMax : BaseIA
 
         // Calcul du score
         //float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
-        //float score = weight.x*distP;
-        float score = -weight.y*distIA;
+        float score = weight.x*distP;
+        //float score = -weight.y*distIA;
         return score;
     }
 

@@ -7,7 +7,7 @@ public class IAAlphaBeta : BaseIA
 {
     public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Alpha Beta";
     public Vector4 weight = new Vector4(1, 1, 1, 1);
-    public static int defaultDepth = 2;
+    public int defaultDepth = 2;
 
     protected override void PlayIA()
     {

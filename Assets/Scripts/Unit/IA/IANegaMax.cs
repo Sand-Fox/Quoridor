@@ -5,8 +5,9 @@ using Debug = UnityEngine.Debug;
 
 public class IANegaMax : BaseIA
 {
-    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme NegaMax";
+    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Nega Max";
     public Vector4 weight = new Vector4(1, 1, 1, 1);
+    public int defaultDepth = 2;
 
     // Fonction qui va determiner le coup fait par l'IA
     protected override void PlayIA()
@@ -29,8 +30,8 @@ public class IANegaMax : BaseIA
             return;
         }
 
-        // Génération du coup, on va maximiser le coup que l'on va jouer donc on appelle Max
-        Coup coup = BestCoup(1, 1);
+        // Génération du meiileur coup
+        Coup coup = BestCoup(defaultDepth, 1);
 
         //Distinction de cas MUR et MOUVEMENT
         
