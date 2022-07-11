@@ -56,8 +56,8 @@ public class IAMiniMax : BaseIA
         int nbWallP = OtherUnit().wallCount;
 
         // Calcul du score
-        //float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
-        float score = weight.x*distP;
+        float score = weight.x*distP - weight.y*distIA - weight.z* nbWallP + weight.w*nbWallIA;
+        //float score = weight.x*distP;
         //float score = -weight.y*distIA;
         return score;
     }

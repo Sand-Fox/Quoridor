@@ -53,14 +53,14 @@ public class SceneSetUpManager : MonoBehaviour
 
         if (playMode == "Algo Genetique")
         {
-            GameObject IAObject1 = PhotonNetwork.Instantiate("Units/IAAlphaBeta", new Vector2(4, 4), Quaternion.identity);
+            GameObject IAObject1 = PhotonNetwork.Instantiate("Units/IANegaAlphaBeta", new Vector2(4, 4), Quaternion.identity);
             IAObject1.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
-            IAAlphaBeta IA1 = IAObject1.GetComponent<IAAlphaBeta>();
+            IANegaAlphaBeta IA1 = IAObject1.GetComponent<IANegaAlphaBeta>();
             ReferenceManager.Instance.player = IA1;
             IA1.weight = IAWeight1;
 
-            GameObject IAObject2 = PhotonNetwork.Instantiate("Units/IAAlphaBeta", new Vector2(4, 4), Quaternion.identity);
-            IAAlphaBeta IA2 = IAObject2.GetComponent<IAAlphaBeta>();
+            GameObject IAObject2 = PhotonNetwork.Instantiate("Units/IANegaAlphaBeta", new Vector2(4, 4), Quaternion.identity);
+            IANegaAlphaBeta IA2 = IAObject2.GetComponent<IANegaAlphaBeta>();
             ReferenceManager.Instance.enemy = IA2;
             IA2.weight = IAWeight2;
         }

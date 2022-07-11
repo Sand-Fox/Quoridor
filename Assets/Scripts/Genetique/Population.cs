@@ -30,7 +30,7 @@ public class Population : MonoBehaviour
     {
         if (int.TryParse(text, out int result))
         {
-            int finalResult =  Mathf.Abs(result) + result % 2;
+            int finalResult =  Mathf.Max(2, result) + Mathf.Max(2, result) % 2;
             nbIndividuals = finalResult;
             TmpIndividuals.text = finalResult.ToString();
         }
@@ -45,7 +45,7 @@ public class Population : MonoBehaviour
     {
         if (int.TryParse(text, out int result))
         {
-            int finalResult = Mathf.Abs(result);
+            int finalResult = Mathf.Max(1, result);
             nbGenerations = finalResult;
             TmpGenerations.text = finalResult.ToString();
         }
@@ -74,9 +74,9 @@ public class Population : MonoBehaviour
     {
         indexIndividuals += 2;
 
-        IAAlphaBeta IAWinner;
-        if (stateIsWin) IAWinner = ReferenceManager.Instance.player as IAAlphaBeta;
-        else IAWinner = ReferenceManager.Instance.enemy as IAAlphaBeta;
+        IANegaAlphaBeta IAWinner;
+        if (stateIsWin) IAWinner = ReferenceManager.Instance.player as IANegaAlphaBeta;
+        else IAWinner = ReferenceManager.Instance.enemy as IANegaAlphaBeta;
         winner.Add(IAWinner.weight);
 
         if (indexIndividuals == nbIndividuals)

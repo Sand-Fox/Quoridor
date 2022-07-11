@@ -64,6 +64,7 @@ public class IANegaAlphaBeta : BaseIA
 
         // Calcul du score
         float score = weight.x*distP*distP - weight.y*distIA*distIA - weight.z* nbWallP + weight.w*nbWallIA;
+        //float score = weight.x * distP - weight.y * distIA - weight.z * nbWallP + weight.w * nbWallIA;
         //float score = weight.x*distP;
         //float score = -weight.y*distIA;
         return score;
