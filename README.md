@@ -6,7 +6,6 @@
 * [General Info](#general-info)
 * [Setup](#setup)
 * [Features](#features)
-* [To-Do-list](#to-do-list)
 ## Introduction
 In perspective of Sorbonne University PIMA classes, we must develop a game named Quoridor.
 
@@ -28,8 +27,10 @@ This project simulate the game of Quoridor. Implemented by [Henri Besancenot](ht
 To run this project, [download the file]() and execute Quoridor.
 
 ## Features
-* Play a game of Quoridor in a window with a friend on servers.
+* Play a game of Quoridor with a friend on server.
+* Play against various AI with different behaviours.
+* Organize match between AI to determine which moves are the best
+
 * A* pathfinding algorithm to help you in your moves.
-## To-do-list:
-* Implement agent.
+* Genetic algorithm to determine the IA with the best parameters.
 * Save and load game(s).
