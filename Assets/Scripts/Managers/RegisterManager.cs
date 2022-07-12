@@ -18,4 +18,6 @@ public class RegisterManager : MonoBehaviour
         string month = (DateTime.Now.Month <= 9) ? "0" + DateTime.Now.Month : DateTime.Now.Month.ToString();
         SaveSystem.Save(partie, day + "-" + month + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second);
     }
+
+    public int NombreCoups() => partie.ListCoups.Count;
 }

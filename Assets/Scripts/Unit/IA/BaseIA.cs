@@ -9,8 +9,8 @@ public abstract class BaseIA : BaseUnit
 
     private void OnGameStateChanged(GameState newState)
     {
-        if (this == ReferenceManager.Instance.player && GameManager.Instance.isPlayerTurn()
-            || (this == ReferenceManager.Instance.enemy && GameManager.Instance.isEnemyTurn()))
+        if (this == ReferenceManager.Instance.player && GameManager.Instance.isPlayerTurn(newState)
+            || (this == ReferenceManager.Instance.enemy && GameManager.Instance.isEnemyTurn(newState)))
             Invoke("PlayIA", movementDuration);
     }
 

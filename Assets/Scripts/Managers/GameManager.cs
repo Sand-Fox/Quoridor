@@ -30,18 +30,20 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(newState);
     }
 
-    public bool isPlayerTurn()
+    public bool isPlayerTurn(GameState state = 0)
     {
-        if ((PhotonNetwork.LocalPlayer.ActorNumber == 1 && gameState == GameState.Player1Turn)
-            || (PhotonNetwork.LocalPlayer.ActorNumber == 2 && gameState == GameState.Player2Turn)) return true;
+        if (state == 0) state = gameState;
+        if ((PhotonNetwork.LocalPlayer.ActorNumber == 1 && state == GameState.Player1Turn)
+            || (PhotonNetwork.LocalPlayer.ActorNumber == 2 && state == GameState.Player2Turn)) return true;
 
         return false;
     }
 
-    public bool isEnemyTurn()
+    public bool isEnemyTurn(GameState state = 0)
     {
-        if ((PhotonNetwork.LocalPlayer.ActorNumber == 1 && gameState == GameState.Player2Turn)
-            || (PhotonNetwork.LocalPlayer.ActorNumber == 2 && gameState == GameState.Player1Turn)) return true;
+        if (state == 0) state = gameState;
+        if ((PhotonNetwork.LocalPlayer.ActorNumber == 1 && state == GameState.Player2Turn)
+            || (PhotonNetwork.LocalPlayer.ActorNumber == 2 && state == GameState.Player1Turn)) return true;
 
         return false;
     }
@@ -50,7 +52,8 @@ public class GameManager : MonoBehaviour
     {
         GameState newState = (gameState == GameState.Player1Turn) ? GameState.Player2Turn : GameState.Player1Turn;
         if (ReferenceManager.Instance.player.occupiedTile.transform.position.y == 8) newState = GameState.Win;
-        if (ReferenceManager.Instance.enemy.occupiedTile.transform.position.y == 0) newState = GameState.Loose;
+        if (ReferenceManager.Instance.enemy.occupiedTile.transform.position.y == 0
+            || RegisterManager.Instance.NombreCoups() == 150) newState = GameState.Loose;
         UpdateGameState(newState);
     }
 
@@ -63,11 +66,12 @@ public class GameManager : MonoBehaviour
 
 public enum GameState
 {
-    GenerateGrid = 0,
-    WaitForPlayer = 1,
-    SpawnUnits = 2,
-    Player1Turn = 3,
-    Player2Turn = 4,
-    Win = 5,
-    Loose = 6
+    Default = 0,
+    GenerateGrid = 1,
+    WaitForPlayer = 2,
+    SpawnUnits = 3,
+    Player1Turn = 4,
+    Player2Turn = 5,
+    Win = 6,
+    Loose = 7
 }

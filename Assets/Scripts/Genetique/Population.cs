@@ -6,31 +6,29 @@ using Photon.Pun;
 
 public class Population : MonoBehaviour
 {
-    public static Population Instance;
-
-    public static List<Vector4> population = new List<Vector4>();
-    public static List<Vector4> winner = new List<Vector4>();
+    private List<Vector4> population = new List<Vector4>();
+    private List<Vector4> winner = new List<Vector4>();
 
     private int nbIndividuals = 4;
     private int nbGenerations = 2;
 
-    public static int indexIndividuals = 0;
-    public static int indexGenerations = 0;
+    private int indexIndividuals;
+    private int indexGenerations;
 
     [SerializeField] private TMP_InputField TmpIndividuals;
     [SerializeField] private TMP_InputField TmpGenerations;
 
     private void Awake()
     {
-        Instance = this;
         GameManager.OnGameStateChanged += OnGameStateChanged;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void OnIndividualTextChange(string text)
     {
         if (int.TryParse(text, out int result))
         {
-            int finalResult =  Mathf.Max(2, result) + Mathf.Max(2, result) % 2;
+            int finalResult =  Mathf.Max(4, result) - Mathf.Max(4, result) % 4;
             nbIndividuals = finalResult;
             TmpIndividuals.text = finalResult.ToString();
         }
@@ -66,7 +64,13 @@ public class Population : MonoBehaviour
     {
         indexIndividuals = 0;
         indexGenerations = 0;
-        GeneratePopulation();
+
+        for (int i = 0; i < nbIndividuals; i++)
+        {
+            Vector4 weight = new Vector4(Random.value, Random.value, Random.value, Random.value);
+            population.Add(weight);
+        }
+
         Match();
     }
 
@@ -100,16 +104,7 @@ public class Population : MonoBehaviour
         Match();
     }
 
-    private void GeneratePopulation()
-    {
-        for(int i = 0; i < nbIndividuals; i++)
-        {
-            Vector4 weight = new Vector4(Random.value, Random.value, Random.value, Random.value);
-            population.Add(weight);
-        }
-    }
-
-    public void Match()
+    private void Match()
     {
         Vector4 weight1 = population[Random.Range(0, population.Count)];
         population.Remove(weight1);
@@ -120,6 +115,12 @@ public class Population : MonoBehaviour
         SceneSetUpManager.IAWeight1 = weight1;
         SceneSetUpManager.IAWeight2 = weight2;
 
+        StartCoroutine(ReloadGame());
+    }
+
+    private IEnumerator ReloadGame()
+    {
+        yield return new WaitForSeconds(0.1f);
         if (PhotonNetwork.InRoom) PhotonNetwork.LoadLevel("Game");
         else PrivateRoom.Instance.CreatePrivateRoom();
     }
@@ -162,13 +163,6 @@ public class Population : MonoBehaviour
         List<Vector4> newGen = new List<Vector4>();
         while(winner.Count > 0)
         {
-            if (winner.Count == 1)
-            {
-                newGen.Add(winner[0]);
-                winner.Remove(winner[0]);
-                break;
-            }
-
             Vector4 father = winner[Random.Range(0, winner.Count)];
             winner.Remove(father);
 

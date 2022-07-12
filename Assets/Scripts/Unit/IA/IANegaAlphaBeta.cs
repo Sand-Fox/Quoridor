@@ -94,9 +94,8 @@ public class IANegaAlphaBeta : BaseIA
             value = Mathf.Max(value, -negaMax(depth-1, -beta, -alpha, -maximazingPlayer));
 
             alpha = Mathf.Max(alpha, value);
-            if(alpha>=beta) 
+            if(alpha >= beta) 
             {
-                Debug.Log("Elagage Move");
                 playing.SetUnitWhenTesting(usedTile.transform.position);
                 return value;
             }
@@ -118,11 +117,7 @@ public class IANegaAlphaBeta : BaseIA
                     DespawnWallWhenTesting(pair.Key, Orientation.Horizontal);
 
                     alpha = Mathf.Max(alpha, value);
-                    if(alpha>=beta)
-                    {
-                        Debug.Log("Elagage Mur H");
-                        break;
-                    }
+                    if(alpha >= beta) break;
                 }
                 // Enfant ou le mur est pose verticalement
                 if(VerticalWall.CanSpawnHere(pair.Value))
@@ -132,11 +127,7 @@ public class IANegaAlphaBeta : BaseIA
                     DespawnWallWhenTesting(pair.Key, Orientation.Vertical);
 
                     alpha = Mathf.Max(alpha, value);
-                    if(alpha>=beta)
-                    {
-                        Debug.Log("Elagage Mur V");
-                        break;
-                    }
+                    if(alpha >= beta) break;
                 }
             }
         }
