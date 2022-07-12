@@ -120,7 +120,7 @@ public class Population : MonoBehaviour
 
     private IEnumerator ReloadGame()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(BaseUnit.movementDuration);
         if (PhotonNetwork.InRoom) PhotonNetwork.LoadLevel("Game");
         else PrivateRoom.Instance.CreatePrivateRoom();
     }
