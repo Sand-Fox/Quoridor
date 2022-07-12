@@ -86,9 +86,9 @@ public class Population : MonoBehaviour
 
             if (indexGenerations == nbGenerations)
             {
-                string messageFinal = "Fin de l'algorithme génétique : \n";
-                foreach (Vector4 weight in winner) messageFinal += weight + "\n";
-                Debug.Log(messageFinal);
+                string results = "";
+                foreach (Vector4 weight in winner) results += weight + "\n";
+                UIManager.Instance.EnableGeneticResults(results);
                 return;
             }
 
@@ -136,10 +136,10 @@ public class Population : MonoBehaviour
 
     private Vector4 Modify(Vector4 father, int geneIndex)
     {
-        if (geneIndex == 0) return new Vector4(father.x * (1 + Random.Range(-0.1f, 0.1f)), father.y, father.z, father.w);
-        if (geneIndex == 1) return new Vector4(father.x, father.y * (1 + Random.Range(-0.1f, 0.1f)), father.z, father.w);
-        if (geneIndex == 2) return new Vector4(father.x, father.y, father.z * (1 + Random.Range(-0.1f, 0.1f)), father.w);
-        if (geneIndex == 3) return new Vector4(father.x, father.y, father.z, father.w * (1 + Random.Range(-0.1f, 0.1f)));
+        if (geneIndex == 0) return new Vector4(father.x * Random.Range(0.9f, 1.1f), father.y, father.z, father.w);
+        if (geneIndex == 1) return new Vector4(father.x, father.y * Random.Range(0.9f, 1.1f), father.z, father.w);
+        if (geneIndex == 2) return new Vector4(father.x, father.y, father.z * Random.Range(0.9f, 1.1f), father.w);
+        if (geneIndex == 3) return new Vector4(father.x, father.y, father.z, father.w * Random.Range(0.9f, 1.1f));
         Debug.LogWarning("n is not in range of Vector4");
         return default;
     }

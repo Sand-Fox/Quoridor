@@ -1622,8 +1622,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Algorithme g\xE9n\xE9tique sur l' IA alpha beta avec x individus et y
-    g\xE9n\xE9rations."
+  m_text: "Algorithme g\xE9n\xE9tique sur nega alpha beta avec x individus et y g\xE9n\xE9rations."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 85cbc449baf9d408aaffaf407c1c9e4f, type: 2}
   m_sharedMaterial: {fileID: -6674877404949003427, guid: 85cbc449baf9d408aaffaf407c1c9e4f, type: 2}

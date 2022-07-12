@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PanelScript optionsPanel;
     [SerializeField] private PanelScript winPanel;
     [SerializeField] private PanelScript loosePanel;
+    [SerializeField] private PanelScript GeneticResultsPanel;
+    [SerializeField] private TextMeshProUGUI GeneticResultsTmp;
 
     private void Awake()
     {
@@ -63,5 +65,11 @@ public class UIManager : MonoBehaviour
     public void UpdateWallCountText()
     {
         wallButton.ChangeMainText("Wall (" + ReferenceManager.Instance.player.wallCount + ")");
+    }
+
+    public void EnableGeneticResults(string text)
+    {
+        GeneticResultsTmp.text = text;
+        GeneticResultsPanel.EnablePanel(true);
     }
 }

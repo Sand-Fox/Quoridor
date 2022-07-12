@@ -32,7 +32,8 @@ public class PathFinding : MonoBehaviour
             }
         }
 
-        return bestPath;
+        if (bestPath.Count == 0) return null;
+        else return bestPath;
     }
 
     public bool ExistPath(BaseUnit unit)

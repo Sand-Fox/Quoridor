@@ -16,6 +16,6 @@ public class RegisterManager : MonoBehaviour
     {
         string day = (DateTime.Now.Day <= 9) ? "0" + DateTime.Now.Day : DateTime.Now.Day.ToString();
         string month = (DateTime.Now.Month <= 9) ? "0" + DateTime.Now.Month : DateTime.Now.Month.ToString();
-        SaveSystem.Save(partie, day + "-" + month + "-" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second);
+        SaveSystem.Save(partie, day + "-" + month + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second);
     }
 }
