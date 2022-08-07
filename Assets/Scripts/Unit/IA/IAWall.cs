@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IAWall : BaseIA
 {
-    public static string description = "IA qui pose un mur à l'endroit adéquat sur le meilleur chemin du joueur";
+    public static string description = "AI that puts a wall\non the player's best path";
 
     protected override void PlayIA()
     {

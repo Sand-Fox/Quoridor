@@ -10,7 +10,7 @@ public abstract class BaseUnit : MonoBehaviour
     public PhotonView view { get; private set; }
     public int wallCount = 10;
 
-    public static readonly float movementDuration = 0.2f;
+    public static readonly float movementDuration = 0.25f;
 
     protected virtual void Awake()
     {
@@ -70,7 +70,7 @@ public abstract class BaseUnit : MonoBehaviour
         wallCount--;
         UIManager.Instance.UpdateWallCountText();
 
-        CoupWall c = new CoupWall(position, orientation);
+        CoupWall c = new CoupWall(corner.transform.position, orientation);
         RegisterManager.Instance.AddCoup(c);
         GameManager.Instance.EndTurn();
     }

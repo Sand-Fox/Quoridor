@@ -22,6 +22,12 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
         GameManager.OnGameStateChanged += OnGameStateChanged;
+
+        if(SceneSetUpManager.playMode == "Replays")
+        {
+            winPanel.DisableSaveButton();
+            loosePanel.DisableSaveButton();
+        }
     }
 
     private void OnDestroy()
@@ -64,7 +70,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateWallCountText()
     {
-        wallButton.ChangeMainText("Wall (" + ReferenceManager.Instance.player.wallCount + ")");
+        wallButton.ChangeMainText("Wall (<blue>" + ReferenceManager.Instance.player.wallCount + "</blue> - <red>" + ReferenceManager.Instance.enemy.wallCount + "</red>)");
     }
 
     public void EnableGeneticResults(string text)

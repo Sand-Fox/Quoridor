@@ -5,7 +5,7 @@ using Debug = UnityEngine.Debug;
 
 public class IANegaMax : BaseIA
 {
-    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Nega Max";
+    public static string description = "AI that chooses the best move using\nNega Max algorithm (not recommended)";
     public Vector4 weight = new Vector4(1, 1, 1, 1);
     public int defaultDepth = 2;
 

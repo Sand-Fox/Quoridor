@@ -17,7 +17,8 @@ public class PartieButton : MonoBehaviour
     public void OnPlayButton()
     {
         Partie partie = SaveSystem.Load<Partie>(file.Name);
-        Debug.Log(partie);
+        SceneSetUpManager.replay = partie;
+        PrivateRoom.Instance.CreatePrivateRoom();
     }
 
     public void OnDeleteButton()

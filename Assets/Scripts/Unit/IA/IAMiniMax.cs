@@ -5,7 +5,7 @@ using Debug = UnityEngine.Debug;
 
 public class IAMiniMax : BaseIA
 {
-    public static string description = "IA qui choisit le meilleur coup à jouer en utilisant l'algorithme Mini Max";
+    public static string description = "AI that chooses the best move using\nMini Max algorithm (not recommended)";
     public Vector4 weight = new Vector4(1, 1, 1, 1);
     public int defaultDepth = 2;
 

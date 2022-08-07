@@ -5,6 +5,8 @@ using UnityEngine;
 public class Partie
 {
     public List<Coup> ListCoups = new List<Coup>();
+    public bool playerBegins;
+    public bool playerWins;
 
     public override string ToString()
     {

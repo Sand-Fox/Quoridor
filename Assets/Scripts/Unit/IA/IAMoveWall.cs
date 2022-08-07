@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class IAMoveWall : BaseIA
 {
-    public static string description = "IA qui choisit aléatoirement entre poser un mur et se déplacer";
+    public static string description = "AI that randomly chooses between\nputting up a wall and moving";
 
     protected override void PlayIA()
     {

@@ -7,10 +7,14 @@ public class SceneSetUpManager : MonoBehaviour
 {
     public static SceneSetUpManager Instance;
     public static string playMode;
+
     public static string IAName1;
     public static string IAName2;
+
     public static Vector4 IAWeight1;
     public static Vector4 IAWeight2;
+
+    public static Partie replay;
 
     private void Awake()
     {
@@ -65,6 +69,21 @@ public class SceneSetUpManager : MonoBehaviour
             IA2.weight = IAWeight2;
         }
 
+        if (playMode == "Replays")
+        {
+            GameObject IAObject1 = PhotonNetwork.Instantiate("Units/IAReplay", new Vector2(4, 4), Quaternion.identity);
+            IAObject1.GetComponent<SpriteRenderer>().color = ColorExtension.blue;
+            IAReplay IAReplay1 = IAObject1.GetComponent<IAReplay>();
+            ReferenceManager.Instance.player = IAReplay1;
+            IAReplay1.index = (replay.playerBegins) ? 0 : 1;
+
+
+            GameObject IAObject2 = PhotonNetwork.Instantiate("Units/IAReplay", new Vector2(4, 4), Quaternion.identity);
+            IAReplay IAReplay2 = IAObject2.GetComponent<IAReplay>();
+            ReferenceManager.Instance.enemy = IAReplay2;
+            IAReplay2.index = (replay.playerBegins) ? 1 : 0;
+        }
+
     }
 
     private void OnWaitForPlayer()
@@ -72,16 +91,20 @@ public class SceneSetUpManager : MonoBehaviour
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            StartCoroutine(CoinToss());
+            StartCoroutine(CoinToss(Random.value > 0.5));
         }
 
-        if (PhotonNetwork.OfflineMode) StartCoroutine(CoinToss());
+        if (PhotonNetwork.OfflineMode)
+        {
+            if (playMode == "Replays") StartCoroutine(CoinToss(replay.playerBegins));
+            else StartCoroutine(CoinToss(Random.value > 0.5));
+        }
     }
 
-    private IEnumerator CoinToss()
+    private IEnumerator CoinToss(bool toss)
     {
         yield return new WaitForEndOfFrame();
-        GameState state = (Random.value > 0.5) ? GameState.Player1Turn : GameState.Player2Turn;
+        GameState state = toss ? GameState.Player1Turn : GameState.Player2Turn;
         GameManager.Instance.view.RPC("UpdateGameState", RpcTarget.All, state);
     }
 }

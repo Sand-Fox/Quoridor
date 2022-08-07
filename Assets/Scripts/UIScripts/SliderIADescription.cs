@@ -30,6 +30,7 @@ public class SliderIADescription : MonoBehaviour
             TmpText.text = IAMoveWall.description;
             SceneSetUpManager.IAName1 = "Units/IAMoveWall";
         }
+        /*
         else if (value == 4)
         {
             TmpText.text = IAMiniMax.description;
@@ -40,12 +41,13 @@ public class SliderIADescription : MonoBehaviour
             TmpText.text = IAAlphaBeta.description;
             SceneSetUpManager.IAName1 = "Units/IAAlphaBeta";
         }
-        else if (value == 6)
+        */
+        else if (value == 4)
         {
             TmpText.text = IANegaMax.description;
             SceneSetUpManager.IAName1 = "Units/IANegaMax";
         }
-        else if (value == 7)
+        else if (value == 5)
         {
             TmpText.text = IANegaAlphaBeta.description;
             SceneSetUpManager.IAName1 = "Units/IANegaAlphaBeta";
@@ -70,6 +72,7 @@ public class SliderIADescription : MonoBehaviour
             TmpText.text = IAMoveWall.description;
             SceneSetUpManager.IAName2 = "Units/IAMoveWall";
         }
+        /*
         else if (value == 4)
         {
             TmpText.text = IAMiniMax.description;
@@ -80,12 +83,13 @@ public class SliderIADescription : MonoBehaviour
             TmpText.text = IAAlphaBeta.description;
             SceneSetUpManager.IAName2 = "Units/IAAlphaBeta";
         }
-        else if (value == 6)
+        */
+        else if (value == 4)
         {
             TmpText.text = IANegaMax.description;
             SceneSetUpManager.IAName2 = "Units/IANegaMax";
         }
-        else if (value == 7)
+        else if (value == 5)
         {
             TmpText.text = IANegaAlphaBeta.description;
             SceneSetUpManager.IAName2 = "Units/IANegaAlphaBeta";

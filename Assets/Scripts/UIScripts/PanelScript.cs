@@ -7,6 +7,7 @@ using DG.Tweening;
 public class PanelScript : MonoBehaviour
 {
     [SerializeField] private Image blackImage;
+    [SerializeField] private Button saveButton;
     private RectTransform rectTransform;
 
     private Tween tweenAnchorPos;
@@ -45,6 +46,11 @@ public class PanelScript : MonoBehaviour
             tweenFade.PlayBackwards();
             tweenAnchorPos.PlayBackwards();
         }
+    }
+
+    public void DisableSaveButton()
+    {
+        saveButton.interactable = false;
     }
 
     public void OnImageClick()

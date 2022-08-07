@@ -162,7 +162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 61.3837, y: 0}
+  m_AnchoredPosition: {x: 61.383698, y: 0}
   m_SizeDelta: {x: 122.7673, y: 82.901}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &105054676
@@ -537,8 +537,8 @@ Canvas:
   m_GameObject: {fileID: 551000463}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 650647451}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -547,7 +547,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &551000467
 RectTransform:
@@ -1453,7 +1453,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 61.3837, y: 0}
+  m_AnchoredPosition: {x: 61.383698, y: 0}
   m_SizeDelta: {x: 122.7673, y: 82.901}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1739388582
@@ -1621,7 +1621,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Algorithme g\xE9n\xE9tique sur nega alpha beta avec x individus et y g\xE9n\xE9rations."
+  m_text: 'Genetic algorithm on nega alpha beta
+
+    with x individuals and y generations.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 85cbc449baf9d408aaffaf407c1c9e4f, type: 2}
   m_sharedMaterial: {fileID: -6674877404949003427, guid: 85cbc449baf9d408aaffaf407c1c9e4f, type: 2}
