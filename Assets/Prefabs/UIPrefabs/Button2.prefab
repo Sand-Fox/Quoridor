@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1895252303351407149, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_text
-      value: player vs ia
+      value: player vs ai
       objectReference: {fileID: 0}
     - target: {fileID: 2969982022185223549, guid: e411081c799704b3d8648d20945560ae, type: 3}
       propertyPath: m_Pivot.x
