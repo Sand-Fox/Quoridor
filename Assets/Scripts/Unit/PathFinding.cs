@@ -8,136 +8,82 @@ public class PathFinding : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-    public bool debugMode { get; set; }
     private List<CustomTile> open;
     private List<CustomTile> closed;
 
     public List<CustomTile> GetWiningPath(BaseUnit unit)
     {
-        CustomTile[] endRaw;
-        if (unit == ReferenceManager.Instance.player) endRaw = GridManager.Instance.GetLastRaw();
-        else endRaw = GridManager.Instance.GetFirstRaw();
+        int endRawIndex;
+        if (unit == ReferenceManager.Instance.player) endRawIndex = GridManager.BOUNDS - 1;
+        else endRawIndex = 0;
 
-        List<CustomTile> bestPath = new List<CustomTile>();
-        int bestDistance = GridManager.MAXPATH;
+        if (unit.occupiedTile.transform.position.y == endRawIndex) return new List<CustomTile>();
 
-        foreach (CustomTile tile in endRaw)
-        {
-            var path = GetPath(unit, tile);
-            int distance = (path == null) ? GridManager.MAXPATH : path.Count;
-            if (distance < bestDistance)
-            {
-                bestPath = path;
-                bestDistance = distance;
-            }
-        }
-
-        if (bestPath.Count == 0) return null;
-        else return bestPath;
-    }
-
-    public bool ExistPath(BaseUnit unit)
-    {
-        CustomTile[] endRaw;
-        if (unit == ReferenceManager.Instance.player) endRaw = GridManager.Instance.GetLastRaw();
-        else endRaw = GridManager.Instance.GetFirstRaw();
-
-        foreach(CustomTile tile in endRaw)
-        {
-            var path = GetPath(unit, tile);
-            if(path !=null)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<CustomTile> GetPath(BaseUnit unit, CustomTile targetTile)
-    {
-        if(targetTile.occupiedUnit == unit) return new List<CustomTile>();
-        if (targetTile.occupiedUnit != null) return null;
-
-        SetUpPath(unit, targetTile);
-        if (targetTile.previousTile == null) return null;
+        CustomTile targetTile = SetUpPath(unit, endRawIndex);
+        if (targetTile == null) return null;
 
         List<CustomTile> path = new List<CustomTile>();
         CustomTile currentTile = targetTile;
 
-        int flag = 0;
-        while (currentTile != unit.occupiedTile && flag < 100)
+        while (currentTile != unit.occupiedTile)
         {
-            flag++;
             path.Add(currentTile);
             currentTile = currentTile.previousTile;
         }
-        if (flag == 100) Debug.Log("Flag atteint dans GetPath");
         path.Reverse();
         return path;
     }
 
-    private void SetUpPath(BaseUnit unit, CustomTile targetTile)
+    private CustomTile SetUpPath(BaseUnit unit, int endRawIndex)
     {
         open = new List<CustomTile>();
         closed = new List<CustomTile>();
-        unit.occupiedTile.previousTile = null;
-        targetTile.previousTile = null;
-        open.Add(unit.occupiedTile);
 
-        int flag = 0;
-        while (flag < 100)
+        CustomTile unitTile = unit.occupiedTile;
+        unitTile.previousTile = null;
+        unitTile.G = 0;
+        unitTile.H = DistanceToEndRaw(unitTile, endRawIndex, unit);
+        open.Add(unitTile);
+
+        while (true)
         {
-            flag++;
-            CustomTile current = GetLowestFCostInOpen(unit);
-            if (current == null) return;
+            CustomTile current = GetLowestFCostInOpen();
+            // S'il n'existe pas de chemin vers le but
+            if (current == null) return null; 
+
             open.Remove(current);
             closed.Add(current);
-            if(current == targetTile) return;
+            if(current.transform.position.y == endRawIndex) return current;
 
             foreach (CustomTile neighbour in current.AdjacentTiles())
             {
                 if (closed.Contains(neighbour)) continue;
 
-                if (!open.Contains(neighbour) || current.GetDistanceFromStartTile() + 1 < neighbour.GetDistanceFromStartTile())
+                bool neighbourIsFresh = !open.Contains(neighbour);
+                if (neighbourIsFresh || current.G + 1 < neighbour.G)
                 {
                     neighbour.previousTile = current;
-                    neighbour.G = neighbour.GetDistanceFromStartTile();
-                    neighbour.H = DistanceTo(neighbour, targetTile, unit);
-                    if (!open.Contains(neighbour)) open.Add(neighbour);
+                    neighbour.G = current.G + 1;
+                    neighbour.H = DistanceToEndRaw(neighbour, endRawIndex, unit);
+                    if (neighbourIsFresh) open.Add(neighbour);
                 }
             }
         }
-        if (flag == 100) Debug.Log("Flag atteint dans SetUpPath");
     }
 
-    private int DistanceTo(CustomTile source, CustomTile destination, BaseUnit myUnit)
+    private int DistanceToEndRaw(CustomTile source, int endRawIndex, BaseUnit myUnit)
     {
-        Vector2 direction = destination.transform.position - source.transform.position;
-        int distance = (int)(Mathf.Abs(direction.x) + Mathf.Abs(direction.y));
-        BaseUnit otherUnit = (myUnit == ReferenceManager.Instance.player) ? ReferenceManager.Instance.enemy : ReferenceManager.Instance.player;
-        if (UnitIsBetweenSourceAndDestination(otherUnit, source, destination)) distance--;
+        Vector2 sourcePosition = source.transform.position;
+        int distance = Mathf.Abs(endRawIndex - (int)sourcePosition.y);
+        Vector2 otherUnitPosition = myUnit.OtherUnit().occupiedTile.transform.position;
+
+        if (sourcePosition.x == otherUnitPosition.x &&
+            otherUnitPosition.y.IsBetween(sourcePosition.y, endRawIndex)) distance--;
+
         return distance;
     }
 
-    private bool UnitIsBetweenSourceAndDestination(BaseUnit unit, CustomTile sourceTile, CustomTile destinationTile)
-    {
-        Vector2 position = unit.occupiedTile.transform.position;
-        Vector2 source = sourceTile.transform.position;
-        Vector2 dest = destinationTile.transform.position;
-
-        if (position.x < Mathf.Min(source.x, dest.x)) return false;
-        if (position.x > Mathf.Max(source.x, dest.x)) return false;
-        if (position.y < Mathf.Min(source.y, dest.y)) return false;
-        if (position.y > Mathf.Max(source.y, dest.y)) return false;
-        if (position.x == source.x && position.y == dest.y) return false;
-        if (position.x == dest.x && position.y == source.y) return false;
-        if (position == dest) return false;
-        if (position == source) return false;
-
-        return true;
-    }
-
-    private CustomTile GetLowestFCostInOpen(BaseUnit unit)
+    private CustomTile GetLowestFCostInOpen()
     {
         if(open.Count == 0) return null;
 
@@ -145,8 +91,7 @@ public class PathFinding : MonoBehaviour
         foreach(CustomTile tile in open)
         {
             if (tile.F < bestTile.F) bestTile = tile;
-            if (tile.F == bestTile.F && tile.transform.position.y < bestTile.transform.position.y && unit == ReferenceManager.Instance.enemy) bestTile = tile;
-            if (tile.F == bestTile.F && tile.transform.position.y > bestTile.transform.position.y && unit == ReferenceManager.Instance.player) bestTile = tile;
+            if (tile.F == bestTile.F && tile.H < bestTile.H) bestTile = tile;
         }
         return bestTile;
     }

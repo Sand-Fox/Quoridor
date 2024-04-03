@@ -6,6 +6,7 @@ using Photon.Pun;
 public class CustomCorner : MonoBehaviour
 {
     public static Orientation orientation = Orientation.Horizontal;
+    [SerializeField] private GameObject visual;
 
     public bool isOpen = true;
     public CustomWall horizontalWall;
@@ -34,6 +35,11 @@ public class CustomCorner : MonoBehaviour
         if (!canSpawnHere) return;
         ReferenceManager.Instance.player.view.RPC("SpawnWall", RpcTarget.All, transform.position, orientation);
         GridManager.Instance.selectedCorner = null;
+    }
+
+    public void EnableVisual(bool enable)
+    {
+        visual.SetActive(enable && isOpen);
     }
 
     public static void SwitchOrientation()

@@ -15,6 +15,8 @@ public class SliderIADescription : MonoBehaviour
 
     public void OnSlider1Changed(float value)
     {
+        AudioManager.Instance.Play("Click");
+
         if (value == 1) 
         {
             TmpText.text = IAMove.description;
@@ -30,18 +32,6 @@ public class SliderIADescription : MonoBehaviour
             TmpText.text = IAMoveWall.description;
             SceneSetUpManager.IAName1 = "Units/IAMoveWall";
         }
-        /*
-        else if (value == 4)
-        {
-            TmpText.text = IAMiniMax.description;
-            SceneSetUpManager.IAName1 = "Units/IAMiniMax";
-        }
-        else if (value == 5)
-        {
-            TmpText.text = IAAlphaBeta.description;
-            SceneSetUpManager.IAName1 = "Units/IAAlphaBeta";
-        }
-        */
         else if (value == 4)
         {
             TmpText.text = IANegaMax.description;
@@ -72,18 +62,6 @@ public class SliderIADescription : MonoBehaviour
             TmpText.text = IAMoveWall.description;
             SceneSetUpManager.IAName2 = "Units/IAMoveWall";
         }
-        /*
-        else if (value == 4)
-        {
-            TmpText.text = IAMiniMax.description;
-            SceneSetUpManager.IAName2 = "Units/IAMiniMax";
-        }
-        else if (value == 5)
-        {
-            TmpText.text = IAAlphaBeta.description;
-            SceneSetUpManager.IAName2 = "Units/IAAlphaBeta";
-        }
-        */
         else if (value == 4)
         {
             TmpText.text = IANegaMax.description;

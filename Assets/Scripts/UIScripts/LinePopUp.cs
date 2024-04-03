@@ -8,7 +8,7 @@ public class LinePopUp : MonoBehaviour
     [SerializeField] private float arrowCountPerTile;
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private GameObject pointPrefab;
-    [SerializeField] private GameObject circlePrefab;
+    [SerializeField] private GameObject targetPrefab;
 
     private void OnEnable() => destroyPopUpsEventChannel.OnVoidEvent += DestroyPopUp;
     private void OnDisable() => destroyPopUpsEventChannel.OnVoidEvent -= DestroyPopUp;
@@ -49,7 +49,7 @@ public class LinePopUp : MonoBehaviour
             }
         }
 
-        GameObject circle = Instantiate(circlePrefab, lines[lines.Count - 1].point2, Quaternion.Euler(0, 0, 45), transform);
+        GameObject circle = Instantiate(targetPrefab, lines[lines.Count - 1].point2, Quaternion.identity, transform);
         circle.GetComponent<SpriteRenderer>().color = color;
     }
 

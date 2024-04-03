@@ -1915,7 +1915,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 667674646}
   m_Direction: 2
   m_Value: 1.0000002
-  m_Size: 0.34274843
+  m_Size: 0.3427484
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2881,8 +2881,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35
-  m_fontSizeBase: 35
+  m_fontSize: 33
+  m_fontSizeBase: 33
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3180,6 +3180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac5daf0bb6c524467b34b595c0a0e379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destropPopUpEvent: {fileID: 11400000, guid: 4556954bf8e944a9684a93ef17320e92, type: 2}
   mode: 0
 --- !u!1 &2008119400
 GameObject:
@@ -4330,7 +4331,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -54.634766, y: -55.75357}
+  m_AnchoredPosition: {x: -54.634766, y: -55.75354}
   m_SizeDelta: {x: 109.2693, y: 111.5071}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4817875897029683761
@@ -4470,6 +4471,14 @@ PrefabInstance:
     - target: {fileID: 1139271525, guid: 83865efc909934e7e892fc9bb435918a, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PathFinding, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2441397359640887167, guid: 83865efc909934e7e892fc9bb435918a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157914020881069574, guid: 83865efc909934e7e892fc9bb435918a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4078620330178761414, guid: 83865efc909934e7e892fc9bb435918a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

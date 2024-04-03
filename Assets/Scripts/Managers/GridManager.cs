@@ -13,7 +13,8 @@ public class GridManager : MonoBehaviour
 
     public static readonly int BOUNDS = 9;
     public static readonly int MAXPATH = BOUNDS * BOUNDS;
-    private Dictionary<Vector2, CustomTile> tilesDico = new Dictionary<Vector2, CustomTile>();
+
+    public Dictionary<Vector2, CustomTile> tilesDico = new Dictionary<Vector2, CustomTile>();
     public Dictionary<Vector2, CustomCorner> cornersDico = new Dictionary<Vector2, CustomCorner>();
 
     [HideInInspector] public CustomCorner selectedCorner;
@@ -22,21 +23,17 @@ public class GridManager : MonoBehaviour
     {
         Instance = this;
         GameManager.OnGameStateChanged += OnGameStateChanged;
-        ModeManager.OnModeChanged += OnModeChanged;
     }
 
     private void OnDestroy()
     {
         GameManager.OnGameStateChanged -= OnGameStateChanged;
-        ModeManager.OnModeChanged -= OnModeChanged;
     }
 
     private void OnGameStateChanged(GameState gameState)
     {
         if (gameState == GameState.GenerateGrid) GenerateGrid();
     }
-
-    private void OnModeChanged(Mode newMode) => ResetAllTilesVisual();
 
     public void GenerateGrid()
     {
@@ -73,34 +70,5 @@ public class GridManager : MonoBehaviour
     {
         if (cornersDico.TryGetValue(pos, out var corner)) return corner;
         return null;
-    }
-
-    public CustomTile[] GetFirstRaw()
-    {
-        CustomTile[] firstRaw = new CustomTile[BOUNDS];
-        for (int i = 0; i < BOUNDS; i++) firstRaw[i] = GetTileAtPosition(new Vector2(i, 0));
-        return firstRaw;
-    }
-
-    public CustomTile[] GetLastRaw()
-    {
-        CustomTile[] lastRaw = new CustomTile[BOUNDS];
-        for (int i = 0; i < BOUNDS; i++) lastRaw[i] = GetTileAtPosition(new Vector2(i, BOUNDS - 1));
-        return lastRaw;
-    }
-
-    public void ResetAllTilesVisual()
-    {
-        foreach (KeyValuePair<Vector2, CustomTile> pair in tilesDico) pair.Value.EnableVisual(false);
-    }
-
-    public void ResetAllTilesText()
-    {
-        foreach (KeyValuePair<Vector2, CustomTile> pair in tilesDico) pair.Value.ResetText();
-    }
-
-    public void UpdateAllTilesText()
-    {
-        foreach (KeyValuePair<Vector2, CustomTile> pair in tilesDico) pair.Value.UpdateText();
     }
 }

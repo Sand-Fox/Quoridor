@@ -11,16 +11,8 @@ public abstract class BaseIA : BaseUnit
     {
         if (this == ReferenceManager.Instance.player && GameManager.Instance.isPlayerTurn(newState)
             || (this == ReferenceManager.Instance.enemy && GameManager.Instance.isEnemyTurn(newState)))
-            Invoke("PlayIA", movementDuration);
+            Invoke(nameof(PlayIA), movementDuration);
     }
 
     protected abstract void PlayIA();
-
-    protected BaseUnit OtherUnit()
-    {
-        if (ReferenceManager.Instance.player == this)
-            return ReferenceManager.Instance.enemy;
-
-        return ReferenceManager.Instance.player;
-    }
 }

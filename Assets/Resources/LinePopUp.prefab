@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -46,4 +47,4 @@ MonoBehaviour:
   arrowCountPerTile: 2
   arrowPrefab: {fileID: 1175456898377934444, guid: 5224093f6dfd547e9b8a34fb26aca2fa, type: 3}
   pointPrefab: {fileID: 1478760119414509133, guid: 4e559ae04601a451daf4a2dd5742c027, type: 3}
-  circlePrefab: {fileID: 502586592343474095, guid: dd7f455e5d67b4a3d990880b25ef7ab3, type: 3}
+  targetPrefab: {fileID: 502586592343474095, guid: dd7f455e5d67b4a3d990880b25ef7ab3, type: 3}

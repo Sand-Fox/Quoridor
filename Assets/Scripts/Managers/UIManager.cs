@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
         if (newState == GameState.Player1Turn || newState == GameState.Player2Turn) banner.SetActive(false);
 
         if (SceneSetUpManager.playMode != "IA vs IA" && GameManager.Instance.isPlayerTurn(newState))
-            Invoke("EnableBluttons", BaseUnit.movementDuration);
+            Invoke(nameof(EnableBluttons), BaseUnit.movementDuration);
 
         else
         {

@@ -59,8 +59,6 @@ public class IAAlphaBeta : BaseIA
         int nbWallP = OtherUnit().wallCount;
 
         float score = weight.x * pathP.Count - weight.y * pathIA.Count - weight.z * nbWallP + weight.w * nbWallIA;
-        //float score = weight.x * distP;
-        //float score = -weight.y * distIA;
         return score;
     }
 

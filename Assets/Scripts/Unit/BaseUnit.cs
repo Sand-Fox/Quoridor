@@ -10,7 +10,7 @@ public abstract class BaseUnit : MonoBehaviour
     public PhotonView view { get; private set; }
     public int wallCount = 10;
 
-    public static readonly float movementDuration = 0.25f;
+    public static readonly float movementDuration = 0.3f;
 
     protected virtual void Awake()
     {
@@ -26,6 +26,12 @@ public abstract class BaseUnit : MonoBehaviour
         transform.position = tile.transform.position;
     }
 
+    public BaseUnit OtherUnit()
+    {
+        if (ReferenceManager.Instance.player == this) return ReferenceManager.Instance.enemy;
+        return ReferenceManager.Instance.player;
+    }
+
     [PunRPC]
     public void SetUnit(Vector3 position)
     {
@@ -38,6 +44,7 @@ public abstract class BaseUnit : MonoBehaviour
         tile.occupiedUnit = this;
         occupiedTile = tile;
         transform.DOMove(tile.transform.position, movementDuration).SetEase(Ease.InOutSine);
+        AudioManager.Instance.Play("Move");
 
         CoupMove c = new CoupMove(tile.transform.position);
         RegisterManager.Instance.AddCoup(c);
@@ -69,6 +76,7 @@ public abstract class BaseUnit : MonoBehaviour
         wall.OnSpawn();
         wallCount--;
         UIManager.Instance.UpdateWallCountText();
+        AudioManager.Instance.Play("Wall");
 
         CoupWall c = new CoupWall(corner.transform.position, orientation);
         RegisterManager.Instance.AddCoup(c);

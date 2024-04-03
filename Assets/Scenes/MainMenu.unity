@@ -575,7 +575,7 @@ RectTransform:
   - {fileID: 455730214}
   - {fileID: 6603072950727008108}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -787,7 +787,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1102791183450192261, guid: d999d6e6804424594a38728c9a8d0f16, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1102791183450192261, guid: d999d6e6804424594a38728c9a8d0f16, type: 3}
       propertyPath: m_LocalPosition.x
@@ -865,7 +865,7 @@ Transform:
   m_Children:
   - {fileID: 681604243}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1173448326 stripped
 RectTransform:
@@ -961,6 +961,87 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963343197}
   m_CullTransparentMesh: 1
+--- !u!1 &2122352537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2122352539}
+  - component: {fileID: 2122352538}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2122352538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122352537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09d5add8c23c4c8d84aa5365fa2829e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Music
+    clip: {fileID: 8300000, guid: e3b9234b238d54f4ca4236b97c3f73ca, type: 3}
+    volume: 0.25
+    pitch: 1
+    useRandomPitch: 0
+    minPitch: 1
+    maxPitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Click
+    clip: {fileID: 8300000, guid: f7d2c486903154f73b1d32b5fb2d1484, type: 3}
+    volume: 0.5
+    pitch: 1
+    useRandomPitch: 1
+    minPitch: 1
+    maxPitch: 1.4
+    loop: 0
+    source: {fileID: 0}
+  - name: Move
+    clip: {fileID: 8300000, guid: de626328af62646808a930502681435c, type: 3}
+    volume: 0.3
+    pitch: 1
+    useRandomPitch: 1
+    minPitch: 1
+    maxPitch: 1.2
+    loop: 0
+    source: {fileID: 0}
+  - name: Wall
+    clip: {fileID: 8300000, guid: 2eff869e44e1444958a73f8f438cef78, type: 3}
+    volume: 0.4
+    pitch: 1
+    useRandomPitch: 1
+    minPitch: 0.9
+    maxPitch: 1.2
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &2122352539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122352537}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &564423493681219823
 MonoBehaviour:
   m_ObjectHideFlags: 0

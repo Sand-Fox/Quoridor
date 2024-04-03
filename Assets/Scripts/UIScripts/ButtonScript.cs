@@ -44,6 +44,7 @@ public class ButtonScript : MonoBehaviour
     public void OnPointerClick()
     {
         tweenShake.Restart();
+        AudioManager.Instance.Play("Click");
     }
 
     public void EnableButton(bool enable)

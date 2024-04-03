@@ -7,9 +7,9 @@ public class ModeManager : MonoBehaviour
 {
     public static ModeManager Instance;
 
+    [SerializeField] private VoidEventChannelSO destropPopUpEvent;
     public Mode mode = Mode.Normal;
-    public static event Action<Mode> OnModeChanged;
-
+  
     private void Awake()
     {
         Instance = this;
@@ -26,12 +26,66 @@ public class ModeManager : MonoBehaviour
     public void UpdateMode(Mode newMode)
     {
         mode = newMode;
-        OnModeChanged?.Invoke(newMode);
+        
+        if (newMode == Mode.Move) EnablePlayerMoveZone();
+        else DisablePlayerMoveZone();
+
+        EnableCornerVisual(newMode == Mode.Wall);
+
+        if (newMode == Mode.PathFinding) DrawPathFindingPopUps();
+        else destropPopUpEvent.RaiseEvent();
     }
 
     public void UpdateModeFromButton(int newMode)
     {
         UpdateMode((Mode)newMode);
+    }
+
+    // Mode Move
+    private void EnablePlayerMoveZone()
+    {
+        CustomTile playerTile = ReferenceManager.Instance.player.occupiedTile;
+        foreach (CustomTile tile in playerTile.AdjacentTiles())
+        {
+            tile.EnableVisual(true);
+        }
+    }
+
+    private void DisablePlayerMoveZone()
+    {
+        foreach (KeyValuePair<Vector2, CustomTile> pair in GridManager.Instance.tilesDico)
+        {
+            pair.Value.EnableVisual(false);
+        }
+    }
+
+    // Mode Wall
+    private void EnableCornerVisual(bool enable)
+    {
+        foreach (KeyValuePair<Vector2, CustomCorner> pair in GridManager.Instance.cornersDico)
+        {
+            pair.Value.EnableVisual(enable);
+        }
+    }
+
+    // Mode PathFinding
+    private void DrawPathFindingPopUps()
+    {
+        BaseUnit player = ReferenceManager.Instance.player;
+        List<CustomTile> playerWiningPath = PathFinding.Instance.GetWiningPath(player);
+        if (playerWiningPath != null)
+        {
+            playerWiningPath.Insert(0, player.occupiedTile);
+            LinePopUp.Create(playerWiningPath, ColorExtension.blue);
+        }
+
+        BaseUnit enemy = ReferenceManager.Instance.enemy;
+        List<CustomTile> enemyWiningPath = PathFinding.Instance.GetWiningPath(enemy);
+        if (enemyWiningPath != null)
+        {
+            enemyWiningPath.Insert(0, enemy.occupiedTile);
+            LinePopUp.Create(enemyWiningPath, ColorExtension.red);
+        }
     }
 }
 
