@@ -19,7 +19,7 @@ An unfinished version of the game in python is findable on Henri's github.
 
 
 ## General info
-This project simulate the game of Quoridor. Implemented by [Henri Besancenot](https://github.com/BlackH57), [Zhichun Hua](https://github.com/ZhicoH) and [Nino Sandlarz](https://github.com/Sand-Fox
+This project simulate the game of Quoridor. Implemented by [Henri Besancenot](https://github.com/Henri-Besancenot), [Zhichun Hua](https://github.com/ZhicoH) and [Nino Sandlarz](https://github.com/Sand-Fox
 ).
 	
 
